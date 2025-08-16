@@ -20,8 +20,8 @@
       --line:#E7DDBC; --shadow:0 14px 40px rgba(25,75,108,.12); --radius:22px;
       --gap:14px; --nav-h:64px;
 
-      /* Video height */
-      --video-h: 60dvh;
+      /* Video height (70% viewport, mobile-friendly) */
+      --video-h: 70dvh;
     }
 
     *{box-sizing:border-box}
@@ -93,7 +93,7 @@
 
     .menu-overlay{ position:fixed; inset:0; background:rgba(10,14,18,.45); backdrop-filter:blur(2px); display:none; z-index:2000; }
 
-    /* HERO */
+    /* HERO (acts as ABOUT) */
     header.hero{max-width:1200px; margin:36px auto 18px; padding:0 20px 36px; display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:stretch}
     .hero__grid{position:relative; display:grid; gap:10px; grid-template-columns:repeat(4,1fr); grid-auto-rows:160px; overflow:hidden}
     .tall{grid-row:span 2} .wide{grid-column:span 2}
@@ -144,6 +144,17 @@
       border-radius:999px;
     }
 
+    .cards{ display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px }
+    .card{
+      background:rgba(255,255,255,.98); border-radius:18px; padding:16px;
+      border:1px solid rgba(226,200,147,.38); box-shadow:var(--shadow);
+      display:flex; flex-direction:column; gap:10px; transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .card:hover{ transform:translateY(-2px); box-shadow:0 18px 38px rgba(25,75,108,.16) }
+    .card h3{ margin:2px 0 2px; font-size:18px; color:#192f41 }
+    .muted{ color:var(--muted) }
+    .card video{ width:100%; border-radius:12px; display:block; background:#000 }
+
     /* ===== PHOTOS – wrapper ===== */
     #photos .wrap{
       position:relative; overflow:hidden;
@@ -162,70 +173,88 @@
       border-radius:999px; padding:8px 12px; font-weight:600; color:#21313f; cursor:pointer}
     .tab.active{border-color:rgba(226,200,147,.9); box-shadow:0 6px 16px rgba(25,75,108,.08)}
 
-    /* ===== Ribbon Carousel (tight + taller + scrollable) ===== */
-    #ph-carousel.ribbon{
-      --ribbon-gap: 25px;
-      --ribbon-item-width: clamp(190px, 21vw, 280px);
-      --ribbon-aspect: 4 / 5;
-    }
-    #ph-carousel .ribbon__viewport{
-      overflow-x:auto; overflow-y:hidden;
-      border-radius:18px;
-      touch-action:pan-x;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-      -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 .6%, #000 99.4%, transparent 100%);
-              mask-image:linear-gradient(90deg, transparent 0%, #000 .6%, #000 99.4%, transparent 100%);
-    }
-    #ph-carousel .ribbon__viewport::-webkit-scrollbar{ display:none; }
-
-    #ph-carousel .ribbon__track{
-      display:flex; align-items:stretch;
-      gap:var(--ribbon-gap);
-      will-change:transform;
-      animation:none; /* JS sets the exact distance/time */
-    }
-
-    #ph-carousel .cardp{
-      margin:0; flex:0 0 var(--ribbon-item-width);
-      background:#fff; border-radius:16px; overflow:hidden;
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 10px 24px rgba(0,0,0,.12);
-      cursor:pointer; transition:transform .18s ease, box-shadow .18s ease;
-    }
-    #ph-carousel .cardp:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,.16) }
-    #ph-carousel .cardp img{
-      width:100%; height:100%; object-fit:cover; display:block;
-      aspect-ratio:var(--ribbon-aspect);
-      transform:scale(1.01); transition:transform 6s ease;
-    }
-    #ph-carousel .ribbon__track:not(:hover) .cardp img{ transform:scale(1.045) }
-
-    /* pixel-precise animation: JS supplies --travel and duration */
-    @keyframes ribbon-scroll-px{ to{ transform: translateX(calc(var(--travel) * -1)); } }
-
-    /* ===== Masonry (“Pinterest”) ===== */
+    /* ===== Masonry (unchanged) ===== */
     .masonry{display:none}
     .masonry.active{display:block}
-    .masonry__cols{ column-count:4; column-gap:10px }
-    .masonry__item{
-      break-inside:avoid; margin:0 0 10px; position:relative;
-      overflow:hidden; border-radius:16px; border:1px solid rgba(226,200,147,.38);
-      box-shadow:0 10px 26px rgba(25,75,108,.10); background:#fff;
-    }
-    .masonry__item img{ width:100%; height:auto; display:block }
-    .pin-save{
-      position:absolute; top:10px; right:10px; z-index:2;
-      padding:8px 12px; border-radius:999px; font-weight:700; font-size:13px;
-      background:linear-gradient(180deg, #fff, #f6f0e4); color:#1f2b35;
-      border:1px solid rgba(226,200,147,.7);
-      box-shadow:0 8px 16px rgba(25,75,108,.12);
-      opacity:0; transform:translateY(-6px); transition:.18s ease;
-    }
-    .masonry__item:hover .pin-save{ opacity:1; transform:translateY(0) }
+    .masonry__cols{column-count:4; column-gap:14px}
+    .masonry__item{break-inside:avoid; margin:0 0 14px; position:relative}
+    .masonry__item img{width:100%; height:auto; display:block; border-radius:16px; border:1px solid rgba(226,200,147,.38); box-shadow:0 10px 26px rgba(25,75,108,.10)}
+
+    /* ===== RIBBON CAROUSEL (new) ===== */
+  /* ===== RIBBON CAROUSEL (tight + taller + scrollable) ===== */
+#ph-carousel.ribbon{
+  --ribbon-gap: 25px;
+  --ribbon-item-width: clamp(190px, 21vw, 280px);
+  --ribbon-aspect: 4 / 5;
+}
+#ph-carousel .ribbon__viewport{
+  overflow-x:auto;               /* let users scroll/drag */
+  overflow-y:hidden;
+  border-radius:18px;
+  touch-action: pan-x;           /* smooth horizontal dragging */
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 .6%, #000 99.4%, transparent 100%);
+          mask-image:linear-gradient(90deg, transparent 0%, #000 .6%, #000 99.4%, transparent 100%);
+}
+#ph-carousel .ribbon__viewport::-webkit-scrollbar{ display:none; }
+
+#ph-carousel .ribbon__track{
+  display:flex; align-items:stretch;
+  gap:var(--ribbon-gap);
+  will-change:transform;
+  animation:ribbon-scroll var(--dur, 30s) linear infinite;
+}
+#ph-carousel .ribbon__viewport:hover .ribbon__track{ animation-play-state:paused; } /* pause on hover */
+
+#ph-carousel .cardp{
+  margin:0; /* kill default <figure> margin */
+  flex:0 0 var(--ribbon-item-width);
+  background:#fff; border-radius:16px; overflow:hidden;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  cursor:pointer; transition:transform .18s ease, box-shadow .18s ease;
+}
+#ph-carousel .cardp:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,.16) }
+#ph-carousel .cardp img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  aspect-ratio:var(--ribbon-aspect);
+  transform:scale(1.01); transition:transform 6s ease;
+}
+#ph-carousel .ribbon__track:not(:hover) .cardp img{ transform:scale(1.045) }
+
+/* The animation now travels an exact pixel distance in --travel (set by JS) */
+@keyframes ribbon-scroll{ to{ transform:translateX(var(--travel, -50%)); } }
+
+
+/* ===== MASONRY (“Pinterest”) – tighter + proper overlay Save ===== */
+.masonry{display:none}
+.masonry.active{display:block}
+.masonry__cols{ column-count:4; column-gap:10px }          /* tighter */
+.masonry__item{
+  break-inside:avoid; margin:0 0 10px; position:relative;  /* tight rows */
+  overflow:hidden;                                         /* keep Save inside */
+  border-radius:16px; border:1px solid rgba(226,200,147,.38);
+  box-shadow:0 10px 26px rgba(25,75,108,.10);
+  background:#fff;
+}
+.masonry__item img{ width:100%; height:auto; display:block }
+
+.pin-save{
+  position:absolute; top:10px; right:10px; z-index:2;
+  padding:8px 12px; border-radius:999px; font-weight:700; font-size:13px;
+  background:linear-gradient(180deg, #fff, #f6f0e4); color:#1f2b35;
+  border:1px solid rgba(226,200,147,.7);
+  box-shadow:0 8px 16px rgba(25,75,108,.12);
+  opacity:0; transform:translateY(-6px); transition:.18s ease;
+}
+.masonry__item:hover .pin-save{ opacity:1; transform:translateY(0) }
+
+
+    @keyframes ribbon-scroll{ to{ transform:translateX(-50%) } }
 
     /* ===== VIDEOS ===== */
-    .vgrid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+    .vgrid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
     .vcard{
       background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(253,246,232,.98));
       border:1px solid rgba(226,200,147,.45);
@@ -277,20 +306,26 @@
       .hero__grid{ grid-auto-rows:140px }
       h1{ font-size:38px }
     }
+    @media (max-width:760px){
+      .menu{ display:none }
+      .hamburger{ display:inline-flex }
+      .menu-panel{ display:block; transform:translateY(-6px); opacity:0; pointer-events:none; }
+      .menu-open .menu-panel{ transform:translateY(0); opacity:1; pointer-events:auto; }
+      .menu-open .menu-overlay{ display:block; }
+    }
     @media (max-width:800px){
       .masonry__cols{column-count:2}
-      :root{ --video-h: 54dvh; }
+      :root{ --video-h: 65dvh; }
     }
     @media (max-width:640px){
       .brand{ font-size:18px }
       .hero__grid{ grid-auto-rows:120px }
       h1{ font-size:32px }
-      :root{ --nav-h:60px; --video-h: 50dvh; }
+      :root{ --nav-h:60px; --video-h: 60dvh; }
       .menu-panel a{ font-size:14px; }
-      .sound-hint{ display:none !important; } /* hide pill on small screens */
     }
 
-    /* Soft reveal */
+    /* Soft reveal on scroll */
     .reveal{opacity:0; transform:translateY(8px); filter:saturate(.9); transition:opacity .5s ease, transform .5s ease, filter .5s ease}
     .reveal.in{opacity:1; transform:none; filter:none}
 
@@ -298,7 +333,7 @@
     @media (min-width: 980px){
       #photos{ margin-top: clamp(240px, 1vh, 820px); }
     }
-
+    
     /* Hero "bling" */
     .hero__grid{ position:relative; isolation:isolate; }
     .hero__grid::before{
@@ -317,6 +352,8 @@
       90%{ opacity:0 }
       100%{ opacity:0; transform:translateX(92%) rotate(6deg) }
     }
+    @keyframes luxKen{ from{ transform:scale(1.02) } to{ transform:scale(1.055) } }
+    
   </style>
 </head>
 <body>
@@ -390,10 +427,11 @@
         <button class="tab" role="tab" aria-selected="false" aria-controls="ph-masonry" data-tab="masonry">Masonry</button>
       </div>
 
-      <!-- RIBBON CAROUSEL VIEW -->
+      <!-- RIBBON CAROUSEL VIEW (new) -->
       <div id="ph-carousel" class="ribbon" aria-label="Photo ribbon">
         <div class="ribbon__viewport" tabindex="0">
           <div class="ribbon__track">
+            <!-- one set (JS clones once to loop seamlessly) -->
             <figure class="cardp" data-full="assets/shot1.jpg"><img src="assets/shot1.jpg"  alt=""></figure>
             <figure class="cardp" data-full="assets/shot2.jpg"><img src="assets/shot2.jpg"  alt=""></figure>
             <figure class="cardp" data-full="assets/shot3.jpg"><img src="assets/shot3.jpg"  alt=""></figure>
@@ -464,7 +502,7 @@
     <div class="vgrid">
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic1.jpg" aria-label="Inorganic video 1"><source src="assets/organic1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 3"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
   </section>
 
@@ -540,7 +578,7 @@
   });
 })();
 
-/* ========== NAV: mobile menu ========== */
+/* ========== NAV: mobile menu (open/close + overlay + Esc) ========== */
 (() => {
   const body    = document.body;
   const btn     = document.getElementById('menuBtn');
@@ -557,16 +595,23 @@
   panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 })();
 
-/* ========== LIGHTBOX for photos (tiles + ribbon) ========== */
+/* ========== LIGHTBOX for photos (works for tiles + ribbon cards) ========== */
 (() => {
   const lb     = document.getElementById('lb');
   const lbImg  = document.getElementById('lbImg');
   const lbClose= document.getElementById('lbClose');
   if (!lb || !lbImg || !lbClose) return;
 
-  const openLB = (src) => { lbImg.src = src; lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); };
-  const closeLB= () => { lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src = ''; };
-
+  function openLB(src){
+    lbImg.src = src;
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden','false');
+  }
+  function closeLB(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden','true');
+    lbImg.src = '';
+  }
   lbClose.addEventListener('click', closeLB);
   lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLB(); });
@@ -574,9 +619,9 @@
   function attachLightbox(){
     document.querySelectorAll('#photos .tile, #photos .cardp').forEach(el => {
       el.addEventListener('click', ev => {
-        if (ev.target?.classList?.contains('pin-save')) return;
+        if (ev.target && ev.target.classList && ev.target.classList.contains('pin-save')) return;
         const img = el.querySelector('img');
-        const full = el.getAttribute('data-full') || img?.src;
+        const full = el.getAttribute('data-full') || (img && img.src);
         if (full) openLB(full);
       });
     });
@@ -585,87 +630,10 @@
   window.__attachLightbox = attachLightbox;
 })();
 
-/* ========== PHOTOS: Tabs ========== */
-(() => {
-  const wrap = document.querySelector('#photos .wrap');
-  if (!wrap) return;
-  const tabs = wrap.querySelectorAll('.tab');
-  const ribbonEl  = document.getElementById('ph-carousel');
-  const masonryEl = document.getElementById('ph-masonry');
+/* ========== PHOTOS: Tabs + RIBBON carousel init ========== */
 
-  function setView(view){
-    const isCarousel = view === 'carousel';
-    if (ribbonEl)  ribbonEl.style.display = isCarousel ? 'block' : 'none';
-    if (masonryEl) masonryEl.classList.toggle('active', !isCarousel);
-    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === view));
-    if (window.__attachLightbox) window.__attachLightbox();
-  }
 
-  tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.tab)));
-  setView('carousel');
-})();
-
-/* ========== RIBBON logic: exact distance + user scroll ========== */
-(() => {
-  const ribbonEl = document.getElementById('ph-carousel');
-  if (!ribbonEl) return;
-
-  const track    = ribbonEl.querySelector('.ribbon__track');
-  const viewport = ribbonEl.querySelector('.ribbon__viewport');
-  if (!track || !viewport) return;
-
-  // Clone exactly once for seamless loop
-  if (!track.dataset.cloned) {
-    const originals = Array.from(track.children);
-    originals.forEach(n => track.appendChild(n.cloneNode(true)));
-    track.dataset.cloned = '1';
-  }
-  const originals = Array.from(track.children).slice(0, track.children.length / 2);
-
-  const SPEED_PX_PER_SEC = 100;
-  const getGapPx = () => parseFloat(getComputedStyle(track).gap || '0') || 0;
-
-  function setDistanceAndDuration(){
-    const gap  = getGapPx();
-    const setW = originals.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0)
-             + gap * (originals.length - 1);
-    const travel = setW + gap;       // include the seam gap
-    const dur    = travel / SPEED_PX_PER_SEC;
-
-    track.style.setProperty('--travel', `${travel}px`);
-    track.style.animation = `ribbon-scroll-px ${dur}s linear infinite`;
-    track.style.animationPlayState = 'running';
-  }
-
-  // Wait for image sizes
-  const imgs = track.querySelectorAll('img');
-  Promise.all([...imgs].map(img => img.complete
-    ? Promise.resolve()
-    : new Promise(res => img.addEventListener('load', res, { once:true }))
-  )).then(setDistanceAndDuration);
-
-  window.addEventListener('load', setDistanceAndDuration);
-  window.addEventListener('resize', setDistanceAndDuration);
-
-  // Pause/resume on visibility change
-  document.addEventListener('visibilitychange', () => {
-    track.style.animationPlayState = document.hidden ? 'paused' : 'running';
-  });
-
-  // Let users drag/scroll; pause while interacting
-  let resumeT;
-  const pause = () => { track.style.animationPlayState = 'paused'; clearTimeout(resumeT); };
-  const resumeSoon = () => { clearTimeout(resumeT); resumeT = setTimeout(() => { track.style.animationPlayState = 'running'; }, 800); };
-
-  ['pointerdown','touchstart','wheel','scroll'].forEach(evt =>
-    viewport.addEventListener(evt, pause, { passive:true })
-  );
-  ['pointerup','mouseleave','touchend'].forEach(evt =>
-    viewport.addEventListener(evt, resumeSoon, { passive:true })
-  );
-})();
-
-/* ========== VIDEOS: hint + unmute + pause off-screen ========== */
+/* ========== VIDEOS: sound hint + unmute on tap + pause off-screen ========== */
 (() => {
   const vids = document.querySelectorAll('#videos video');
   if (!vids.length) return;
