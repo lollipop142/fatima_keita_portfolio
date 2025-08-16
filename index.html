@@ -521,7 +521,12 @@
 
           <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
             <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
-            <a class="cta cta--ghost cta--shine" id="mailtoBtn" href="#" rel="noopener">Open Email</a>
+            <a class="cta cta--ghost cta--shine"
+   id="mailtoBtn"
+   href="#"
+   target="_blank"
+   rel="noopener">Open Email</a>
+
             <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
           </div>
         </form>
@@ -712,6 +717,65 @@
   }, { threshold: .12 });
   els.forEach(el => io.observe(el));
 })();
+
+/* ===== CONTACT: email helpers (mailto + Gmail) ===== */
+(() => {
+  const TO = 'jeanetteferrater14@gmail.com';
+  const form = document.getElementById('contactForm');
+  const statusEl = document.getElementById('formStatus');
+  const nameEl = document.getElementById('name');
+  const emailEl = document.getElementById('email');
+  const msgEl = document.getElementById('message');
+  const gmailBtn = document.getElementById('mailtoBtn');
+
+  if (!form || !gmailBtn) return;
+
+  const buildSubject = () => {
+    const n = (nameEl.value || '').trim();
+    return `UGC Inquiry from ${n || 'a brand'}`;
+  };
+
+  const buildBody = () => {
+    const n = (nameEl.value || '').trim();
+    const e = (emailEl.value || '').trim();
+    const m = (msgEl.value || '').trim();
+    return `Hi Fatima,
+
+${m}
+
+— ${n || 'Your Name'}
+${e || ''}`;
+  };
+
+  // Submit: open user's default email app (mailto:)
+ // Submit: open Gmail in a new tab AND trigger default mail client (mailto)
+form.addEventListener('submit', (ev) => {
+  ev.preventDefault();
+
+  const subject = encodeURIComponent(buildSubject());
+  const body = encodeURIComponent(buildBody());
+
+  // 1) Open Gmail compose in a new tab
+  const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${subject}&body=${body}`;
+  window.open(gmailCompose, '_blank', 'noopener');
+
+  // 2) Also open the user's default mail app
+  const mailto = `mailto:${TO}?subject=${subject}&body=${body}`;
+  if (statusEl) statusEl.textContent = 'Opening Gmail and your email app…';
+
+  // Tiny delay improves popup success across browsers
+  setTimeout(() => { window.location.href = mailto; }, 150);
+});
+
+
+  // "Open Email": open Gmail compose in a new tab
+  gmailBtn.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(buildSubject())}&body=${encodeURIComponent(buildBody())}`;
+    window.open(gmailCompose, '_blank', 'noopener'); // opens Gmail website
+  });
+})();
+
   </script>
 </body>
 </html>
