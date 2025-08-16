@@ -532,16 +532,16 @@
         <video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic1.jpg">
           <source src="assets/organic1.mp4" type="video/mp4">
         </video>
-        <h3>Sunday Reset</h3>
-        <p class="muted">Simple rituals — steam, serum, SPF — filmed in soft daylight for a calm, credible feel.</p>
+        <h3>Hook → 3 benefits → CTA</h3>
+        <p class="muted">dewy hydration • calm glow • barrier support.</p>
       </div>
 
       <div class="card reveal">
         <video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg">
           <source src="assets/organic2.mp4" type="video/mp4">
         </video>
-        <h3>Morning Coffee & SPF</h3>
-        <p class="muted">Lifestyle‑first product moment that blends routine, texture, and tasteful branding.</p>
+        <h3>Real-Time Skin Review</h3>
+        <p class="muted">Product applied on camera, see the benefits instantly—hydrated glow, smoother texture, and a soft, camera-ready finish.</p>
       </div>
 
       <div class="cardreveal">
@@ -618,187 +618,205 @@
 
 
 
-  
-
   <script>
-    // dynamic year + lazy alt
-    document.getElementById('y').textContent = new Date().getFullYear();
-    document.querySelectorAll('img').forEach(img=>{
-      img.loading='lazy';
-      if(!img.alt) img.alt='Lifestyle image';
-    });
+/* ========== COMMON: dynamic year + lazy alt ========== */
+(() => {
+  const y = document.getElementById('y');
+  if (y) y.textContent = new Date().getFullYear();
 
-    // Mobile menu
-    const body = document.body;
-    const btn = document.getElementById('menuBtn');
-    const panel = document.getElementById('mobileMenu');
-    const overlay = document.getElementById('menuOverlay');
+  document.querySelectorAll('img').forEach(img => {
+    img.loading = 'lazy';
+    if (!img.alt) img.alt = 'Lifestyle image';
+  });
+})();
 
-    function closeMenu(){
-      body.classList.remove('menu-open');
-      btn.setAttribute('aria-expanded','false');
-      btn.setAttribute('aria-label','Open menu');
-    }
-    function openMenu(){
-      body.classList.add('menu-open');
-      btn.setAttribute('aria-expanded','true');
-      btn.setAttribute('aria-label','Close menu');
-    }
-    btn.addEventListener('click', ()=>{ body.classList.contains('menu-open') ? closeMenu() : openMenu(); });
-    overlay.addEventListener('click', closeMenu);
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
-    panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+/* ========== NAV: mobile menu (open/close + overlay + Esc) ========== */
+(() => {
+  const body    = document.body;
+  const btn     = document.getElementById('menuBtn');
+  const panel   = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('menuOverlay');
+  if (!btn || !panel || !overlay) return;
 
-    // Lightbox
-    const lb = document.getElementById('lb');
-    const lbImg = document.getElementById('lbImg');
-    const lbClose = document.getElementById('lbClose');
-    function attachLightbox(){
-      document.querySelectorAll('#photos .tile').forEach(tile=>{
-        tile.addEventListener('click', (ev)=>{
-          // block if clicking the Save button
-          if(ev.target && ev.target.classList.contains('pin-save')) return;
-          const full = tile.getAttribute('data-full') || tile.querySelector('img').src;
-          lbImg.src = full;
-          lb.classList.add('open');
-          lb.setAttribute('aria-hidden','false');
-        });
+  const openMenu  = () => { body.classList.add('menu-open');  btn.setAttribute('aria-expanded','true');  btn.setAttribute('aria-label', 'Close menu'); };
+  const closeMenu = () => { body.classList.remove('menu-open');btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label', 'Open menu'); };
+
+  btn.addEventListener('click', () => body.classList.contains('menu-open') ? closeMenu() : openMenu());
+  overlay.addEventListener('click', closeMenu);
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+})();
+
+/* ========== LIGHTBOX for photos ========== */
+(() => {
+  const lb     = document.getElementById('lb');
+  const lbImg  = document.getElementById('lbImg');
+  const lbClose= document.getElementById('lbClose');
+  if (!lb || !lbImg || !lbClose) return;
+
+  function openLB(src){
+    lbImg.src = src;
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden','false');
+  }
+  function closeLB(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden','true');
+    lbImg.src = '';
+  }
+  lbClose.addEventListener('click', closeLB);
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLB(); });
+
+  // attach to tiles (both carousel + masonry)
+  function attachLightbox(){
+    document.querySelectorAll('#photos .tile').forEach(tile => {
+      tile.addEventListener('click', ev => {
+        if (ev.target && ev.target.classList && ev.target.classList.contains('pin-save')) return;
+        const full = tile.getAttribute('data-full') || (tile.querySelector('img') && tile.querySelector('img').src);
+        if (full) openLB(full);
       });
-    }
-    function closeLB(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; }
-    lbClose.addEventListener('click', closeLB);
-    lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLB(); });
-    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLB(); });
+    });
+  }
+  // run now and again after photos init
+  attachLightbox();
+  window.__attachLightbox = attachLightbox;
+})();
 
-    // -------- CONTACT: Direct to Gmail (with mailto fallback) --------
-    (() => {
-      const TO_EMAIL = 'jeanetteferrater14@gmail.com';
-      const form      = document.getElementById('contactForm');
-      const submitBtn = document.getElementById('submitBtn');
-      const mailBtn   = document.getElementById('mailtoBtn');
-      const statusEl  = document.getElementById('formStatus');
+/* ========== CONTACT: Prefer Gmail (app → web → mailto), auto-fill message ========== */
+(() => {
+  const TO = 'jeanetteferrater14@gmail.com';
+  const form      = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const mailBtn   = document.getElementById('mailtoBtn');
+  const statusEl  = document.getElementById('formStatus');
+  if (!form || !submitBtn) return;
 
-      function buildCompose() {
-        const name  = (document.getElementById('name').value || '').trim();
-        const email = (document.getElementById('email').value || '').trim();
-        const msg   = (document.getElementById('message').value || '').trim();
+  const isIOS     = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
 
-        const subject   = `UGC Inquiry from ${name || 'a potential client'}`;
-        const plainBody =
+  function buildCompose(){
+    const name  = (document.getElementById('name')?.value || 'a potential client').trim();
+    const email = (document.getElementById('email')?.value || '').trim();
+    const msg   = (document.getElementById('message')?.value || '').trim();
+
+    const subject = `UGC Inquiry from ${name}`;
+    const body =
 `Hi Fatima,
 
 ${msg || '(message left empty)'}
 
-— ${name || 'Anonymous'}${email ? `
-Email: ${email}` : ''}`;
+— ${name}${email ? `\nEmail: ${email}` : ''}`;
 
-        const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${
-          encodeURIComponent(TO_EMAIL)
-        }&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(plainBody)}`;
+    const gmailWeb = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const gmailApp = `googlegmail://co?to=${encodeURIComponent(TO)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailto   = `mailto:${encodeURIComponent(TO)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return { gmailWeb, gmailApp, mailto, body };
+  }
 
-        const nl = '%0D%0A';
-        const mailtoBody =
-          'Hi Fatima,' + nl + nl +
-          encodeURIComponent(msg || '(message left empty)') + nl + nl +
-          encodeURIComponent('— ' + (name || 'Anonymous')) +
-          (email ? nl + encodeURIComponent('Email: ' + email) : '');
-        const mailto = `mailto:${encodeURIComponent(TO_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${mailtoBody}`;
+  function openCompose(urls){
+    if (statusEl) statusEl.textContent = 'Opening your email app…';
 
-        return { gmail, mailto, plainBody };
-      }
+    if (isIOS || isAndroid) {
+      // 1) Gmail app
+      window.location.href = urls.gmailApp;
+      // 2) Gmail web
+      setTimeout(() => { if (!document.hidden) window.location.href = urls.gmailWeb; }, 800);
+      // 3) Default mail app
+      setTimeout(() => { if (!document.hidden) window.location.href = urls.mailto; }, 1600);
+    } else {
+      // Desktop: open Gmail web, fallback to mailto if blocked
+      const win = window.open(urls.gmailWeb, '_blank', 'noopener,noreferrer');
+      setTimeout(() => { if (!win || win.closed) window.location.href = urls.mailto; }, 1000);
+    }
+  }
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Opening Gmail…';
-        statusEl.textContent = '';
+  async function handleSubmit(e){
+    e.preventDefault();
+    submitBtn.disabled = true;
+    const urls = buildCompose();
+    try { await navigator.clipboard.writeText(urls.body); } catch {}
+    openCompose(urls);
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      if (statusEl) statusEl.textContent = '';
+    }, 3000);
+  }
 
-        const { gmail, mailto, plainBody } = buildCompose();
-        try { await navigator.clipboard.writeText(plainBody); } catch {}
+  form.addEventListener('submit', handleSubmit);
+  if (mailBtn) mailBtn.addEventListener('click', (e) => { e.preventDefault(); handleSubmit(e); });
+})();
 
-        // Go to Gmail compose
-        window.location.assign(gmail);
+/* ========== PHOTOS: Tabs (Carousel / Masonry) + Carousel autoplay + swipe ========== */
+(() => {
+  const wrap = document.querySelector('#photos .wrap');
+  if (!wrap) return;
 
-        // Quiet fallback to mailto if Gmail can't open
-        setTimeout(() => { window.location.href = mailto; }, 1200);
+  const tabs       = wrap.querySelectorAll('.tab');
+  const carouselEl = document.getElementById('ph-carousel');
+  const masonryEl  = document.getElementById('ph-masonry');
 
-        // Re-enable in case the user returns
-        setTimeout(() => { submitBtn.disabled = false; submitBtn.textContent = 'Send Inquiry'; }, 2500);
-      });
+  function setView(view){
+    const isCarousel = view === 'carousel';
+    if (carouselEl) carouselEl.style.display = isCarousel ? 'block' : 'none';
+    if (masonryEl)  masonryEl.classList.toggle('active', !isCarousel);
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === view));
+    if (window.__attachLightbox) window.__attachLightbox();
+  }
 
-      // Secondary button: open Gmail immediately (same fallback)
-      mailBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const { gmail, mailto } = buildCompose();
-        window.location.assign(gmail);
-        setTimeout(() => { window.location.href = mailto; }, 1200);
-      });
-    })();
+  tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.tab)));
+  setView('carousel');
 
-    // -------- PHOTOS: Carousel (autoplay ~2s) + Tabs --------
-    (() => {
-      const root  = document.querySelector('#photos .wrap');
-      if (!root) return;
+  // Carousel mechanics
+  if (carouselEl) {
+    const track  = carouselEl.querySelector('.carousel__track');
+    const slides = carouselEl.querySelectorAll('.carousel__slide');
+    const prev   = carouselEl.querySelector('[data-dir="prev"]');
+    const next   = carouselEl.querySelector('[data-dir="next"]');
+    const dots   = carouselEl.querySelectorAll('.dot');
 
-      const tabs = root.querySelectorAll('.tab');
-      const carouselEl = document.getElementById('ph-carousel');
-      const masonryEl  = document.getElementById('ph-masonry');
+    if (track && slides.length) {
+      let i = 0, timer = null;
+      const INTERVAL_MS = 2000;
 
-      function setView(view){
-        const isCarousel = view === 'carousel';
-        carouselEl.style.display = isCarousel ? 'block' : 'none';
-        masonryEl.classList.toggle('active', !isCarousel);
-        tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === view));
-      }
+      const go   = (n) => { i = (n + slides.length) % slides.length; track.style.transform = `translateX(-${i*100}%)`; dots.forEach((d,k)=>d.classList.toggle('active', k===i)); };
+      const play = () => { if (!timer) timer = setInterval(()=>go(i+1), INTERVAL_MS); };
+      const stop = () => { clearInterval(timer); timer = null; };
 
-      tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.tab)));
-      setView('carousel');
+      prev?.addEventListener('click', () => { stop(); go(i-1); play(); });
+      next?.addEventListener('click', () => { stop(); go(i+1); play(); });
+      dots.forEach((d,k) => d.addEventListener('click', () => { stop(); go(k); play(); }));
 
-      // Carousel logic
-      const track  = carouselEl.querySelector('.carousel__track');
-      const slides = carouselEl.querySelectorAll('.carousel__slide');
-      const prev   = carouselEl.querySelector('[data-dir="prev"]');
-      const next   = carouselEl.querySelector('[data-dir="next"]');
-      const dots   = carouselEl.querySelectorAll('.dot');
-
-      let i = 0; let timer = null; const INTERVAL_MS = 2000; // 2s
-      function go(n){ i = (n + slides.length) % slides.length; track.style.transform = `translateX(-${i * 100}%)`; dots.forEach((d,k)=>d.classList.toggle('active',k===i)); }
-      function play(){ if (timer) return; timer = setInterval(() => go(i + 1), INTERVAL_MS); }
-      function stop(){ clearInterval(timer); timer = null; }
-
-      prev.addEventListener('click', () => { stop(); go(i - 1); play(); });
-      next.addEventListener('click', () => { stop(); go(i + 1); play(); });
-      dots.forEach((d, k) => d.addEventListener('click', () => { stop(); go(k); play(); }));
-
-      // Swipe support
-      let sx = 0, dx = 0;
+      // swipe
+      let sx=0, dx=0;
       track.addEventListener('touchstart', e => { stop(); sx = e.touches[0].clientX; dx = 0; }, {passive:true});
       track.addEventListener('touchmove',  e => { dx = e.touches[0].clientX - sx; }, {passive:true});
       track.addEventListener('touchend',   () => { if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1)); play(); });
 
-      root.addEventListener('mouseenter', stop);
-      root.addEventListener('mouseleave', play);
-      root.addEventListener('focusin', stop);
-      root.addEventListener('focusout', play);
+      wrap.addEventListener('mouseenter', stop);
+      wrap.addEventListener('mouseleave', play);
+      wrap.addEventListener('focusin', stop);
+      wrap.addEventListener('focusout', play);
       document.addEventListener('visibilitychange', () => { document.hidden ? stop() : play(); });
 
       go(0); play();
+    }
+  }
+})();
 
-      // Attach lightbox click handlers for all tiles
-      attachLightbox();
-    })();
+/* ========== Soft reveal on scroll ========== */
+(() => {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || !els.length) {
+    els.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  els.forEach(el => io.observe(el));
+})();
+</script>
 
-    // -------- Soft reveal on scroll --------
-    (() => {
-      const els = document.querySelectorAll('.reveal');
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, {threshold: .12});
-      els.forEach(el => io.observe(el));
-    })();
-
-    // Make sure lightbox is bound for masonry items too (if DOM changes later)
-    attachLightbox();
-  </script>
 </body>
 </html>
