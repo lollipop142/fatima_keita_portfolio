@@ -98,11 +98,6 @@
       position:fixed; inset:0; background:rgba(10,14,18,.45);
       backdrop-filter:blur(2px); display:none; z-index:2000;
     }
-    /* Push Photography below the fold on larger screens (no size changes) */
-@media (min-width: 980px){
-  header.hero { margin-bottom: 22vh; } /* tweak 18–28vh if you want more/less push */
-}
-
 
     /* HERO (acts as ABOUT) */
     header.hero{max-width:1200px; margin:36px auto 18px; padding:0 20px 36px; display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:stretch}
@@ -302,6 +297,13 @@
     /* Soft reveal on scroll */
     .reveal{opacity:0; transform:translateY(8px); filter:saturate(.9); transition:opacity .5s ease, transform .5s ease, filter .5s ease}
     .reveal.in{opacity:1; transform:none; filter:none}
+
+    /* >>> Push Photography below the fold on desktops (no hero size change) <<< */
+    @media (min-width: 980px){
+      #photos{
+        margin-top: clamp(240px, 1vh, 820px);
+      }
+    }
   </style>
 </head>
 <body>
@@ -353,7 +355,7 @@
     </div>
 
     <div class="hero__copy">
-      <span class="eyebrow">UGC • Wellness • Lifestyle • Self-Care</span>
+      <span class="eyebrow">UGC • Wellness • Lifestyle • Self-Ccare</span>
       <h1>Who is Fatima?</h1>
       <p class="lead">
         Think of me as the bridge between your brand and the people who are about to fall in love with it.
@@ -473,17 +475,16 @@
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/testimonial3.jpg" aria-label="Testimonial video 3"><source src="assets/testimonial3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
 
-    <!-- Inorganic (renamed from Organic) -->
+    <!-- Inorganic -->
     <h3 class="section-title" style="font-size:24px; margin-top:28px">Inorganic</h3>
     <div class="vgrid">
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic1.jpg" aria-label="Inorganic video 1"><source src="assets/organic1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-            <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-
+      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS (brand quotes image) -->
+  <!-- TESTIMONIALS -->
   <section id="testimonials">
     <div class="card reveal" style="max-width:1100px; margin:0 auto">
       <img
@@ -492,7 +493,6 @@
         loading="lazy"
         style="width:100%; display:block; border-radius:16px; border:1px solid rgba(226,200,147,.38); box-shadow:var(--shadow)"
       >
-      
     </div>
   </section>
 
@@ -500,7 +500,7 @@
   <section id="contact">
     <div class="card reveal" style="max-width:860px; margin:0 auto">
       <span class="eyebrow">Collaborations</span>
-      <h2 class="section-title" style="margin-top:6px">Let’s</h2>
+      <h2 class="section-title" style="margin-top:6px">Let’s Collaborate</h2>
       <p class="muted">Tell me about your product and goals — I’ll share concepts within 24 hours.</p>
 
       <form id="contactForm" style="display:grid; gap:12px">
