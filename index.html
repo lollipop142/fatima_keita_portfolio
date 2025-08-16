@@ -304,6 +304,52 @@
         margin-top: clamp(240px, 1vh, 820px);
       }
     }
+
+     
+    /* ===== Collage "bling": new shape + run only twice ===== */
+.hero__grid{
+  position:relative; isolation:isolate;
+}
+
+/* REPLACE any previous .hero__grid::before rules with this */
+.hero__grid::before{
+  content:"";
+  position:absolute; inset:-12% -55%;
+  z-index:6; pointer-events:none; border-radius:28px;
+
+  /* bright core with a gold kiss */
+  background:linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.65) 48%,
+   
+    rgba(255,255,255,.55) 58%,
+    rgba(255,255,255,0) 100%);
+  mix-blend-mode:screen;
+
+  /* taper the bar into a slim oval (works in Safari & Chrome) */
+  -webkit-mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
+  mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
+
+  transform:translateX(-78%) rotate(6deg);
+  opacity:0;
+
+  /* run twice, then stop + stay invisible */
+  animation:blingTwice 5.0s ease-in-out .3s 2 forwards;
+}
+@keyframes blingTwice{
+  0%   { opacity:0; transform:translateX(-78%) rotate(6deg) }
+  10%  { opacity:1 }
+  50%  { opacity:1 }
+  90%  { opacity:.0 }
+  100% { opacity:0; transform:translateX(92%) rotate(6deg) }
+}
+
+/* keep the zoom gentle so it doesn't feel too close */
+@keyframes luxKen{
+  from{ transform:scale(1.02) }
+  to  { transform:scale(1.055) }
+}
+
   </style>
 </head>
 <body>
