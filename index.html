@@ -63,11 +63,10 @@
     .menu a{
       text-decoration:none; color:#194b6c; font-weight:500; margin:0 6px;
       padding:7px 10px; border-radius:12px; transition:background .15s ease,color .15s ease;
-      font-size:14px; /* smaller menu text */
+      font-size:14px;
     }
     .menu a:hover{background:rgba(226,200,147,.16); color:#1f2b35}
 
-    /* Mobile button (hamburger stays on mobile) */
     .hamburger{
       display:none; border:1px solid rgba(25,75,108,.25);
       background:rgba(255,255,255,.9); color:#1f2b35;
@@ -77,7 +76,6 @@
     }
     .hamburger svg{width:20px; height:20px; display:block}
 
-    /* Mobile dropdown panel */
     .menu-panel{
       position:absolute; top:calc(100% + 10px); right:16px; left:16px;
       background:rgba(255,255,255,.96);
@@ -89,18 +87,14 @@
     .menu-panel a{
       display:block; text-align:center; padding:10px 8px; margin:4px 0;
       color:#194b6c; font-weight:600; text-decoration:none; border-radius:12px;
-      font-size:15px; /* a bit smaller in the mobile sheet too */
+      font-size:15px;
     }
     .menu-panel a:hover{background:rgba(226,200,147,.14)}
 
-    /* Overlay */
-    .menu-overlay{
-      position:fixed; inset:0; background:rgba(10,14,18,.45);
-      backdrop-filter:blur(2px); display:none; z-index:2000;
-    }
+    .menu-overlay{ position:fixed; inset:0; background:rgba(10,14,18,.45); backdrop-filter:blur(2px); display:none; z-index:2000; }
 
     /* HERO (acts as ABOUT) */
-    header.hero{max-width:1200px; margin:36px auto 18px; padding:0 20px 36px; display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:stretch; margin-top: 80px}
+    header.hero{max-width:1200px; margin:36px auto 18px; padding:0 20px 36px; display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:stretch}
     .hero__grid{position:relative; display:grid; gap:10px; grid-template-columns:repeat(4,1fr); grid-auto-rows:160px; overflow:hidden}
     .tall{grid-row:span 2} .wide{grid-column:span 2}
     .hero__img{
@@ -122,7 +116,6 @@
     h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:1.08; letter-spacing:.3px; color:#1f2b35 }
     .lead{ color:#3b3b3b }
 
-    /* BUTTONS */
     .cta{
       display:inline-flex; align-items:center; gap:10px;
       padding:14px 18px; border-radius:14px; border:1px solid #103A54;
@@ -162,7 +155,7 @@
     .muted{ color:var(--muted) }
     .card video{ width:100%; border-radius:12px; display:block; background:#000 }
 
-    /* ===== PHOTOS – Carousel & Masonry ===== */
+    /* ===== PHOTOS – wrapper ===== */
     #photos .wrap{
       position:relative; overflow:hidden;
       background:
@@ -180,61 +173,94 @@
       border-radius:999px; padding:8px 12px; font-weight:600; color:#21313f; cursor:pointer}
     .tab.active{border-color:rgba(226,200,147,.9); box-shadow:0 6px 16px rgba(25,75,108,.08)}
 
-    #photos .carousel{position:relative}
-    #photos .carousel__viewport{overflow:hidden}
-    #photos .carousel__track{display:flex; transition:transform .45s ease}
-    #photos .carousel__slide{flex:0 0 100%}
-    #photos .carousel__grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px}
-
-    #photos .cnav{position:absolute; inset:auto 0 0 0; top:50%; transform:translateY(-50%);
-      display:flex; justify-content:space-between; padding:0 6px; pointer-events:none}
-    #photos .cbtn{pointer-events:auto; width:42px; height:42px; border-radius:50%;
-      display:grid; place-items:center; cursor:pointer; background:rgba(255,255,255,.96);
-      border:1px solid rgba(226,200,147,.5); box-shadow:var(--shadow)}
-    #photos .dots{display:flex; justify-content:center; gap:8px; margin-top:12px}
-    #photos .dot{width:8px; height:8px; border-radius:999px; background:rgba(25,75,108,.28); border:none; cursor:pointer}
-    #photos .dot.active{background:var(--navy)}
-
-    .tile{position:relative; overflow:hidden; border-radius:16px; background:linear-gradient(180deg,#fff,var(--sand));
-      border:1px solid rgba(226,200,147,.38); box-shadow:0 10px 26px rgba(25,75,108,.10); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; cursor:zoom-in}
-    .tile:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(25,75,108,.16); border-color:rgba(226,200,147,.68) }
-    .tile img{ width:100%; height:100%; object-fit:cover; display:block }
-    .p23{ aspect-ratio:2 / 3 } .p34{ aspect-ratio:3 / 4 } .p916{ aspect-ratio:9 / 16 }
-
-    .pin-save{position:absolute; top:10px; right:10px; padding:8px 12px; border-radius:999px; font-weight:700; font-size:13px;
-      background:linear-gradient(180deg, #fff, #f6f0e4); color:#1f2b35; border:1px solid rgba(226,200,147,.7);
-      box-shadow:0 8px 16px rgba(25,75,108,.12); opacity:0; transform:translateY(-6px); transition:.18s ease}
-    .tile:hover .pin-save{opacity:1; transform:translateY(0)}
-
+    /* ===== Masonry (unchanged) ===== */
     .masonry{display:none}
     .masonry.active{display:block}
     .masonry__cols{column-count:4; column-gap:14px}
     .masonry__item{break-inside:avoid; margin:0 0 14px; position:relative}
     .masonry__item img{width:100%; height:auto; display:block; border-radius:16px; border:1px solid rgba(226,200,147,.38); box-shadow:0 10px 26px rgba(25,75,108,.10)}
 
-    /* ===== VIDEOS (now 70% viewport height) ===== */
+    /* ===== RIBBON CAROUSEL (new) ===== */
+    /* ===== RIBBON CAROUSEL (tight + taller) ===== */
+#ph-carousel.ribbon{
+  --ribbon-gap: 25px;                       /* super close */
+  --ribbon-item-width: clamp(190px, 21vw, 280px);
+  --ribbon-aspect: 4 / 5;                  /* taller cards (↑ height) */
+}
+#ph-carousel .ribbon__viewport{
+  overflow:hidden; border-radius:18px;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 .6%, #000 99.4%, transparent 100%);
+          mask-image:linear-gradient(90deg, transparent 0%, #000 .6%, #000 99.4%, transparent 100%);
+}
+#ph-carousel .ribbon__track{
+  display:flex; align-items:stretch;
+  gap:var(--ribbon-gap);
+  will-change:transform;
+  animation:ribbon-scroll var(--dur, 30s) linear infinite;
+}
+#ph-carousel .ribbon__track:hover{ animation-play-state:paused }
+
+#ph-carousel .cardp{
+  margin:0;                                 /* 🔥 kill default <figure> margins (the big gaps) */
+  flex:0 0 var(--ribbon-item-width);
+  background:#fff; border-radius:16px; overflow:hidden;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  cursor:pointer; transition:transform .18s ease, box-shadow .18s ease;
+}
+#ph-carousel .cardp:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,.16) }
+#ph-carousel .cardp img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  aspect-ratio:var(--ribbon-aspect);
+  transform:scale(1.01); transition:transform 6s ease;
+}
+#ph-carousel .ribbon__track:not(:hover) .cardp img{ transform:scale(1.045) }
+
+@keyframes ribbon-scroll{ to{ transform:translateX(-50%) } }
+
+/* ===== MASONRY (“Pinterest”) – tighter + proper overlay Save ===== */
+.masonry{display:none}
+.masonry.active{display:block}
+.masonry__cols{ column-count:4; column-gap:10px }          /* tighter */
+.masonry__item{
+  break-inside:avoid; margin:0 0 10px; position:relative;  /* tight rows */
+  overflow:hidden;                                         /* keep Save inside */
+  border-radius:16px; border:1px solid rgba(226,200,147,.38);
+  box-shadow:0 10px 26px rgba(25,75,108,.10);
+  background:#fff;
+}
+.masonry__item img{ width:100%; height:auto; display:block }
+
+.pin-save{
+  position:absolute; top:10px; right:10px; z-index:2;
+  padding:8px 12px; border-radius:999px; font-weight:700; font-size:13px;
+  background:linear-gradient(180deg, #fff, #f6f0e4); color:#1f2b35;
+  border:1px solid rgba(226,200,147,.7);
+  box-shadow:0 8px 16px rgba(25,75,108,.12);
+  opacity:0; transform:translateY(-6px); transition:.18s ease;
+}
+.masonry__item:hover .pin-save{ opacity:1; transform:translateY(0) }
+
+
+    @keyframes ribbon-scroll{ to{ transform:translateX(-50%) } }
+
+    /* ===== VIDEOS ===== */
     .vgrid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
     .vcard{
       background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(253,246,232,.98));
       border:1px solid rgba(226,200,147,.45);
       border-radius:18px; box-shadow:var(--shadow); padding:10px;
       transition:transform .15s ease, box-shadow .15s ease;
-
-      /* keep card same height as video */
       height: var(--video-h);
       display:flex;
     }
     .vcard:hover{ transform:translateY(-2px); box-shadow:0 18px 38px rgba(25,75,108,.16) }
-
     .vframe{
       position:relative; overflow:hidden; border-radius:16px;
       background:linear-gradient(180deg,#fff,var(--sand));
       border:1px solid rgba(226,200,147,.45);
       box-shadow:0 10px 26px rgba(25,75,108,.10);
-
-      /* fill the card height */
-      width:100%;
-      height:100%;
+      width:100%; height:100%;
     }
     .vframe video{ width:100%; height:100%; object-fit:cover; display:block; background:#000; }
     .vframe::after{
@@ -265,91 +291,59 @@
     .socials a:hover{ transform:translateY(-2px); opacity:.9 } .socials svg{ width:18px; height:18px; fill:#fff; display:block }
 
     /* RESPONSIVE */
-    @media (max-width:1100px){
-      #photos .carousel__grid{grid-template-columns:repeat(3, minmax(0,1fr));}
-      .masonry__cols{column-count:3}
-    }
+    @media (max-width:1100px){ .masonry__cols{column-count:3} }
     @media (max-width:980px){
       header.hero{ grid-template-columns:1fr }
       .hero__grid{ grid-auto-rows:140px }
       h1{ font-size:38px }
     }
     @media (max-width:760px){
-      .menu{ display:none }              /* hide desktop links */
-      .hamburger{ display:inline-flex }  /* show burger */
+      .menu{ display:none }
+      .hamburger{ display:inline-flex }
       .menu-panel{ display:block; transform:translateY(-6px); opacity:0; pointer-events:none; }
       .menu-open .menu-panel{ transform:translateY(0); opacity:1; pointer-events:auto; }
       .menu-open .menu-overlay{ display:block; }
     }
     @media (max-width:800px){
-      #photos .carousel__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .masonry__cols{column-count:2}
-      :root{ --video-h: 65dvh; } /* slightly shorter on tablets */
+      :root{ --video-h: 65dvh; }
     }
     @media (max-width:640px){
       .brand{ font-size:18px }
       .hero__grid{ grid-auto-rows:120px }
       h1{ font-size:32px }
-      :root{ --nav-h:60px; --video-h: 60dvh; } /* shorter on phones */
-      .menu-panel a{ font-size:14px; } /* a bit smaller on small phones */
+      :root{ --nav-h:60px; --video-h: 60dvh; }
+      .menu-panel a{ font-size:14px; }
     }
 
     /* Soft reveal on scroll */
     .reveal{opacity:0; transform:translateY(8px); filter:saturate(.9); transition:opacity .5s ease, transform .5s ease, filter .5s ease}
     .reveal.in{opacity:1; transform:none; filter:none}
 
-    /* >>> Push Photography below the fold on desktops (no hero size change) <<< */
+    /* Push Photography slightly down desktop */
     @media (min-width: 980px){
-      #photos{
-        margin-top: clamp(240px, 1vh, 820px);
-      }
+      #photos{ margin-top: clamp(240px, 1vh, 820px); }
     }
-
-     
-    /* ===== Collage "bling": new shape + run only twice ===== */
-.hero__grid{
-  position:relative; isolation:isolate;
-}
-
-/* REPLACE any previous .hero__grid::before rules with this */
-.hero__grid::before{
-  content:"";
-  position:absolute; inset:-12% -55%;
-  z-index:6; pointer-events:none; border-radius:28px;
-
-  /* bright core with a gold kiss */
-  background:linear-gradient(90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,.65) 48%,
-   
-    rgba(255,255,255,.55) 58%,
-    rgba(255,255,255,0) 100%);
-  mix-blend-mode:screen;
-
-  /* taper the bar into a slim oval (works in Safari & Chrome) */
-  -webkit-mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
-  mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
-
-  transform:translateX(-78%) rotate(6deg);
-  opacity:0;
-
-  /* run twice, then stop + stay invisible */
-  animation:blingTwice 5.0s ease-in-out .3s 2 forwards;
-}
-@keyframes blingTwice{
-  0%   { opacity:0; transform:translateX(-78%) rotate(6deg) }
-  10%  { opacity:1 }
-  50%  { opacity:1 }
-  90%  { opacity:.0 }
-  100% { opacity:0; transform:translateX(92%) rotate(6deg) }
-}
-
-/* keep the zoom gentle so it doesn't feel too close */
-@keyframes luxKen{
-  from{ transform:scale(1.02) }
-  to  { transform:scale(1.055) }
-}
-
+    
+    /* Hero "bling" */
+    .hero__grid{ position:relative; isolation:isolate; }
+    .hero__grid::before{
+      content:""; position:absolute; inset:-12% -55%; z-index:6; pointer-events:none; border-radius:28px;
+      background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.65) 48%, rgba(255,255,255,.55) 58%, rgba(255,255,255,0) 100%);
+      mix-blend-mode:screen;
+      -webkit-mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
+      mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
+      transform:translateX(-78%) rotate(6deg);
+      opacity:0;
+      animation:blingTwice 5.0s ease-in-out .3s 2 forwards;
+    }
+    @keyframes blingTwice{
+      0%{ opacity:0; transform:translateX(-78%) rotate(6deg) }
+      10%,50%{ opacity:1 }
+      90%{ opacity:0 }
+      100%{ opacity:0; transform:translateX(92%) rotate(6deg) }
+    }
+    @keyframes luxKen{ from{ transform:scale(1.02) } to{ transform:scale(1.055) } }
   </style>
 </head>
 <body>
@@ -371,7 +365,6 @@
         <a href="#contact" role="menuitem">Contact</a>
       </div>
 
-      <!-- Hamburger stays for mobile -->
       <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
       </button>
@@ -388,7 +381,7 @@
 
   <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
 
-  <!-- HERO now IS the ABOUT section -->
+  <!-- HERO -->
   <header class="hero" id="about" role="banner">
     <div class="hero__grid" aria-hidden="true">
       <img class="hero__img tall reveal"  src="assets/1.jpg" alt="Lifestyle portrait with product">
@@ -424,50 +417,24 @@
         <button class="tab" role="tab" aria-selected="false" aria-controls="ph-masonry" data-tab="masonry">Masonry</button>
       </div>
 
-      <!-- CAROUSEL VIEW -->
-      <div id="ph-carousel" class="carousel" aria-label="Photo carousel">
-        <div class="carousel__viewport" tabindex="0">
-          <div class="carousel__track">
-            <div class="carousel__slide">
-              <div class="carousel__grid">
-                <div class="tile p34"  data-full="assets/shot1.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot1.jpg"  alt="Golden hour portrait holding product"></div>
-                <div class="tile p34"  data-full="assets/shot2.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot2.jpg"  alt="Serum texture on hands"></div>
-                <div class="tile p916" data-full="assets/shot3.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot3.jpg"  alt="Ultra-tall editorial with bottle"></div>
-                <div class="tile p34"  data-full="assets/shot4.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot4.jpg"  alt="Mirror portrait with product"></div>
-              </div>
-            </div>
-            <div class="carousel__slide">
-              <div class="carousel__grid">
-                <div class="tile p23"  data-full="assets/shot5.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot5.jpg"  alt="Outdoor detail with tote and bottle"></div>
-                <div class="tile p34"  data-full="assets/shot6.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot6.jpg"  alt="Routine: applying cream"></div>
-                <div class="tile p34"  data-full="assets/shot7.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot7.jpg"  alt="Editorial portrait with product"></div>
-                <div class="tile p916" data-full="assets/shot8.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot8.jpg"  alt="Phone-tall packaging vignette"></div>
-              </div>
-            </div>
-            <div class="carousel__slide">
-              <div class="carousel__grid">
-                <div class="tile p23"  data-full="assets/shot9.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot9.jpg"  alt="BTS scene with diffuser"></div>
-                <div class="tile p34"  data-full="assets/shot10.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot10.jpg" alt="Ingredients still-life with dropper"></div>
-                <div class="tile p34"  data-full="assets/shot11.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot11.jpg" alt="Detail portrait with glossed lips and product"></div>
-                <div class="tile p23"  data-full="assets/shot12.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="assets/shot12.jpg" alt="Before/after bottles on marble"></div>
-              </div>
-            </div>
+      <!-- RIBBON CAROUSEL VIEW (new) -->
+      <div id="ph-carousel" class="ribbon" aria-label="Photo ribbon">
+        <div class="ribbon__viewport" tabindex="0">
+          <div class="ribbon__track">
+            <!-- one set (JS clones once to loop seamlessly) -->
+            <figure class="cardp" data-full="assets/shot1.jpg"><img src="assets/shot1.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot2.jpg"><img src="assets/shot2.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot3.jpg"><img src="assets/shot3.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot4.jpg"><img src="assets/shot4.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot5.jpg"><img src="assets/shot5.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot6.jpg"><img src="assets/shot6.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot7.jpg"><img src="assets/shot7.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot8.jpg"><img src="assets/shot8.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot9.jpg"><img src="assets/shot9.jpg"  alt=""></figure>
+            <figure class="cardp" data-full="assets/shot10.jpg"><img src="assets/shot10.jpg" alt=""></figure>
+            <figure class="cardp" data-full="assets/shot11.jpg"><img src="assets/shot11.jpg" alt=""></figure>
+            <figure class="cardp" data-full="assets/shot12.jpg"><img src="assets/shot12.jpg" alt=""></figure>
           </div>
-        </div>
-
-        <div class="cnav" aria-hidden="false">
-          <button class="cbtn" type="button" aria-label="Previous" data-dir="prev">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 6l-6 6 6 6" fill="none" stroke="#194B6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="cbtn" type="button" aria-label="Next" data-dir="next">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 6l6 6-6 6" fill="none" stroke="#194B6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-
-        <div class="dots" aria-label="Slide navigation">
-          <button class="dot" aria-label="Go to slide 1"></button>
-          <button class="dot" aria-label="Go to slide 2"></button>
-          <button class="dot" aria-label="Go to slide 3"></button>
         </div>
       </div>
 
@@ -521,12 +488,11 @@
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/testimonial3.jpg" aria-label="Testimonial video 3"><source src="assets/testimonial3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
 
-    <!-- Inorganic -->
     <h3 class="section-title" style="font-size:24px; margin-top:28px">Inorganic</h3>
     <div class="vgrid">
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic1.jpg" aria-label="Inorganic video 1"><source src="assets/organic1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
       <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcardreveal">
+      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
   </section>
 
@@ -559,7 +525,7 @@
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
           <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
-          <a class="cta cta--ghost cta--shine" id="mailtoBtn" href="#" rel="noopener">Open Email</a>
+          <a class="cta cta--ghost cta--shine" id="mailtoBtn" href="#" rel="noopener">Work With Me</a>
           <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
         </div>
       </form>
@@ -619,7 +585,7 @@
   panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 })();
 
-/* ========== LIGHTBOX for photos ========== */
+/* ========== LIGHTBOX for photos (works for tiles + ribbon cards) ========== */
 (() => {
   const lb     = document.getElementById('lb');
   const lbImg  = document.getElementById('lbImg');
@@ -641,10 +607,11 @@
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLB(); });
 
   function attachLightbox(){
-    document.querySelectorAll('#photos .tile').forEach(tile => {
-      tile.addEventListener('click', ev => {
+    document.querySelectorAll('#photos .tile, #photos .cardp').forEach(el => {
+      el.addEventListener('click', ev => {
         if (ev.target && ev.target.classList && ev.target.classList.contains('pin-save')) return;
-        const full = tile.getAttribute('data-full') || (tile.querySelector('img') && tile.querySelector('img').src);
+        const img = el.querySelector('img');
+        const full = el.getAttribute('data-full') || (img && img.src);
         if (full) openLB(full);
       });
     });
@@ -653,76 +620,19 @@
   window.__attachLightbox = attachLightbox;
 })();
 
-/* ========== CONTACT: Gmail-first compose with auto-filled message ========== */
-(() => {
-  const TO = 'jeanetteferrater14@gmail.com';
-  const form      = document.getElementById('contactForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const mailBtn   = document.getElementById('mailtoBtn');
-  const statusEl  = document.getElementById('formStatus');
-  if (!form || !submitBtn) return;
-
-  const isIOS     = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const isAndroid = /Android/.test(navigator.userAgent);
-
-  function buildCompose(){
-    const name  = (document.getElementById('name')?.value || 'a potential client').trim();
-    const email = (document.getElementById('email')?.value || '').trim();
-    const msg   = (document.getElementById('message')?.value || '').trim();
-
-    const subject = `UGC Inquiry from ${name}`;
-    const body =
-`Hi Fatima,
-
-${msg || '(message left empty)'}
-
-— ${name}${email ? `\nEmail: ${email}` : ''}`;
-
-    const gmailWeb = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const gmailApp = `googlegmail://co?to=${encodeURIComponent(TO)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const mailto   = `mailto:${encodeURIComponent(TO)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    return { gmailWeb, gmailApp, mailto, body };
-  }
-
-  function openCompose(urls){
-    const statusEl = document.getElementById('formStatus');
-    if (statusEl) statusEl.textContent = 'Opening your email app…';
-    if (isIOS || isAndroid) {
-      window.location.href = urls.gmailApp;
-      setTimeout(() => { if (!document.hidden) window.location.href = urls.gmailWeb; }, 800);
-      setTimeout(() => { if (!document.hidden) window.location.href = urls.mailto; }, 1600);
-    } else {
-      const win = window.open(urls.gmailWeb, '_blank', 'noopener,noreferrer');
-      setTimeout(() => { if (!win || win.closed) window.location.href = urls.mailto; }, 1000);
-    }
-  }
-
-  async function handleSubmit(e){
-    e.preventDefault();
-    submitBtn.disabled = true;
-    const urls = buildCompose();
-    try { await navigator.clipboard.writeText(urls.body); } catch {}
-    openCompose(urls);
-    setTimeout(() => { submitBtn.disabled = false; if (statusEl) statusEl.textContent = ''; }, 3000);
-  }
-
-  form.addEventListener('submit', handleSubmit);
-  if (mailBtn) mailBtn.addEventListener('click', (e) => { e.preventDefault(); handleSubmit(e); });
-})();
-
-/* ========== PHOTOS: Tabs + Carousel autoplay + swipe ========== */
+/* ========== PHOTOS: Tabs + RIBBON carousel init ========== */
 (() => {
   const wrap = document.querySelector('#photos .wrap');
   if (!wrap) return;
 
   const tabs       = wrap.querySelectorAll('.tab');
-  const carouselEl = document.getElementById('ph-carousel');
+  const ribbonEl   = document.getElementById('ph-carousel'); // now ribbon
   const masonryEl  = document.getElementById('ph-masonry');
 
   function setView(view){
     const isCarousel = view === 'carousel';
-    if (carouselEl) carouselEl.style.display = isCarousel ? 'block' : 'none';
-    if (masonryEl)  masonryEl.classList.toggle('active', !isCarousel);
+    if (ribbonEl)  ribbonEl.style.display = isCarousel ? 'block' : 'none';
+    if (masonryEl) masonryEl.classList.toggle('active', !isCarousel);
     tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === view));
     if (window.__attachLightbox) window.__attachLightbox();
   }
@@ -730,38 +640,59 @@ ${msg || '(message left empty)'}
   tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.tab)));
   setView('carousel');
 
-  if (carouselEl) {
-    const track  = carouselEl.querySelector('.carousel__track');
-    const slides = carouselEl.querySelectorAll('.carousel__slide');
-    const prev   = carouselEl.querySelector('[data-dir="prev"]');
-    const next   = carouselEl.querySelector('[data-dir="next"]');
-    const dots   = carouselEl.querySelectorAll('.dot');
+  /* ---- ribbon logic ---- */
+  if (ribbonEl) {
+    const track    = ribbonEl.querySelector('.ribbon__track');
+    const viewport = ribbonEl.querySelector('.ribbon__viewport');
+    if (!track || !viewport) return;
 
-    if (track && slides.length) {
-      let i = 0, timer = null;
-      const INTERVAL_MS = 2000;
+    const originals = Array.from(track.children);
+    originals.forEach(n => track.appendChild(n.cloneNode(true))); // clone once for seamless loop
 
-      const go   = (n) => { i = (n + slides.length) % slides.length; track.style.transform = `translateX(-${i*100}%)`; dots.forEach((d,k)=>d.classList.toggle('active', k===i)); };
-      const play = () => { if (!timer) timer = setInterval(()=>go(i+1), INTERVAL_MS); };
-      const stop = () => { clearInterval(timer); timer = null; };
-
-      prev?.addEventListener('click', () => { stop(); go(i-1); play(); });
-      next?.addEventListener('click', () => { stop(); go(i+1); play(); });
-      dots.forEach((d,k) => d.addEventListener('click', () => { stop(); go(k); play(); }));
-
-      let sx=0, dx=0;
-      track.addEventListener('touchstart', e => { stop(); sx = e.touches[0].clientX; dx = 0; }, {passive:true});
-      track.addEventListener('touchmove',  e => { dx = e.touches[0].clientX - sx; }, {passive:true});
-      track.addEventListener('touchend',   () => { if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1)); play(); });
-
-      wrap.addEventListener('mouseenter', stop);
-      wrap.addEventListener('mouseleave', play);
-      wrap.addEventListener('focusin', stop);
-      wrap.addEventListener('focusout', play);
-      document.addEventListener('visibilitychange', () => { document.hidden ? stop() : play(); });
-
-      go(0); play();
+    const SPEED_PX_PER_SEC = 190; // faster
+    function getGap(){
+      const cs = getComputedStyle(track);
+      const g  = parseFloat(cs.gap || '0') || 1;
+      return isNaN(g) ? 1 : g;
     }
+    function setDuration(){
+      const gap = getGap();
+      const w = originals.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + gap * (originals.length - 1);
+      const dur = w / SPEED_PX_PER_SEC;
+      track.style.setProperty('--dur', `${dur}s`);
+    }
+    if (document.readyState === 'complete') setDuration();
+    else window.addEventListener('load', setDuration);
+    window.addEventListener('resize', setDuration);
+
+    // Pause when tab hidden
+    document.addEventListener('visibilitychange', () => {
+      track.style.animationPlayState = document.hidden ? 'paused' : 'running';
+    });
+
+    // Optional: drag to scrub
+    let dragging=false,startX=0,savedX=0;
+    viewport.addEventListener('pointerdown', e => {
+      dragging=true; startX=e.clientX;
+      savedX=new DOMMatrixReadOnly(getComputedStyle(track).transform).m41||0;
+      track.style.animationPlayState='paused';
+      viewport.setPointerCapture(e.pointerId);
+    });
+    viewport.addEventListener('pointermove', e => {
+      if(!dragging) return;
+      const dx=e.clientX-startX;
+      track.style.transform=`translateX(${savedX+dx}px)`;
+    });
+    viewport.addEventListener('pointerup', e => {
+      if(!dragging) return; dragging=false;
+      const offsetX=new DOMMatrixReadOnly(getComputedStyle(track).transform).m41||0;
+      track.style.transform=`translateX(${offsetX}px)`;
+      requestAnimationFrame(() => {
+        track.style.animation='none'; void track.offsetWidth;
+        track.style.animation=`ribbon-scroll var(--dur) linear infinite`;
+        track.style.animationPlayState='running';
+      });
+    });
   }
 })();
 
