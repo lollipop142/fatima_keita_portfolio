@@ -649,6 +649,16 @@ header.hero .cta--ghost{
   outline-offset:2px;
   border-radius:50%;
 }
+/* Edge vignette to ground the hero */
+@media (min-width:980px){
+  header.hero::before{
+    box-shadow:none;            /* keep your existing rule clean */
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.04) 100%),
+      radial-gradient(900px 280px at 8% 0%, rgba(226,200,147,.10) 0%, rgba(226,200,147,0) 60%),
+      linear-gradient(180deg, var(--creamA1), var(--creamA2));
+  }
+}
 
   </style>
 </head>
