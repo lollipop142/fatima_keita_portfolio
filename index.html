@@ -621,6 +621,70 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 @media (max-width: 640px){
   .polaroid__head .polaroid__dot { display: none !important; }
 }
+/* --- BLING for the hero collage (Who is Fatima? grid) --- */
+.hero__grid { position: relative; }
+.hero__grid .hero__img {                /* now used as a wrapper */
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+/* make inner <img> fill the wrapper no matter what */
+.hero__grid .hero__img > img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+  border-radius: inherit;
+}
+
+/* the shine layer that sweeps across */
+.hero__grid .hero__img .shine{
+  position:absolute; z-index:2; pointer-events:none;
+  top:-20%; right:-20%; bottom:-20%; left:-20%;
+  background:
+    linear-gradient(115deg,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,.95) 50%,
+      rgba(255,255,255,0) 60%),
+    radial-gradient(140px 50px at 50% 50%, rgba(255,255,255,.25), rgba(255,255,255,0) 70%);
+  transform: translateX(-140%) rotate(8deg);
+  opacity:0;
+  will-change: transform, opacity;
+}
+
+/* hover: run the sweep twice */
+.hero__grid .hero__img:hover .shine{
+  animation: heroShine 1.15s ease-out both 2;
+}
+
+/* auto-bling for the first two cells */
+.hero__grid .hero__img.shine-auto .shine{
+  animation: heroShine 1.15s ease-out .45s both 2;
+}
+
+@keyframes heroShine{
+  0%   { transform:translateX(-140%) rotate(8deg); opacity:0; }
+  12%  { opacity:.5;  }
+  55%  { opacity:.95; }
+  100% { transform:translateX(140%)  rotate(8deg); opacity:0; }
+}
+
+/* hero collage shine — double pass */
+.hero__grid .hero__img:hover .shine{
+  animation: heroShine 1.15s ease-out both 2;    /* ← 2 passes on hover */
+}
+.hero__grid .hero__img.shine-auto .shine{
+  animation: heroShine 1.15s ease-out .45s both 2; /* ← 2 passes on load */
+}
+
+/* make sure the gallery cards also do two passes */
+.polaroid:hover .polaroid__img::after{
+  animation: collageShine 1.2s ease-out both 2;
+}
+.collage-grid .stack:first-child .polaroid:first-child .polaroid__img::after,
+.collage-grid .stack:nth-child(2) .polaroid:first-child .polaroid__img::after{
+  animation: collageShine 1.2s ease-out .45s both 2 !important;
+}
 
 </style>
 </head>
@@ -1007,5 +1071,41 @@ ${e || ''}`;
 })();
 
 </script>
+<script>
+/* Wrap hero images and add a shine layer without changing your HTML */
+(() => {
+  const grid = document.querySelector('.hero__grid');
+  if (!grid) return;
+
+  // Collect current <img> nodes in the hero grid
+  const imgs = Array.from(grid.querySelectorAll('img.hero__img, .hero__img'));
+
+  imgs.forEach((img, idx) => {
+    // Create wrapper that will become the grid child
+    const wrap = document.createElement('div');
+    wrap.className = 'hero__img';                   // keep same class for styling
+    // preserve span classes like "tall" or "wide"
+    if (img.classList.contains('tall')) wrap.classList.add('tall');
+    if (img.classList.contains('wide')) wrap.classList.add('wide');
+
+    // Insert wrapper in place of the image
+    grid.insertBefore(wrap, img);
+
+    // Move the image inside the wrapper and clean classes
+    img.classList.remove('tall','wide');
+    wrap.appendChild(img);
+
+    // Add the shine layer
+    const shine = document.createElement('span');
+    shine.className = 'shine';
+    wrap.appendChild(shine);
+
+    // Give auto-bling to the first two
+// Give auto-bling to ALL tiles (twice via CSS)
+wrap.classList.add('shine-auto');
+  });
+})();
+</script>
+
 </body>
 </html>
