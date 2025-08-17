@@ -555,6 +555,101 @@
       #testimonials::before,
       #contact::before{ top:-18px; bottom:-18px; }
     }
+    hero__copy::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 6px;
+    background: linear-gradient(90deg, rgba(226, 200, 147, .95), rgba(226, 200, 147, 0));
+    opacity: .68;
+    border-radius: 22px 22px 0 0;
+}
+/* ==== HERO CARD — screenshot look, desktop-first (scoped) ==== */
+
+/* 1) Corrected selector (replace any existing `hero__copy::before` with this) */
+
+/* 2) Softer frosted card */
+.hero__copy{
+  background:linear-gradient(180deg,#ffffff .1%,#FBF3E6 98%);
+  border:1px solid rgba(226,200,147,.45);
+  border-radius:26px;
+  box-shadow:
+    0 24px 60px rgba(25,75,108,.12),
+    0 6px 18px rgba(139,113,51,.08),
+    inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+/* 3) Headline + underline */
+.hero__copy h1{
+  font-family:"Playfair Display",serif;
+  font-weight:700;
+  font-size:32px; /* keep your base size for mobile; we bump it only on larger screens below */
+  line-height:1.08;
+  color:#1f2b35;
+  margin:0 0 6px;
+  position:relative;
+}
+.hero__copy h1::after{
+  content:"";
+  display:block;
+  height:3px;
+  width:100%;
+  max-width:520px;
+  margin-top:12px;
+  background:linear-gradient(90deg, rgba(226,200,147,.92), rgba(226,200,147,.18));
+  border-radius:999px;
+}
+
+/* 4) Body tone similar to screenshot */
+.hero__copy .lead{ color:#56524F; }
+
+/* 5) Luxe buttons — scoped to hero only so other sections don’t change */
+header.hero .cta{
+  padding:16px 22px;
+  border-radius:18px;
+  box-shadow:0 10px 22px rgba(25,75,108,.15);
+}
+header.hero .cta--ghost{
+  background:#FFFFFF;
+  border:1px solid rgba(226,200,147,.45);
+  color:#2c2a2a;
+  box-shadow:0 10px 20px rgba(139,113,51,.10);
+}
+
+/* 6) Desktop-up refinements only (mobile stays as-is) */
+@media (min-width: 820px){
+  .hero__copy h1{ font-size:42px; }
+  .hero__copy .lead{ font-size:18px; }
+}
+/* Slider dots: force perfect circles across browsers */
+.slider__dots .dot{
+  width:12px;
+  height:12px;
+  padding:0;                 /* remove default button padding */
+  border:0;
+  display:inline-block;      /* avoid baseline weirdness */
+  line-height:0;
+  border-radius:50%;
+  aspect-ratio:1 / 1;        /* safety for Safari/others */
+  background:rgba(139,113,51,.45);
+  cursor:pointer;
+  transition:transform .18s ease, opacity .18s ease, background .18s ease;
+}
+
+.slider__dots .dot.active{
+  background:rgb(87,68,25);
+  transform:scale(1.25);     /* uniform scale keeps the circle */
+}
+
+/* optional: nice keyboard focus ring */
+.slider__dots .dot:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+  border-radius:50%;
+}
+
   </style>
 </head>
 <body>
@@ -602,6 +697,7 @@
       <span class="hero__overlay"></span>
     </div>
 
+    
     <div class="hero__copy">
       <span class="eyebrow">UGC • Wellness • Lifestyle • Self-Care</span>
       <h1>Who is Fatima?</h1>
@@ -616,7 +712,6 @@
       </div>
     </div>
   </header>
-
   <!-- PHOTOGRAPHY -->
   <section id="photos">
     <h2 class="section-title"></h2>
@@ -649,7 +744,7 @@
 
       <!-- Static gallery (unchanged) -->
       <div class="g-wrap">
-        <h4 class="g-title">Featured Photo Gallery</h4>
+        <h4 class="g-title">Amazing Photo Gallery</h4>
         <p class="g-sub">I create elegant, aesthetic visuals that feel real, glow on skin, and convert.</p>
         <div class="gallery-grid" id="ph-gallery"></div>
       </div>
