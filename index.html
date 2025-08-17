@@ -7,7 +7,7 @@
   <meta name="description" content="UGC Creator Portfolio – wellness, skincare, feminine storytelling with a soft, luxury, Pinterest-inspired aesthetic." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
@@ -16,6 +16,15 @@
       --ink:#1C1B1B; --muted:#6F6A68;
       --line:#E7DDBC; --shadow:0 14px 40px rgba(25,75,108,.12); --radius:22px;
       --gap:14px; --nav-h:64px;
+
+      /* Photography (luxe creamy) */
+      --p-bg-1:#FFFCF6;
+      --p-bg-2:#FBF2E2;
+      --p-plate:#FFFFFF;
+      --p-line:#EADFC5;
+      --p-ink:#3E3A2E;
+      --p-muted:#7A6F57;
+      --p-ink-strong:#2B261B;
     }
 
     *{box-sizing:border-box}
@@ -27,7 +36,6 @@
       -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     }
 
-    /* Background */
     .bg-ornaments{
       position:fixed; inset:0; z-index:-2; pointer-events:none;
       background:
@@ -53,7 +61,7 @@
     }
     .nav__inner{max-width:1200px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between}
     .brand{font-family:"Playfair Display",serif; font-weight:700; letter-spacing:.4px; font-size:20px; color:var(--navy)}
-    .menu{display:flex; align-items:center; gap:4px; z-index:3100}
+    .menu{display:flex; align-items:center; gap:4px}
     .menu a{
       text-decoration:none; color:#194b6c; font-weight:500; margin:0 6px;
       padding:7px 10px; border-radius:12px; transition:background .15s ease,color .15s ease;
@@ -61,36 +69,31 @@
     }
     .menu a:hover{background:rgba(226,200,147,.16); color:#1f2b35}
 
-    .hamburger{
-      display:none; border:1px solid rgba(25,75,108,.25);
-      background:rgba(255,255,255,.9); color:#1f2b35;
-      width:42px; height:42px; border-radius:12px;
-      align-items:center; justify-content:center; cursor:pointer;
-      box-shadow:0 6px 16px rgba(25,75,108,.18);
-    }
-    .hamburger svg{width:20px; height:20px; display:block}
-
-    .menu-panel{
-      position:absolute; top:calc(100% + 10px); right:16px; left:16px;
-      background:rgba(255,255,255,.96);
-      border:1px solid rgba(226,200,147,.45);
-      box-shadow:0 18px 42px rgba(25,75,108,.14);
-      border-radius:18px; padding:14px; display:none; z-index:3100;
-      backdrop-filter:saturate(140%) blur(6px);
-      opacity:0; transform:translateY(-6px); pointer-events:none; transition:.18s ease;
-    }
-    .menu-panel a{
-      display:block; text-align:center; padding:10px 8px; margin:4px 0;
-      color:#194b6c; font-weight:600; text-decoration:none; border-radius:12px;
-      font-size:15px;
-    }
-    .menu-panel a:hover{background:rgba(226,200,147,.14)}
-
-    .menu-overlay{ position:fixed; inset:0; background:rgba(10,14,18,.45); backdrop-filter:blur(2px); display:none; z-index:2000; }
+    .hamburger{display:none}
+    .menu-panel{display:none}
+    .menu-overlay{display:none}
 
     @media (max-width: 820px){
       .menu{display:none}
-      .hamburger{display:inline-flex}
+      .hamburger{
+        display:inline-flex; border:1px solid rgba(25,75,108,.25);
+        background:rgba(255,255,255,.9); color:#1f2b35;
+        width:42px; height:42px; border-radius:12px; align-items:center; justify-content:center; cursor:pointer;
+        box-shadow:0 6px 16px rgba(25,75,108,.18);
+      }
+      .hamburger svg{width:20px; height:20px}
+      .menu-panel{
+        position:absolute; top:calc(100% + 10px); right:16px; left:16px;
+        background:rgba(255,255,255,.96);
+        border:1px solid rgba(226,200,147,.45);
+        box-shadow:0 18px 42px rgba(25,75,108,.14);
+        border-radius:18px; padding:14px; z-index:3100;
+        backdrop-filter:saturate(140%) blur(6px);
+        opacity:0; transform:translateY(-6px); pointer-events:none; transition:.18s ease;
+      }
+      .menu-panel a{display:block; text-align:center; padding:10px 8px; margin:4px 0; color:#194b6c; font-weight:600; text-decoration:none; border-radius:12px; font-size:15px;}
+      .menu-panel a:hover{background:rgba(226,200,147,.14)}
+      .menu-overlay{ position:fixed; inset:0; background:rgba(10,14,18,.45); backdrop-filter:blur(2px); z-index:2000; }
       body.menu-open .menu-panel{display:block; opacity:1; transform:none; pointer-events:auto}
       body.menu-open .menu-overlay{display:block}
     }
@@ -109,7 +112,6 @@
       transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
       filter:saturate(1.02) contrast(1.02);
     }
-    .hero__img:hover{transform:scale(1.03) translateY(-2px); box-shadow:0 16px 38px rgba(25,75,108,.16), 0 0 16px rgba(226,200,147,.3)}
     .hero__overlay{position:absolute; inset:0; border-radius:16px; background:linear-gradient(180deg,rgba(0,0,0,0) 40%, rgba(0,0,0,.10)); pointer-events:none}
 
     .hero__copy{
@@ -120,22 +122,8 @@
     .eyebrow{ color:var(--gold-ink); font-size:12px; letter-spacing:.22em; text-transform:uppercase }
     h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:1.08; letter-spacing:.3px; color:#1f2b35 }
     .lead{ color:#3b3b3b }
-
-    .cta{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:14px 18px; border-radius:14px; border:1px solid #103A54;
-      background:var(--navy); color:#fff; text-decoration:none; font-weight:600;
-      box-shadow:0 8px 18px rgba(25,75,108,.22); transition:.2s ease; position:relative; overflow:hidden;
-    }
-    .cta:hover{ transform:translateY(-2px); box-shadow:0 12px 22px rgba(25,75,108,.30) }
+    .cta{ display:inline-flex; align-items:center; gap:10px; padding:14px 18px; border-radius:14px; border:1px solid #103A54; background:var(--navy); color:#fff; text-decoration:none; font-weight:600; box-shadow:0 8px 18px rgba(25,75,108,.22); transition:.2s ease; }
     .cta--ghost{ background:linear-gradient(180deg,#fff,var(--sand)); color:#2c2a2a; border:1px solid var(--line) }
-    .cta--ghost:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(226,200,147,.20) }
-    .cta--shine::after{
-      content:""; position:absolute; inset:-2px;
-      background:linear-gradient(120deg,transparent 0%, rgba(255,255,255,.45) 20%, transparent 40%);
-      transform:translateX(-100%); transition:transform .6s ease;
-    }
-    .cta--shine:hover::after{ transform:translateX(100%); }
 
     /* SECTION SHELL */
     section{ max-width:1100px; margin:34px auto; padding:0 20px }
@@ -149,95 +137,127 @@
       border-radius:999px;
     }
 
-    /* Reusable container */
-    .wrap{
+    /* ======= Photography (creamy section) ======= */
+    .wrap--photo{
       position:relative; overflow:hidden;
       background:
-        radial-gradient(700px 320px at 0% 0%, rgba(226,200,147,.12) 0%, transparent 60%),
-        radial-gradient(600px 260px at 100% 20%, rgba(25,75,108,.08) 0%, transparent 55%),
-        linear-gradient(180deg, rgba(255,253,248,.92), rgba(250,246,236,.92));
-      border:1px solid rgba(226,200,147,.45);
+        radial-gradient(700px 280px at 0% 0%, rgba(226,200,147,.14) 0%, transparent 60%),
+        radial-gradient(600px 240px at 100% 20%, rgba(226,200,147,.10) 0%, transparent 55%),
+        linear-gradient(180deg, var(--p-bg-1), var(--p-bg-2));
+      border:1px solid var(--p-line);
       border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:22px;
+      box-shadow:0 20px 50px rgba(139,113,51,.10);
+      padding:0;
+      color:var(--p-ink);
     }
 
-    /* ===== Tabs styling: ONLY buttons, no outer container plate ===== */
-    .tabs{
-      display:flex; gap:10px; align-items:center; margin-bottom:14px;
-      padding:0; background:transparent; border:none; box-shadow:none;
-      width:max-content;
+    .studio{ display:grid; grid-template-columns:420px 1fr; gap:0 }
+    .studio__left{
+      background:linear-gradient(180deg, var(--p-plate), #FFFBF6);
+      border-right:1px solid var(--p-line);
+      padding:32px; display:flex; flex-direction:column; justify-content:center; gap:14px;
     }
-    .tab{
-      appearance:none; border:1px solid var(--line);
-      background:linear-gradient(180deg,#ffffff, #f6efe2);
-      color:#2a2a2a; padding:8px 14px; border-radius:12px; font-weight:600;
-      cursor:pointer; transition:transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
-      box-shadow:0 4px 10px rgba(25,75,108,.08);
-      font-size:14px;
-    }
-    .tab:hover{ transform:translateY(-1px); box-shadow:0 8px 16px rgba(25,75,108,.12); }
-    .tab:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(226,200,147,.55), 0 8px 16px rgba(25,75,108,.12); }
-    .tab.active,
-    .tab[aria-selected="true"]{
-      background:var(--navy); color:#fff; border-color:#103A54;
-      box-shadow:0 10px 22px rgba(25,75,108,.28);
-      transform:translateY(-1px) scale(1.03);
+    .studio__eyebrow{ color:var(--p-muted); letter-spacing:.22em; text-transform:uppercase; font-size:12px }
+    .studio__title{ font-family:"Playfair Display",serif; font-weight:700; font-size:clamp(26px,3.2vw,36px); margin:4px 0; color:var(--p-ink-strong); }
+    .studio__lead{ color:var(--p-muted); margin:0 0 6px }
+
+    /* vibe chips (balanced, light) */
+    .studio__chips{ display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 10px; padding:0 }
+    .chip{
+      list-style:none; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--p-line); background:linear-gradient(180deg,#fff,#FFFBF6);
+      font-size:12px; color:var(--p-ink);
+      box-shadow:0 6px 14px rgba(139,113,51,.08);
     }
 
-    /* ===== Ribbon Carousel ===== */
-    #ph-carousel.ribbon{
-      --ribbon-gap: 18px;
-      --ribbon-item-width: clamp(200px, 22vw, 300px);
-      --ribbon-aspect: 4 / 5;
-    }
-    #ph-carousel .ribbon__viewport{
-      overflow-x:auto; overflow-y:hidden;
-      border-radius:18px; touch-action:pan-x; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-      -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 1%, #000 99%, transparent 100%);
-              mask-image:linear-gradient(90deg, transparent 0%, #000 1%, #000 99%, transparent 100%);
-    }
-    #ph-carousel .ribbon__viewport::-webkit-scrollbar{ display:none; }
-    #ph-carousel .ribbon__track{
-      display:flex; align-items:stretch; gap:var(--ribbon-gap); will-change:transform; animation:none;
-    }
-    #ph-carousel .cardp{
-      margin:0; flex:0 0 var(--ribbon-item-width);
-      background:#fff; border-radius:16px; overflow:hidden;
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 10px 24px rgba(0,0,0,.12);
-      cursor:pointer; transition:transform .18s ease, box-shadow .18s ease;
-    }
-    #ph-carousel .cardp:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,.16) }
-    #ph-carousel .cardp img{
-      width:100%; height:100%; object-fit:cover; display:block;
-      aspect-ratio:var(--ribbon-aspect);
-      transform:scale(1.01); transition:transform 6s ease;
-    }
-    #ph-carousel .ribbon__track:not(:hover) .cardp img{ transform:scale(1.045) }
-    @keyframes ribbon-scroll-px{ to{ transform: translateX(calc(var(--travel) * -1)); } }
+    .studio__btn{ display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:999px; border:1px solid var(--p-line); background:var(--navy); color:#fff; text-decoration:none; font-weight:600; width:max-content; }
 
-    /* Masonry */
-    .masonry{display:none}
-    .masonry.active{display:block}
-    .masonry__cols{ column-count:4; column-gap:12px }
-    .masonry__item{
-      break-inside:avoid; margin:0 0 12px; position:relative;
-      overflow:hidden; border-radius:16px; border:1px solid rgba(226,200,147,.38);
-      box-shadow:0 10px 26px rgba(25,75,108,.10); background:#fff;
-    }
-    .masonry__item img{ width:100%; height:auto; display:block }
-    .pin-save{
-      position:absolute; top:10px; right:10px; z-index:2;
-      padding:8px 12px; border-radius:999px; font-weight:700; font-size:13px;
-      background:linear-gradient(180deg, #fff, #f6f0e4); color:#1f2b35;
-      border:1px solid rgba(226,200,147,.7);
-      box-shadow:0 8px 16px rgba(25,75,108,.12);
-      opacity:0; transform:translateY(-6px); transition:.18s ease;
-    }
-    .masonry__item:hover .pin-save{ opacity:1; transform:translateY(0) }
+    .studio__right{ position:relative; padding:20px; }
 
-    /* VIDEOS */
+    /* Slider: CLEAN image with centered dots */
+    .slider{ position:relative; width:100%; height:100%; }
+    .slides{
+      position:relative;
+      border-radius:18px; overflow:hidden;
+      background:transparent; border:none; box-shadow:none;
+      aspect-ratio: 4 / 5;
+      max-height:72vh;
+      margin-inline:auto;
+    }
+    .slide{ position:absolute; inset:0; opacity:0; transition:opacity .45s ease; }
+    .slide.active{ opacity:1; }
+    .slide img{ width:100%; height:100%; object-fit:cover; display:block; border-radius: 30px; }
+
+    .slider__btn{
+      position:absolute; z-index:5; top:50%; transform:translateY(-50%);
+      width:42px; height:42px; border-radius:12px; border:1px solid rgba(139,113,51,.35);
+      background:linear-gradient(180deg,#fff,#F9F1E0); color:var(--p-ink-strong); font-weight:800; cursor:pointer; display:grid; place-items:center;
+      box-shadow:0 10px 22px rgba(139,113,51,.18);
+    }
+    .slider__btn.prev{ left:14px } .slider__btn.next{ right:14px }
+
+    /* centered, minimalist gold dots */
+  /* dots: no plate, no border — only the dots */
+.slider__dots{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:6;
+
+  /* strip the container look */
+  padding:0;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  backdrop-filter:none;
+}
+.dot{
+  width:9px; height:9px;
+  border-radius:50%;
+  background:rgba(139,113,51,.45);
+  border:0;
+  opacity:.95;
+  cursor:pointer;
+  transition:transform .18s ease, opacity .18s ease, background .18s ease;
+}
+.dot.active{
+  background:rgb(87, 68, 25);
+  transform:scale(1.35);
+}
+@media (max-width: 640px){
+  /* two big portraits per row */
+  .gallery-grid{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap:14px;
+    grid-auto-rows:auto;
+  }
+  .gitem{
+    aspect-ratio: 4 / 5;   /* tall & luxe */
+    border-radius:16px;
+  }
+  .gitem--tall{ grid-row:span 1; } /* keep grid even on mobile */
+}
+
+
+    /* Static gallery */
+    .g-wrap{ padding:22px 18px 28px }
+    .g-title{ text-align:center; color:var(--p-ink-strong); font-family:"Playfair Display",serif; margin:26px 0 6px; font-size:30px }
+    .g-sub{ text-align:center; color:var(--p-muted); max-width:760px; margin:0 auto 20px }
+    .gallery-grid{ display:grid; gap:18px; grid-template-columns:1fr 1.15fr 1fr; grid-auto-rows:260px; padding:0 8px 10px; }
+    .gitem{ position:relative; border-radius:18px; overflow:hidden; background:#fff; border:1px solid var(--p-line); box-shadow:0 12px 28px rgba(139,113,51,.12); cursor:pointer; }
+    .gitem img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .gitem--tall{ grid-row:span 2; }
+
+    /* LIGHTBOX */
+    .lb{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); z-index:2000 }
+    .lb.open{ display:flex }
+    .lb__img{ max-width:min(92vw,1100px); max-height:86vh; border-radius:16px; display:block; box-shadow:0 24px 60px rgba(0,0,0,.32); background:#fff; border:1px solid rgba(231,221,188,.6) }
+    .lb__close{ position:fixed; top:14px; right:14px; background:rgba(255,255,255,.94); border:1px solid rgba(226,200,147,.7); border-radius:999px; padding:8px 12px; font-weight:600; color:#333; cursor:pointer; box-shadow:var(--shadow) }
+
+    /* VIDEOS (unchanged) */
     .vgrid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; }
     .vcard{
       background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(253,246,232,.98));
@@ -247,28 +267,11 @@
       display:flex;
     }
     .vcard:hover{ transform:translateY(-2px); box-shadow:0 18px 38px rgba(25,75,108,.16) }
-    .vframe{
-      position:relative; overflow:hidden; border-radius:16px;
-      background:#000;
-      border:1px solid rgba(226,200,147,.45);
-      box-shadow:0 10px 26px rgba(25,75,108,.10);
-      width:100%;
-      aspect-ratio: 9 / 16;
-    }
+    .vframe{ position:relative; overflow:hidden; border-radius:16px; background:#000; border:1px solid rgba(226,200,147,.45); box-shadow:0 10px 26px rgba(25,75,108,.10); width:100%; aspect-ratio: 9 / 16; }
     .vframe video{ width:100%; height:100%; object-fit:cover; display:block; background:#000; }
-    .vframe::after{
-      content:""; position:absolute; inset:0;
-      box-shadow:inset 0 0 0 1px rgba(226,200,147,.35), inset 0 0 30px rgba(226,200,147,.15);
-      pointer-events:none; border-radius:16px;
-    }
+    .vframe::after{ content:""; position:absolute; inset:0; box-shadow:inset 0 0 0 1px rgba(226,200,147,.35), inset 0 0 30px rgba(226,200,147,.15); pointer-events:none; border-radius:16px; }
     .sound-hint{ position:absolute; left:50%; bottom:10px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; font-weight:700; font-size:12px; letter-spacing:.02em; background:rgba(25,75,108,.88); color:#fff; border:1px solid rgba(226,200,147,.55); box-shadow:0 10px 26px rgba(25,75,108,.25); cursor:pointer; user-select:none; transition:opacity .2s ease, transform .2s ease; }
     .sound-hint.hide{ opacity:0; transform:translate(-50%, 4px); pointer-events:none; }
-
-    /* LIGHTBOX */
-    .lb{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); z-index:2000 }
-    .lb.open{ display:flex }
-    .lb__img{ max-width:min(92vw,1100px); max-height:86vh; border-radius:16px; display:block; box-shadow:0 24px 60px rgba(0,0,0,.32); background:#fff; border:1px solid rgba(231,221,188,.6) }
-    .lb__close{ position:fixed; top:14px; right:14px; background:rgba(255,255,255,.94); border:1px solid rgba(226,200,147,.7); border-radius:999px; padding:8px 12px; font-weight:600; color:#333; cursor:pointer; box-shadow:var(--shadow) }
 
     /* FOOTER */
     .footer{padding:40px 20px; text-align:center; color:#756f6d}
@@ -276,71 +279,252 @@
     .socials a{ width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#1c1b1b; color:#fff; text-decoration:none; transition:transform .12s ease, opacity .12s ease}
     .socials a:hover{ transform:translateY(-2px); opacity:.9 } .socials svg{ width:18px; height:18px; fill:#fff; display:block }
 
-    /* DESKTOP HERO (big but a bit shorter) */
     @media (min-width: 980px){
-      header.hero{
-        max-width:1300px;
-        gap:32px;
-        padding:0 28px 48px;
-        min-height:calc(92vh - var(--nav-h));
-        grid-template-columns:1.2fr 1fr;
-      }
+      header.hero{ max-width:1300px; gap:32px; padding:0 28px 48px; min-height:calc(92vh - var(--nav-h)); grid-template-columns:1.2fr 1fr; }
       .hero__grid{ grid-auto-rows:220px; gap:12px; }
       .hero__copy{ padding:36px; }
     }
-
-    /* CONTACT heading like mock */
-    #contact .eyebrow{ color: var(--gold-ink); letter-spacing:.22em; text-transform:uppercase; font-size:13px; }
-    #contact .section-title{
-      font-family:"Playfair Display",serif; font-weight:700;
-      font-size:clamp(36px, 4.6vw, 48px); margin:6px 0 14px; padding-bottom:8px; display:block; position:relative;
+    @media (max-width:1020px){
+      .studio{ grid-template-columns:1fr; }
+      .studio__left{ order:2 } 
+      .studio__right{ order:1 }
+      .gallery-grid{ grid-template-columns:1fr 1fr; grid-auto-rows:230px }
+      .gitem--tall{ grid-row:span 1 }
     }
-    #contact .section-title::after{
-      content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
-      background:linear-gradient(90deg, rgba(226,200,147,.95), rgba(226,200,147,.25));
-      border-radius:2px;
-    }
-
-    /* Responsive */
-    @media (max-width:1100px){ .masonry__cols{column-count:3} }
     @media (max-width:980px){
       header.hero{ grid-template-columns:1fr }
       .hero__grid{ grid-auto-rows:140px }
-      h1{ font-size:38px }
       .vgrid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
     }
-    @media (max-width:800px){ .masonry__cols{column-count:2} }
     @media (max-width:640px){
-      .brand{ font-size:18px }
-      .hero__grid{ grid-auto-rows:120px }
-      h1{ font-size:32px }
       .vgrid{ grid-template-columns:1fr; }
-      .menu-panel a{ font-size:14px; }
       .sound-hint{ display:none !important; }
       .vframe video{ object-fit:contain; }
     }
+    /* --- MOBILE: make gallery tiles big --- */
+@media (max-width:640px){
+  .g-wrap{ padding:18px 8px 24px; }         /* give the grid more width */
+  .gallery-grid{
+    grid-template-columns: repeat(2, 1fr);  /* two big columns */
+    gap: 12px;
+    padding: 0;                             
+    grid-auto-rows: auto !important;        /* override 1020px rule */
+  }
+  .gitem{
+    aspect-ratio: 3 / 4;                    /* taller cards = bigger look */
+    border-radius: 16px;
+  }
+  .gitem img{ width:100%; height:100%; object-fit:cover; }
+}
+@media (max-width:420px){
+  .gitem{ aspect-ratio: 2.6 / 4; }  /* slightly taller */
+}
+/* ==== Bigger gallery, tighter gaps ==== */
+/* ==== FINAL GALLERY RULES ==== */
 
-    /* Soft reveal */
-    .reveal{opacity:0; transform:translateY(8px); filter:saturate(.9); transition:opacity .5s ease, transform .5s ease, filter .5s ease}
-    .reveal.in{opacity:1; transform:none; filter:none}
+/* desktop / tablet */
+.wrap--photo .gallery-grid{
+  grid-template-columns: 1fr 1.15fr 1fr;
+  grid-auto-rows: 300px;
+  gap: 18px;
+  padding: 0 12px 14px;
+}
 
-    /* Hero "bling" */
-    .hero__grid{ position:relative; isolation:isolate; }
-    .hero__grid::before{
-      content:""; position:absolute; inset:-12% -55%; z-index:6; pointer-events:none; border-radius:28px;
-      background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.65) 48%, rgba(255,255,255,.55) 58%, rgba(255,255,255,0) 100%);
-      mix-blend-mode:screen;
-      -webkit-mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
-      mask-image: radial-gradient(120% 55% at 50% 50%, #000 40%, transparent 72%);
-      transform:translateX(-78%) rotate(6deg);
-      opacity:0; animation:blingTwice 5.0s ease-in-out .3s 2 forwards;
-    }
-    @keyframes blingTwice{
-      0%{ opacity:0; transform:translateX(-78%) rotate(6deg) }
-      10%,50%{ opacity:1 }
-      90%{ opacity:0 }
-      100%{ opacity:0; transform:translateX(92%) rotate(6deg) }
-    }
+/* mobile ≤ 640px: 2×2, show first 4, comfy gap + indent */
+@media (max-width: 640px){
+  .wrap--photo .g-wrap{
+    padding: 18px 16px 22px !important;     /* indentation inside the card */
+  }
+
+  .wrap--photo .gallery-grid{
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: auto !important;
+    gap: 14px !important;                   /* space between tiles */
+    padding: 0 !important;
+    margin: 6px auto 0 !important;
+    width: 100%;
+  }
+
+  .wrap--photo .gallery-grid .gitem:nth-child(n+5){
+    display: none !important;               /* only the first 4 tiles on mobile */
+  }
+
+  .wrap--photo .gitem{
+    aspect-ratio: 3 / 4;                    /* tall, luxe */
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .wrap--photo .gitem--tall{
+    grid-row: span 1 !important;            /* keep rows even on mobile */
+  }
+
+  .wrap--photo .gitem img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}/* ===== Contact container ===== */
+/* ===== Contact card (2nd design) ===== */
+#contact { padding: 0 20px; }
+
+.contact-card{
+  max-width: 1240px;
+  margin: 34px auto 50px;
+  padding: clamp(22px, 3.2vw, 44px) clamp(18px, 4vw, 64px);
+  border-radius: 28px;
+  border: 1px solid rgba(226,200,147,.45);
+  background:
+    radial-gradient(1200px 340px at 100% 0, rgba(226,200,147,.18) 0%, rgba(226,200,147,0) 60%),
+    linear-gradient(180deg, #FFFCF6 0%, #FBF3E6 100%);
+  box-shadow:
+    0 26px 70px rgba(139,113,51,.14),
+    inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.contact-eyebrow{
+  display:inline-block;
+  color:var(--gold-ink);
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.contact-title{
+  font-family:"Playfair Display",serif;
+  font-weight:700;
+  font-size: clamp(20px, 5vw, 45px);
+  line-height:1.05;
+  color:#1f2b35;
+  margin: 0 0 10px;
+}
+
+.contact-rule{
+  height:3px;
+  width:100%;
+  max-width: 980px;             /* subtle, not full bleed */
+  background:linear-gradient(90deg, rgba(226,200,147,.95), rgba(226,200,147,.15));
+  border-radius:999px;
+  margin: 8px 0 18px;
+}
+
+.contact-sub{
+  margin: 0 0 18px;
+  color:#6f6a68;
+}
+
+.contact-form{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+/* Inputs matching the mock */
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+  padding:16px 18px;
+  font: inherit;
+  color:var(--ink);
+  box-shadow: 0 6px 16px rgba(139,113,51,.06);
+}
+
+.contact-form input{ height:56px; }
+
+.contact-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-top: 6px;
+}
+
+/* Make the card breathe on phones */
+@media (max-width: 640px){
+  .contact-card{
+    padding: 22px 16px;
+    border-radius: 22px;
+  }
+  .contact-rule{ max-width:100%; }
+  .contact-actions{ flex-wrap:wrap; }
+}
+/* === MOBILE: make the gallery bigger & longer === */
+@media (max-width: 640px){
+  /* give the card a touch more breathing room */
+  .wrap--photo .g-wrap{
+    padding: 22px 14px 28px !important;
+  }
+
+  /* bigger heading & copy inside the card */
+  .wrap--photo .g-title{
+    font-size: clamp(28px, 8vw, 42px);
+    margin-bottom: 8px;
+  }
+  .wrap--photo .g-sub{
+    font-size: clamp(14px, 3.8vw, 18px);
+    margin-bottom: 16px;
+  }
+
+  /* keep 2 columns, tighten the gap a bit */
+  .wrap--photo .gallery-grid{
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    grid-auto-rows: auto !important;
+  }
+
+  /* make each tile MUCH taller/bigger */
+  .wrap--photo .gitem{
+    aspect-ratio: auto !important;                 /* let height drive the size */
+    height: clamp(220px, 50vw, 420px) !important;  /* ← bump these numbers to go even bigger */
+    border-radius: 18px !important;
+    overflow: hidden;
+  }
+  .wrap--photo .gitem img{
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* still show only the first 4 on mobile */
+  .wrap--photo .gallery-grid .gitem:nth-child(n+5){
+    display: none !important;
+  }
+}
+
+/* MOBILE — gallery: 1 column, edge-to-edge, no big center gap */
+@media (max-width: 640px){
+  /* remove side padding so images can be wider */
+  .wrap--photo .g-wrap{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* single column, tight vertical spacing */
+  .wrap--photo .gallery-grid{
+    grid-template-columns: 1fr !important;
+    column-gap: 0 !important;
+    row-gap: 12px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+  }
+
+  /* let each tile fill the width */
+  .wrap--photo .gitem{
+    aspect-ratio: auto !important;  /* stop forcing tall crop */
+    height: auto !important;
+    border-radius: 0 !important;    /* edge-to-edge look */
+  }
+  .wrap--photo .gitem img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -374,17 +558,17 @@
       <a href="#contact" role="menuitem">Contact</a>
     </div>
   </nav>
-<div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
+  <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
 
   <!-- HERO -->
   <header class="hero" id="about" role="banner">
     <div class="hero__grid" aria-hidden="true">
-      <img class="hero__img tall reveal"  src="./assets/1.jpg" alt="Lifestyle portrait with product">
-      <img class="hero__img reveal"       src="./assets/4.jpg" alt="Soft light product detail">
-      <img class="hero__img wide reveal"  src="./assets/3.jpg" alt="Editorial scene with skincare">
-      <img class="hero__img tall reveal"  src="./assets/2.jpg" alt="Calm morning routine">
-      <img class="hero__img reveal"       src="./assets/6.jpg" alt="Flat lay textures and props">
-      <img class="hero__img reveal"       src="./assets/5.jpg" alt="Hands with serum bottle">
+      <img class="hero__img tall"  src="./assets/1.jpg" alt="Lifestyle portrait with product">
+      <img class="hero__img"       src="./assets/4.jpg" alt="Soft light product detail">
+      <img class="hero__img wide"  src="./assets/3.jpg" alt="Editorial scene with skincare">
+      <img class="hero__img tall"  src="./assets/2.jpg" alt="Calm morning routine">
+      <img class="hero__img"       src="./assets/6.jpg" alt="Flat lay textures and props">
+      <img class="hero__img"       src="./assets/5.jpg" alt="Hands with serum bottle">
       <span class="hero__overlay"></span>
     </div>
 
@@ -397,153 +581,132 @@
         because your brand deserves to feel unforgettable.
       </p>
       <div style="display:flex; gap:10px; flex-wrap:wrap">
-        <a class="cta" href="#videos">See Work →</a>
-        <a class="cta cta--ghost cta--shine" href="#contact">Work With Me</a>
+        <a class="cta" href="#photos">See Work →</a>
+        <a class="cta cta--ghost" href="#contact">Work With Me</a>
       </div>
     </div>
   </header>
 
-  <!-- PHOTOS -->
+  <!-- PHOTOGRAPHY -->
   <section id="photos">
-    <h2 class="section-title">Photography</h2>
-    <div class="wrap">
-      <div class="tabs" role="tablist" aria-label="Choose photo layout">
-        <button class="tab active" role="tab" aria-selected="true" aria-controls="ph-carousel" data-tab="carousel">Carousel</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="ph-masonry" data-tab="masonry">Masonry</button>
-      </div>
+    <h2 class="section-title"></h2>
+    <div class="wrap wrap--photo">
+      <div class="studio">
+        <!-- LEFT: short, balanced brand vibe in Fatima’s voice -->
+        <aside class="studio__left">
+          <span class="studio__eyebrow">Authentic Contents & photography</span>
+          <h3 class="studio__title">A High Quality Photography</h3>
+          <p class="studio__lead">I help brands become unforgettable.</p>
+          <ul class="studio__chips">
+            <li class="chip">#feminineenergy</li>
+            <li class="chip">#aesthetic</li>
+            <li class="chip">#womenempowerment</li>
+            <li class="chip">#wellness</li>
+          </ul>
+          <a class="studio__btn" href="#contact">Read More</a>
+        </aside>
 
-      <!-- RIBBON CAROUSEL VIEW -->
-      <div id="ph-carousel" class="ribbon" aria-label="Photo ribbon">
-        <div class="ribbon__viewport" tabindex="0">
-          <div class="ribbon__track">
-            <figure class="cardp" data-full="./assets/shot1.jpg"><img src="./assets/shot1.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot2.jpg"><img src="./assets/shot2.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot3.jpg"><img src="./assets/shot3.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot4.jpg"><img src="./assets/shot4.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot5.jpg"><img src="./assets/shot5.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot6.jpg"><img src="./assets/shot6.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot7.jpg"><img src="./assets/shot7.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot8.jpg"><img src="./assets/shot8.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot9.jpg"><img src="./assets/shot9.jpg"  alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot10.jpg"><img src="./assets/shot10.jpg" alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot11.jpg"><img src="./assets/shot11.jpg" alt=""></figure>
-            <figure class="cardp" data-full="./assets/shot12.jpg"><img src="./assets/shot12.jpg" alt=""></figure>
+        <!-- RIGHT: clean slider with centered dots -->
+        <div class="studio__right">
+          <div class="slider" id="ph-slider">
+            <button class="slider__btn prev" aria-label="Previous">‹</button>
+            <div class="slides"></div>
+            <button class="slider__btn next" aria-label="Next">›</button>
+            <div class="slider__dots" id="ph-dots" aria-label="Slide pagination"></div>
           </div>
         </div>
       </div>
 
-      <!-- MASONRY VIEW -->
-      <div id="ph-masonry" class="masonry" aria-label="Pinterest-style grid">
-        <div class="masonry__cols">
-          <div class="masonry__item tile" data-full="./assets/shot1.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot1.jpg" alt="Golden hour portrait holding product"></div>
-          <div class="masonry__item tile" data-full="./assets/shot2.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot2.jpg" alt="Serum texture on hands"></div>
-          <div class="masonry__item tile" data-full="./assets/shot3.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot3.jpg" alt="Ultra-tall editorial with bottle"></div>
-          <div class="masonry__item tile" data-full="./assets/shot4.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot4.jpg" alt="Mirror portrait with product"></div>
-          <div class="masonry__item tile" data-full="./assets/shot5.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot5.jpg" alt="Outdoor detail with tote and bottle"></div>
-          <div class="masonry__item tile" data-full="./assets/shot6.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot6.jpg" alt="Routine: applying cream"></div>
-          <div class="masonry__item tile" data-full="./assets/shot7.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot7.jpg" alt="Editorial portrait with product"></div>
-          <div class="masonry__item tile" data-full="./assets/shot8.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot8.jpg" alt="Phone-tall packaging vignette"></div>
-          <div class="masonry__item tile" data-full="./assets/shot9.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot9.jpg" alt="BTS scene with diffuser"></div>
-          <div class="masonry__item tile" data-full="./assets/shot10.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot10.jpg" alt="Ingredients still-life with dropper"></div>
-          <div class="masonry__item tile" data-full="./assets/shot11.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot11.jpg" alt="Detail portrait with glossed lips and product"></div>
-          <div class="masonry__item tile" data-full="./assets/shot12.jpg"><button class="pin-save" aria-label="Save photo">Save</button><img class="reveal" src="./assets/shot12.jpg" alt="Before/after bottles on marble"></div>
-        </div>
+      <!-- Static gallery (unchanged) -->
+      <div class="g-wrap">
+        <h4 class="g-title">Amazing Photo Gallery</h4>
+        <p class="g-sub">I create elegant, aesthetic visuals that feel real, glow on skin, and convert.</p>
+        <div class="gallery-grid" id="ph-gallery"></div>
       </div>
     </div>
   </section>
 
-  <!-- VIDEOS -->
+  <!-- VIDEOS (UNCHANGED) -->
   <section id="videos">
     <h3 class="section-title" style="font-size:24px; margin-top:18px">Skincare</h3>
     <div class="vgrid">
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/skincare1.jpg" aria-label="Skincare video 1"><source src="./assets/video1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/skincare2.jpg" aria-label="Skincare video 2"><source src="./assets/skincare2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/skincare3.jpg" aria-label="Skincare video 3"><source src="./assets/video3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/skincare1.jpg" aria-label="Skincare video 1"><source src="./assets/video1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/skincare2.jpg" aria-label="Skincare video 2"><source src="./assets/skincare2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/skincare3.jpg" aria-label="Skincare video 3"><source src="./assets/video3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
 
     <h3 class="section-title" style="font-size:24px; margin-top:28px">Makeup</h3>
     <div class="vgrid">
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/makeup1.jpg" aria-label="Makeup video 1"><source src="./assets/makeup1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/makeup2.jpg" aria-label="Makeup video 2"><source src="./assets/makeup2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/makeup3.jpg" aria-label="Makeup video 3"><source src="./assets/makeup3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/makeup1.jpg" aria-label="Makeup video 1"><source src="./assets/makeup1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/makeup2.jpg" aria-label="Makeup video 2"><source src="./assets/makeup2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/makeup3.jpg" aria-label="Makeup video 3"><source src="./assets/makeup3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
 
     <h3 class="section-title" style="font-size:24px; margin-top:28px">Showcasing</h3>
     <div class="vgrid">
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial1.jpg" aria-label="Showcasing video 1"><source src="./assets/showcasing1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial2.jpg" aria-label="Showcasing video 2"><source src="./assets/showcasing2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial3.jpg" aria-label="Showcasing video 3"><source src="./assets/showcasing3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial1.jpg" aria-label="Showcasing video 1"><source src="./assets/showcasing1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial2.jpg" aria-label="Showcasing video 2"><source src="./assets/showcasing2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial3.jpg" aria-label="Showcasing video 3"><source src="./assets/showcasing3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
 
     <h3 class="section-title" style="font-size:24px; margin-top:28px">Testimonials</h3>
     <div class="vgrid">
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial1.jpg" aria-label="Testimonial video 1"><source src="./assets/testimonial1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial2.jpg" aria-label="Testimonial video 2"><source src="./assets/testimonial2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial3.jpg" aria-label="Testimonial video 3"><source src="./assets/testimonial3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial1.jpg" aria-label="Testimonial video 1"><source src="./assets/testimonial1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial2.jpg" aria-label="Testimonial video 2"><source src="./assets/testimonial2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/testimonial3.jpg" aria-label="Testimonial video 3"><source src="./assets/testimonial3.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
 
     <h3 class="section-title" style="font-size:24px; margin-top:28px">Inorganic</h3>
     <div class="vgrid">
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic1.jpg" aria-label="Inorganic video 1"><source src="./assets/organic1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="./assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-      <div class="vcard reveal"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic2.jpg" aria-label="Inorganic video 3"><source src="./assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic1.jpg" aria-label="Inorganic video 1"><source src="./assets/organic1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic2.jpg" aria-label="Inorganic video 2"><source src="./assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
+      <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic2.jpg" aria-label="Inorganic video 3"><source src="./assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     </div>
   </section>
 
   <!-- TESTIMONIALS IMAGE -->
   <section id="testimonials">
     <div class="wrap">
-      <div class="card reveal" style="max-width:1100px; margin:0 auto">
-        <img
-          src="./assets/brands.jpg"
-          alt="Collage of brand testimonial messages"
-          loading="lazy"
-          style="width:100%; display:block; border-radius:16px; border:1px solid rgba(226,200,147,.38); box-shadow:var(--shadow)"
-        >
+      <div class="card" style="max-width:1100px; margin:0 auto">
+        <img src="./assets/brands.jpg" alt="Collage of brand testimonial messages" loading="lazy"
+             style="width:100%; display:block; border-radius:16px; border:1px solid rgba(226,200,147,.38); box-shadow:var(--shadow)">
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact">
-    <div class="wrap">
-      <div class="card reveal" style="max-width:860px; margin:0 auto">
-        <span class="eyebrow">Collaborations</span>
-        <h2 class="section-title">Let’s Collaborate</h2>
-        <p class="muted">Tell me about your product and goals — I’ll share concepts within 24 hours.</p>
+  <!-- CONTACT -->
+<section id="contact">
+  <div class="contact-card">
+    <span class="contact-eyebrow">COLLABORATIONS</span>
+    <h2 class="contact-title">Let’s Collaborate</h2>
+    <div class="contact-rule" aria-hidden="true"></div>
 
-        <form id="contactForm" style="display:grid; gap:12px">
-          <input id="name"   name="name"  placeholder="Your name" required
-                 style="padding:12px 14px; border-radius:12px; border:1px solid var(--line)">
-          <input id="email"  name="email" type="email" placeholder="Your email" required
-                 style="padding:12px 14px; border-radius:12px; border:1px solid var(--line)">
-          <textarea id="message" name="message" rows="4" placeholder="Your message" required
-                    style="padding:12px 14px; border-radius:12px; border:1px solid var(--line)"></textarea>
+    <p class="contact-sub">
+      Tell me about your product and goals — I’ll share concepts within 24 hours.
+    </p>
 
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-            <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
-            <a class="cta cta--ghost cta--shine"
-   id="mailtoBtn"
-   href="#"
-   target="_blank"
-   rel="noopener">Open Email</a>
+    <form id="contactForm" class="contact-form">
+      <input id="name" name="name" placeholder="Your name" required>
+      <input id="email" name="email" type="email" placeholder="Your email" required>
+      <textarea id="message" name="message" rows="5" placeholder="Your message" required></textarea>
 
-            <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
-          </div>
-        </form>
+      <div class="contact-actions">
+        <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
+        <a class="cta cta--ghost" id="mailtoBtn" href="#" target="_blank" rel="noopener">Open Email</a>
+        <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
       </div>
-    </div>
-  </section>
+    </form>
+  </div>
+</section>
 
   <!-- FOOTER -->
   <footer class="footer">
     © <span id="y"></span> Fatima Keita — UGC Creator
     <div class="socials" aria-label="Social links">
-    
       <a href="mailto:jeanetteferrater14@gmail.com" aria-label="Email for collaborations">
         <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5Z"/></svg>
       </a>
-     
     </div>
   </footer>
 
@@ -554,7 +717,14 @@
   </div>
 
   <script>
-/* COMMON */
+/* Photo sources for slider + gallery */
+const PHOTO_SOURCES = [
+  "./assets/shot1.jpg","./assets/shot2.jpg","./assets/shot3.jpg","./assets/shot4.jpg",
+  "./assets/shot5.jpg","./assets/shot6.jpg","./assets/shot7.jpg","./assets/shot8.jpg",
+  "./assets/shot9.jpg","./assets/shot10.jpg","./assets/shot11.jpg","./assets/shot12.jpg",
+];
+
+/* Common */
 (() => {
   const y = document.getElementById('y');
   if (y) y.textContent = new Date().getFullYear();
@@ -564,10 +734,7 @@
   });
 })();
 
-/* NAV mobile */
-
-
-/* LIGHTBOX */
+/* Lightbox */
 (() => {
   const lb = document.getElementById('lb');
   const lbImg = document.getElementById('lbImg');
@@ -578,97 +745,80 @@
   lbClose.addEventListener('click', closeLB);
   lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLB(); });
-  function attachLightbox(){
-    document.querySelectorAll('#photos .tile, #photos .cardp').forEach(el => {
-      el.addEventListener('click', ev => {
-        if (ev.target?.classList?.contains('pin-save')) return;
-        const img = el.querySelector('img');
-        const full = el.getAttribute('data-full') || img?.src;
-        if (full) openLB(full);
-      });
-    });
-  }
-  attachLightbox();
-  window.__attachLightbox = attachLightbox;
+  window.__openLB = openLB;
 })();
 
-/* PHOTOS: Tabs */
+/* Slider with centered dots (clean) */
 (() => {
-  const wrap = document.querySelector('#photos .wrap');
-  if (!wrap) return;
-  const tabs = wrap.querySelectorAll('.tab');
-  const ribbonEl  = document.getElementById('ph-carousel');
-  const masonryEl = document.getElementById('ph-masonry');
+  const wrap = document.querySelector('#ph-slider .slides');
+  const dotsWrap = document.getElementById('ph-dots');
+  if (!wrap || !dotsWrap) return;
 
-  function setView(view){
-    const isCarousel = view === 'carousel';
-    if (ribbonEl)  ribbonEl.style.display = isCarousel ? 'block' : 'none';
-    if (masonryEl) masonryEl.classList.toggle('active', !isCarousel);
-    tabs.forEach(t => {
-      const active = t.dataset.tab === view;
-      t.classList.toggle('active', active);
-      t.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    if (window.__attachLightbox) window.__attachLightbox();
-  }
+  // Build slides
+  PHOTO_SOURCES.slice(0,6).forEach((src, i) => {
+    const fig = document.createElement('figure');
+    fig.className = 'slide' + (i === 0 ? ' active' : '');
+    fig.innerHTML = `<img src="${src}" alt="Slide ${i+1}">`;
+    wrap.appendChild(fig);
 
-  tabs.forEach(t => t.addEventListener('click', () => setView(t.dataset.tab)));
-  setView('carousel');
-})();
-
-/* RIBBON auto-scroll */
-(() => {
-  const ribbonEl = document.getElementById('ph-carousel');
-  if (!ribbonEl) return;
-  const track = ribbonEl.querySelector('.ribbon__track');
-  const viewport = ribbonEl.querySelector('.ribbon__viewport');
-  if (!track || !viewport) return;
-
-  if (!track.dataset.cloned) {
-    const originals = Array.from(track.children);
-    originals.forEach(n => track.appendChild(n.cloneNode(true)));
-    track.dataset.cloned = '1';
-  }
-  const originals = Array.from(track.children).slice(0, track.children.length / 2);
-
-  const SPEED_PX_PER_SEC = 50;
-  const getGapPx = () => parseFloat(getComputedStyle(track).gap || '0') || 0;
-
-  function setDistanceAndDuration(){
-    const gap  = getGapPx();
-    const setW = originals.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0)
-             + gap * (originals.length - 1);
-    const travel = setW + gap;
-    const dur    = travel / SPEED_PX_PER_SEC;
-    track.style.setProperty('--travel', `${travel}px`);
-    track.style.animation = `ribbon-scroll-px ${dur}s linear infinite`;
-    track.style.animationPlayState = 'running';
-  }
-
-  const imgs = track.querySelectorAll('img');
-  Promise.all([...imgs].map(img => img.complete
-    ? Promise.resolve()
-    : new Promise(res => img.addEventListener('load', res, { once:true }))
-  )).then(setDistanceAndDuration);
-
-  window.addEventListener('load', setDistanceAndDuration);
-  window.addEventListener('resize', setDistanceAndDuration);
-  document.addEventListener('visibilitychange', () => {
-    track.style.animationPlayState = document.hidden ? 'paused' : 'running';
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+    dotsWrap.appendChild(dot);
   });
 
-  let resumeT;
-  const pause = () => { track.style.animationPlayState = 'paused'; clearTimeout(resumeT); };
-  const resumeSoon = () => { clearTimeout(resumeT); resumeT = setTimeout(() => { track.style.animationPlayState = 'running'; }, 800); };
-  ['pointerdown','touchstart','wheel','scroll'].forEach(evt =>
-    viewport.addEventListener(evt, pause, { passive:true })
-  );
-  ['pointerup','mouseleave','touchend'].forEach(evt =>
-    viewport.addEventListener(evt, resumeSoon, { passive:true })
-  );
+  const slides = Array.from(wrap.children);
+  const dots   = Array.from(dotsWrap.children);
+  let idx = 0;
+
+  const show = (n) => {
+    idx = (n + slides.length) % slides.length;
+    slides.forEach((s,i)=>s.classList.toggle('active', i===idx));
+    dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
+  };
+
+  document.querySelector('#ph-slider .prev').addEventListener('click', ()=>show(idx-1));
+  document.querySelector('#ph-slider .next').addEventListener('click', ()=>show(idx+1));
+  dots.forEach((d,i)=> d.addEventListener('click', ()=>show(i)));
+
+  // auto-advance with pause on hover/touch
+  let timer = setInterval(()=>show(idx+1), 5000);
+  wrap.addEventListener('mouseenter',()=>clearInterval(timer));
+  wrap.addEventListener('mouseleave',()=>timer=setInterval(()=>show(idx+1),5000));
+  dotsWrap.addEventListener('mouseenter',()=>clearInterval(timer));
+  dotsWrap.addEventListener('mouseleave',()=>timer=setInterval(()=>show(idx+1),5000));
 })();
 
-/* VIDEOS behavior */
+/* Static gallery */
+(() => {
+  const g = document.getElementById('ph-gallery');
+  if (!g) return;
+
+  const imgs = [
+    PHOTO_SOURCES[2] || PHOTO_SOURCES[0],
+    PHOTO_SOURCES[4] || PHOTO_SOURCES[0],
+    PHOTO_SOURCES[3] || PHOTO_SOURCES[0],
+    PHOTO_SOURCES[0],
+    PHOTO_SOURCES[1] || PHOTO_SOURCES[0],
+  ];
+
+  const makeTile = (src, cls='') => {
+    const f = document.createElement('figure');
+    f.className = 'gitem ' + cls;
+    f.dataset.full = src;
+    f.innerHTML = `<img src="${src}" alt="Gallery photo">`;
+    f.addEventListener('click', ()=> window.__openLB && window.__openLB(src));
+    return f;
+  };
+
+  g.appendChild(makeTile(imgs[0]));
+  g.appendChild(makeTile(imgs[1],'gitem--tall'));
+  g.appendChild(makeTile(imgs[2]));
+  g.appendChild(makeTile(imgs[3]));
+  g.appendChild(makeTile(imgs[4]));
+})();
+
+/* Videos behavior (unchanged) */
 (() => {
   const vids = document.querySelectorAll('#videos video');
   if (!vids.length) return;
@@ -690,17 +840,23 @@
   }
 })();
 
-/* Soft reveal */
+/* Mobile nav */
 (() => {
-  const els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window) || !els.length) { els.forEach(el => el.classList.add('in')); return; }
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: .12 });
-  els.forEach(el => io.observe(el));
+  const body  = document.body;
+  const btn   = document.getElementById('menuBtn');
+  const panel = document.getElementById('mobileMenu');
+  if (!btn || !panel) return;
+  let overlay = document.getElementById('menuOverlay');
+  if (!overlay) { overlay = document.createElement('div'); overlay.id='menuOverlay'; overlay.className='menu-overlay'; document.body.appendChild(overlay); }
+  const openMenu = () => { body.classList.add('menu-open'); btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','Close menu'); };
+  const closeMenu= () => { body.classList.remove('menu-open'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','Open menu'); };
+  btn.addEventListener('click', () => body.classList.contains('menu-open') ? closeMenu() : openMenu());
+  overlay.addEventListener('click', closeMenu);
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 })();
 
-/* ===== CONTACT: email helpers (mailto + Gmail) ===== */
+/* Contact helpers */
 (() => {
   const TO = 'jeanetteferrater14@gmail.com';
   const form = document.getElementById('contactForm');
@@ -709,14 +865,12 @@
   const emailEl = document.getElementById('email');
   const msgEl = document.getElementById('message');
   const gmailBtn = document.getElementById('mailtoBtn');
-
   if (!form || !gmailBtn) return;
 
   const buildSubject = () => {
     const n = (nameEl.value || '').trim();
     return `UGC Inquiry from ${n || 'a brand'}`;
   };
-
   const buildBody = () => {
     const n = (nameEl.value || '').trim();
     const e = (emailEl.value || '').trim();
@@ -729,72 +883,25 @@ ${m}
 ${e || ''}`;
   };
 
-  // Submit: open user's default email app (mailto:)
- // Submit: open Gmail in a new tab AND trigger default mail client (mailto)
-form.addEventListener('submit', (ev) => {
-  ev.preventDefault();
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const subject = encodeURIComponent(buildSubject());
+    const body = encodeURIComponent(buildBody());
+    const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${subject}&body=${body}`;
+    window.open(gmailCompose, '_blank', 'noopener');
+    const mailto = `mailto:${TO}?subject=${subject}&body=${body}`;
+    if (statusEl) statusEl.textContent = 'Opening Gmail and your email app…';
+    setTimeout(() => { window.location.href = mailto; }, 150);
+  });
 
-  const subject = encodeURIComponent(buildSubject());
-  const body = encodeURIComponent(buildBody());
-
-  // 1) Open Gmail compose in a new tab
-  const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${subject}&body=${body}`;
-  window.open(gmailCompose, '_blank', 'noopener');
-
-  // 2) Also open the user's default mail app
-  const mailto = `mailto:${TO}?subject=${subject}&body=${body}`;
-  if (statusEl) statusEl.textContent = 'Opening Gmail and your email app…';
-
-  // Tiny delay improves popup success across browsers
-  setTimeout(() => { window.location.href = mailto; }, 150);
-});
-
-
-  // "Open Email": open Gmail compose in a new tab
   gmailBtn.addEventListener('click', (ev) => {
     ev.preventDefault();
     const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(buildSubject())}&body=${encodeURIComponent(buildBody())}`;
-    window.open(gmailCompose, '_blank', 'noopener'); // opens Gmail website
+    window.open(gmailCompose, '_blank', 'noopener');
   });
 })();
 
   </script>
-  <script>
-/* NAV mobile (robust) */
-(() => {
-  const body  = document.body;
-  const btn   = document.getElementById('menuBtn');
-  const panel = document.getElementById('mobileMenu');
-  if (!btn || !panel) return;
-
-  // Ensure an overlay exists
-  let overlay = document.getElementById('menuOverlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'menuOverlay';
-    overlay.className = 'menu-overlay';
-    document.body.appendChild(overlay);
-  }
-
-  const openMenu = () => {
-    body.classList.add('menu-open');
-    btn.setAttribute('aria-expanded','true');
-    btn.setAttribute('aria-label', 'Close menu');
-  };
-  const closeMenu = () => {
-    body.classList.remove('menu-open');
-    btn.setAttribute('aria-expanded','false');
-    btn.setAttribute('aria-label', 'Open menu');
-  };
-
-  btn.addEventListener('click', () =>
-    body.classList.contains('menu-open') ? closeMenu() : openMenu()
-  );
-  overlay.addEventListener('click', closeMenu);
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-})();
-</script>
-
+  
 </body>
 </html>
