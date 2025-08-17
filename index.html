@@ -649,16 +649,68 @@ header.hero .cta--ghost{
   outline-offset:2px;
   border-radius:50%;
 }
-/* Edge vignette to ground the hero */
-@media (min-width:980px){
-  header.hero::before{
-    box-shadow:none;            /* keep your existing rule clean */
-    background:
-      linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.04) 100%),
-      radial-gradient(900px 280px at 8% 0%, rgba(226,200,147,.10) 0%, rgba(226,200,147,0) 60%),
-      linear-gradient(180deg, var(--creamA1), var(--creamA2));
-  }
+/* ================== Photography slider: polished card look ================== */
+/* Scope to the photos section so nothing else changes */
+.wrap--photo .slider{
+  position: relative;
+  padding: 18px;                         /* frame thickness */
+  border-radius: 28px;
+  background: linear-gradient(180deg,#F8F1E4,#EFE3CC);
+  border: 1px solid rgba(226,200,147,.45);
+  box-shadow:
+    0 26px 70px rgba(25,75,108,.16),
+    inset 0 1px 0 rgba(255,255,255,.65);
 }
+
+/* Image area */
+
+.wrap--photo .slides::after{
+  content:"";
+  position:absolute; inset:0; border-radius:22px;
+  /* soft inner line + bottom vignette like your screenshot */
+  box-shadow:
+    inset 0 0 0 1px rgba(226,200,147,.28),
+    inset 0 -60px 80px rgba(0,0,0,.06);
+  pointer-events:none;
+}
+.wrap--photo .slide img{ border-radius:22px; } /* match container radius */
+
+/* Arrows: pill buttons that sit just outside the card */
+.wrap--photo .slider__btn{
+  width:44px; height:44px;
+  border-radius:14px;
+  border:1px solid rgba(139,113,51,.30);
+  background: linear-gradient(180deg,#FFFFFF,#F9F1E0);
+  color:#574419; font-weight:800;
+  box-shadow: 0 12px 26px rgba(139,113,51,.22);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.wrap--photo .slider__btn:hover{ transform:translateY(-2px); }
+.wrap--photo .slider__btn.prev{ left:-16px; }   /* nudge outside */
+.wrap--photo .slider__btn.next{ right:-16px; }
+
+@media (max-width: 1020px){
+  .wrap--photo .slider{ padding:14px; }
+  .wrap--photo .slider__btn.prev{ left:14px; }  /* keep inside on smaller screens */
+  .wrap--photo .slider__btn.next{ right:14px; }
+}
+
+/* Dots: tidy, centered circles */
+.wrap--photo .slider__dots{ bottom:12px; gap:10px; }
+.wrap--photo .slider__dots .dot{
+  width:10px; height:10px; padding:0; border:0;
+  border-radius:50%; aspect-ratio:1/1;
+  background:rgba(139,113,51,.45);
+  transition: transform .18s ease, background .18s ease, opacity .18s ease;
+}
+.wrap--photo .slider__dots .dot.active{
+  background:#574419;
+  transform:scale(1.25);
+}
+.wrap--photo .slider__dots .dot:focus-visible{
+  outline:2px solid var(--gold); outline-offset:2px;
+}
+
 
   </style>
 </head>
