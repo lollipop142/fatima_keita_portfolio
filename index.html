@@ -113,12 +113,13 @@ header.hero{
   padding:30px; display:flex; flex-direction:column; justify-content:center; gap:14px; position:relative;
 }
 /* subtle gold strip at card top */
-.hero__copy::before{
-  content:""; position:absolute; left:0; right:0; top:0; height:6px;
-  background:linear-gradient(90deg, rgba(198,161,91,.55), rgba(198,161,91,0));
-  opacity:.9; border-radius:26px 26px 0 0;
+/* push the first "Skincare" title down from the top line */
+#videos .section-title:first-of-type{
+  margin-top: 64px !important;   /* was ~24px */
+  padding-top: 4px;              /* tiny breathing room */
 }
-/* Eyebrow in gold like your screenshot */
+
+/* Eyebrow in gold */
 .eyebrow{ color:var(--accent); font-size:12px; letter-spacing:.22em; text-transform:uppercase }
 
 /* Headline + gold underline */
@@ -170,7 +171,7 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 
 .studio{ display:grid; grid-template-columns:420px 1fr; gap:0; margin-bottom: 28px; }
 .studio__left{
-  background:linear-gradient(180deg,#FFFFFF,#FAF6EE);
+  background: linear-gradient(180deg, #FFFFFF, rgb(255 204 107 / 20%));
   border:1px solid var(--line); border-right:none;
   border-radius:24px 0 0 24px; padding:28px;
   box-shadow:var(--shadow-soft);
@@ -183,7 +184,7 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 .chip{ list-style:none; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; font-size:12px; color:#2b2a2a; box-shadow:0 6px 14px rgba(11,45,77,.08) }
 .studio__btn{ display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:999px; border:1px solid var(--navy); background:var(--navy); color:#fff; text-decoration:none; font-weight:700; width:max-content }
 
-.studio__right{ border:1px solid var(--line); border-left:none; border-radius:0 24px 24px 0; padding:16px; background:linear-gradient(180deg,#FFF,#FAF7F2); box-shadow:var(--shadow-soft); position:relative; }
+.studio__right{ border:1px solid var(--line); border-left:none; border-radius:0 24px 24px 0; padding:16px;background: linear-gradient(180deg, #FFF, #cec5c069); }
 
 /* Slider */
 .slider{ position:relative; width:100%; height:100%; }
@@ -203,6 +204,9 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 .slider__dots{
   position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
   display:flex; gap:8px; z-index:6; padding:0; background:transparent; border:0;
+  flex-wrap:wrap;                         /* allow 12 dots on small screens */
+  max-width:calc(100% - 40px);
+  justify-content:center;
 }
 .dot{
   width:10px; height:10px; border-radius:50%; background:rgba(11,45,77,.35);
@@ -219,7 +223,6 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 /* =================== 5) FEATURED PHOTO GALLERY — 6 cards =================== */
 .collage-wrap{ max-width:1200px; margin:0 auto; padding: 6px 20px 26px; }
 .collage-grid{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:26px; align-items:stretch; }
-/* use flex so each column stacks nicely */
 .stack{ display:flex; flex-direction:column; gap:26px; }
 
 /* Polaroid-style card */
@@ -236,7 +239,6 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
   background:linear-gradient(180deg,#fff,#FAF9F6);
   font-weight:700; color:var(--navy); font-size:14px;
 }
-/* goldish status dot */
 .polaroid__dot{
   width:14px; height:14px; border-radius:50%;
   background:linear-gradient(180deg,#F4E7C8,#E7D2A1);
@@ -295,7 +297,6 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 }
 .contact-eyebrow{ display:inline-block; color:var(--navy); letter-spacing:.22em; text-transform:uppercase; font-size:12px; margin-bottom:10px }
 .contact-title{ font-family:"Playfair Display",serif; font-weight:700; font-size: clamp(20px, 5vw, 45px); line-height:1.05; color:#1f2b35; margin: 0 0 10px; }
-/* GOLD divider here */
 .contact-rule{
   height:3px; width:100%; max-width: 980px;
   background:linear-gradient(90deg, rgba(199,167,106,.95), rgba(199,167,106,.20));
@@ -315,6 +316,47 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 .socials a{ width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:var(--navy); color:#fff; text-decoration:none; transition:transform .12s ease, opacity .12s ease }
 .socials a:hover{ transform:translateY(-2px); opacity:.9 }
 .socials svg{ width:18px; height:18px; fill:#fff; display:block }
+
+/* --- Softer look for video cards (Skincare & the other rows) --- */
+.vgrid{
+  gap: 18px;
+}
+
+/* Card: rounder + softer shadow */
+.vcard{
+  border-radius: 24px;
+  border: 1px solid rgba(234, 222, 205, .9);   /* warm cream outline */
+  background: linear-gradient(180deg, #FFFFFF, #FBF7F0);
+  box-shadow: 0 14px 34px rgba(11,45,77,.12);   /* gentler */
+  padding: 12px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.vcard:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(11,45,77,.14);
+}
+
+/* Video frame: no hard border, rounder corners, soft inner glow */
+.vframe{
+  border: 0;                     /* remove the hard edge */
+  border-radius: 20px;
+  background: #000;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(234, 222, 205, .8),  /* subtle cream ring */
+              inset 0 0 40px rgba(11,45,77,.10);        /* soft vignette */
+}
+.vframe::after{
+  /* keep the gentle inset outline only */
+  box-shadow: inset 0 0 0 1px rgba(234, 222, 205, .6),
+              inset 0 0 26px rgba(11,45,77,.08);
+}
+
+/* Video itself follows the rounded corners */
+.vframe video{
+  border-radius: 20px;
+  object-fit: cover;
+}
+
 </style>
 </head>
 <body>
@@ -346,7 +388,7 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 </nav>
 <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
 
-<!-- HERO (unchanged content) -->
+<!-- HERO -->
 <header class="hero" id="about" role="banner">
   <div class="hero__grid" aria-hidden="true">
     <img class="hero__img tall"  src="./assets/1.jpg" alt="Lifestyle portrait with product">
@@ -389,7 +431,7 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
           <li class="chip">#womenempowerment</li>
           <li class="chip">#wellness</li>
         </ul>
-        <a class="studio__btn" href="#contact">Read More</a>
+        <a class="studio__btn" href="#testimonials">Read Testimonials</a>
       </aside>
 
       <div class="studio__right">
@@ -574,14 +616,14 @@ const PHOTO_SOURCES = [
   });
 })();
 
-/* Slider with dots */
+/* Slider with dots (now uses all 12) */
 (() => {
   const wrap = document.querySelector('#ph-slider .slides');
   const dotsWrap = document.getElementById('ph-dots');
   if (!wrap || !dotsWrap) return;
 
-  // Build slides
-  PHOTO_SOURCES.slice(0,6).forEach((src, i) => {
+  // Build ALL slides
+  PHOTO_SOURCES.forEach((src, i) => {
     const fig = document.createElement('figure');
     fig.className = 'slide' + (i === 0 ? ' active' : '');
     fig.innerHTML = `<img src="${src}" alt="Slide ${i+1}">`;
