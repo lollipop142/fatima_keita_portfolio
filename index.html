@@ -685,6 +685,193 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 .collage-grid .stack:nth-child(2) .polaroid:first-child .polaroid__img::after{
   animation: collageShine 1.2s ease-out .45s both 2 !important;
 }
+/* --- Per-tile shadow for the FIRST (hero) collage --- */
+.hero__grid .hero__img{
+  position: relative;           /* already there in your file */
+  border: 1px solid rgba(234, 227, 211, .95);   /* warm cream ring */
+  background: #fff;             /* prevents dark bleed in shadows */
+  border-radius: 18px;
+  box-shadow:
+    0 12px 28px rgba(11,45,77,.16),
+    0 2px 8px rgba(11,45,77,.06);                /* ambient lift */
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+
+.hero__grid .hero__img:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 42px rgba(11,45,77,.20),
+    0 6px 14px rgba(11,45,77,.10);
+}
+
+/* subtle inner outline so the photo edge looks crisp */
+.hero__grid .hero__img::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  box-shadow:
+    inset 0 0 0 1px rgba(234, 222, 205, .9),
+    inset 0 0 34px rgba(11,45,77,.06);
+}
+
+/* keep the actual image filling the tile cleanly */
+.hero__grid .hero__img > img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; border-radius:inherit; display:block;
+}
+/* ==== Soft Luxury Glow — Hero collage only ==== */
+.hero__grid { position: relative; }
+
+/* treat each hero photo as a "tile" whether it's an <img.hero__img> or a wrapper we create */
+.hero__grid .hero__img{
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+  /* soft outer shadow on every photo */
+  box-shadow: 0 10px 26px rgba(11,45,77,.12);
+  transform: translateZ(0); /* avoid blurriness on mobile */
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+/* the actual image gets the same gentle grade so all tiles match */
+.hero__grid .hero__img > img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit;
+  filter: brightness(1.04) contrast(1.03) saturate(1.07);
+  transform: scale(1.002);
+}
+
+/* warm soft-light wash so skin looks creamy and backgrounds feel cohesive */
+.hero__grid .hero__img::before{
+  content:"";
+  position:absolute; inset:-10%;
+  pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 8%, rgba(255,236,205,.55), rgba(255,236,205,0) 55%),
+    radial-gradient(160% 120% at 100% 100%, rgba(199,167,106,.25), rgba(199,167,106,0) 60%);
+  mix-blend-mode: soft-light;
+  opacity:.65;
+  z-index:2;
+}
+
+/* subtle inner vignette to frame the face/product */
+.hero__grid .hero__img::after{
+  content:"";
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow:
+    inset 0 0 0 1px rgba(234, 222, 205, .75),
+    inset 0 0 80px rgba(11,45,77,.12);
+  z-index:2;
+}
+
+/* hover lift (desktop) */
+@media (hover:hover){
+  .hero__grid .hero__img:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px rgba(11,45,77,.16);
+  }
+}
+
+/* tasteful sparkle (shine) */
+.hero__grid .hero__img .shine{
+  position:absolute; z-index:3; pointer-events:none;
+  top:-20%; right:-20%; bottom:-20%; left:-20%;
+  background:
+    linear-gradient(115deg,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,.95) 50%,
+      rgba(255,255,255,0) 60%),
+    radial-gradient(140px 50px at 50% 50%, rgba(255,255,255,.25), rgba(255,255,255,0) 70%);
+  transform: translateX(-140%) rotate(8deg);
+  opacity:0;
+  will-change: transform, opacity;
+}
+.hero__grid .hero__img:hover .shine{
+  animation: heroShine 1.15s ease-out both 2;   /* double pass on hover */
+}
+.hero__grid .hero__img.shine-auto .shine{
+  animation: heroShine 1.15s ease-out .45s both 2; /* double pass on load for a few tiles */
+}
+@keyframes heroShine{
+  0%   { transform:translateX(-140%) rotate(8deg); opacity:0; }
+  12%  { opacity:.5; }
+  55%  { opacity:.95; }
+  100% { transform:translateX(140%) rotate(8deg); opacity:0; }
+}
+
+/* staggered fade-up when page loads */
+@keyframes fadeUp{
+  from{ opacity:0; transform: translateY(8px); }
+  to  { opacity:1; transform: translateY(0); }
+}
+.hero__grid .hero__img{
+  opacity:0; animation: fadeUp .5s ease forwards;
+}
+
+/* mobile: slightly softer shadows so it doesn’t feel heavy */
+@media (max-width: 640px){
+  .hero__grid .hero__img{
+    box-shadow: 0 12px 26px rgba(11,45,77,.10);
+  }
+}
+/* ==== 3D shadows for the first-page collages ==== */
+
+/* HERO collage (beside “Who is Fatima?”) */
+.hero__grid .hero__img{
+  /* stronger layered depth */
+  box-shadow:
+    0 2px 4px rgba(11,45,77,.10),
+    0 10px 22px rgba(11,45,77,.18),
+    0 28px 48px rgba(11,45,77,.12);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+@media (hover:hover){
+  .hero__grid .hero__img:hover{
+    transform: translateY(-4px);
+    box-shadow:
+      0 6px 10px rgba(11,45,77,.12),
+      0 18px 36px rgba(11,45,77,.22),
+      0 44px 64px rgba(11,45,77,.14);
+  }
+}
+
+/* FEATURED PHOTO GALLERY (the 6 cards) */
+.polaroid__img{
+  border-radius: 16px;
+  /* make each photo itself pop from the card */
+  box-shadow:
+    0 2px 4px rgba(11,45,77,.08),
+    0 12px 24px rgba(11,45,77,.16),
+    0 30px 50px rgba(11,45,77,.12);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.polaroid:hover .polaroid__img{
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 10px rgba(11,45,77,.12),
+    0 22px 38px rgba(11,45,77,.22),
+    0 50px 70px rgba(11,45,77,.14);
+}
+
+/* slightly lighter on mobile so it doesn’t feel heavy */
+@media (max-width:640px){
+  .hero__grid .hero__img,
+  .polaroid__img{
+    box-shadow:
+      0 2px 4px rgba(11,45,77,.08),
+      0 10px 20px rgba(11,45,77,.14),
+      0 22px 36px rgba(11,45,77,.10);
+  }
+}
+.hero__grid .hero__img:hover{
+  transform: translateY(-4px) rotateX(.6deg) rotateY(-.6deg);
+}
+
 
 </style>
 </head>
@@ -1103,6 +1290,43 @@ ${e || ''}`;
     // Give auto-bling to the first two
 // Give auto-bling to ALL tiles (twice via CSS)
 wrap.classList.add('shine-auto');
+  });
+})();
+</script>
+<script>
+/* Upgrade first-page hero collage without changing your HTML */
+(() => {
+  const grid = document.querySelector('.hero__grid');
+  if (!grid) return;
+
+  // Grab current images (they’re <img class="hero__img"> in your markup)
+  const rawImgs = Array.from(grid.querySelectorAll('img.hero__img, .hero__img'));
+
+  rawImgs.forEach((img, i) => {
+    // If it's already wrapped from a previous script, skip
+    if (img.closest('.hero__img') && img.parentElement !== grid) return;
+
+    // Create a wrapper and keep layout classes (tall/wide)
+    const wrap = document.createElement('div');
+    wrap.className = 'hero__img';
+    if (img.classList.contains('tall')) wrap.classList.add('tall');
+    if (img.classList.contains('wide')) wrap.classList.add('wide');
+
+    // Insert wrapper and move the image inside
+    grid.insertBefore(wrap, img);
+    img.classList.remove('tall','wide');
+    wrap.appendChild(img);
+
+    // Add shine overlay
+    const shine = document.createElement('span');
+    shine.className = 'shine';
+    wrap.appendChild(shine);
+
+    // Staggered fade-up
+    wrap.style.animationDelay = `${i * 70}ms`;
+
+    // Auto-shine the first two tiles for a premium “first look”
+    if (i < 2) wrap.classList.add('shine-auto');
   });
 })();
 </script>
