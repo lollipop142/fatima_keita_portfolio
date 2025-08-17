@@ -25,6 +25,13 @@
       --p-ink:#3E3A2E;
       --p-muted:#7A6F57;
       --p-ink-strong:#2B261B;
+
+      /* NEW: section cream palettes (very subtle differences) */
+      --creamA1:#FFFCF6; --creamA2:#FBF3E6; /* Hero */
+      --creamB1:#FFF7EC; --creamB2:#FDEEDB; /* Photography */
+      --creamC1:#FFF5E7; --creamC2:#FBEFDA; /* Videos */
+      --creamD1:#FFF9F0; --creamD2:#FFF1E2; /* Testimonials */
+      --creamE1:#FFFEFB; --creamE2:#FFF8F0; /* Contact */
     }
 
     *{box-sizing:border-box}
@@ -197,50 +204,46 @@
     .slider__btn.prev{ left:14px } .slider__btn.next{ right:14px }
 
     /* centered, minimalist gold dots */
-  /* dots: no plate, no border — only the dots */
-.slider__dots{
-  position:absolute;
-  left:50%;
-  bottom:14px;
-  transform:translateX(-50%);
-  display:flex;
-  gap:8px;
-  z-index:6;
-
-  /* strip the container look */
-  padding:0;
-  background:transparent;
-  border:0;
-  box-shadow:none;
-  backdrop-filter:none;
-}
-.dot{
-  width:9px; height:9px;
-  border-radius:50%;
-  background:rgba(139,113,51,.45);
-  border:0;
-  opacity:.95;
-  cursor:pointer;
-  transition:transform .18s ease, opacity .18s ease, background .18s ease;
-}
-.dot.active{
-  background:rgb(87, 68, 25);
-  transform:scale(1.35);
-}
-@media (max-width: 640px){
-  /* two big portraits per row */
-  .gallery-grid{
-    grid-template-columns: repeat(2, minmax(0,1fr));
-    gap:14px;
-    grid-auto-rows:auto;
-  }
-  .gitem{
-    aspect-ratio: 4 / 5;   /* tall & luxe */
-    border-radius:16px;
-  }
-  .gitem--tall{ grid-row:span 1; } /* keep grid even on mobile */
-}
-
+    .slider__dots{
+      position:absolute;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      display:flex;
+      gap:8px;
+      z-index:6;
+      padding:0;
+      background:transparent;
+      border:0;
+      box-shadow:none;
+      backdrop-filter:none;
+    }
+    .dot{
+      width:9px; height:9px;
+      border-radius:50%;
+      background:rgba(139,113,51,.45);
+      border:0;
+      opacity:.95;
+      cursor:pointer;
+      transition:transform .18s ease, opacity .18s ease, background .18s ease;
+    }
+    .dot.active{
+      background:rgb(87, 68, 25);
+      transform:scale(1.35);
+    }
+    @media (max-width: 640px){
+      /* two big portraits per row */
+      .gallery-grid{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap:14px;
+        grid-auto-rows:auto;
+      }
+      .gitem{
+        aspect-ratio: 4 / 5;   /* tall & luxe */
+        border-radius:16px;
+      }
+      .gitem--tall{ grid-row:span 1; } /* keep grid even on mobile */
+    }
 
     /* Static gallery */
     .g-wrap{ padding:22px 18px 28px }
@@ -302,229 +305,256 @@
       .vframe video{ object-fit:contain; }
     }
     /* --- MOBILE: make gallery tiles big --- */
-@media (max-width:640px){
-  .g-wrap{ padding:18px 8px 24px; }         /* give the grid more width */
-  .gallery-grid{
-    grid-template-columns: repeat(2, 1fr);  /* two big columns */
-    gap: 12px;
-    padding: 0;                             
-    grid-auto-rows: auto !important;        /* override 1020px rule */
-  }
-  .gitem{
-    aspect-ratio: 3 / 4;                    /* taller cards = bigger look */
-    border-radius: 16px;
-  }
-  .gitem img{ width:100%; height:100%; object-fit:cover; }
-}
-@media (max-width:420px){
-  .gitem{ aspect-ratio: 2.6 / 4; }  /* slightly taller */
-}
-/* ==== Bigger gallery, tighter gaps ==== */
-/* ==== FINAL GALLERY RULES ==== */
+    @media (max-width:640px){
+      .g-wrap{ padding:18px 8px 24px; }
+      .gallery-grid{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0;
+        grid-auto-rows: auto !important;
+      }
+      .gitem{
+        aspect-ratio: 3 / 4;
+        border-radius: 16px;
+      }
+      .gitem img{ width:100%; height:100%; object-fit:cover; }
+    }
+    @media (max-width:420px){
+      .gitem{ aspect-ratio: 2.6 / 4; }
+    }
+    /* ==== Bigger gallery, tighter gaps ==== */
+    /* ==== FINAL GALLERY RULES ==== */
 
-/* desktop / tablet */
-.wrap--photo .gallery-grid{
-  grid-template-columns: 1fr 1.15fr 1fr;
-  grid-auto-rows: 300px;
-  gap: 18px;
-  padding: 0 12px 14px;
-}
+    /* desktop / tablet */
+    .wrap--photo .gallery-grid{
+      grid-template-columns: 1fr 1.15fr 1fr;
+      grid-auto-rows: 300px;
+      gap: 18px;
+      padding: 0 12px 14px;
+    }
 
-/* mobile ≤ 640px: 2×2, show first 4, comfy gap + indent */
-@media (max-width: 640px){
-  .wrap--photo .g-wrap{
-    padding: 18px 16px 22px !important;     /* indentation inside the card */
-  }
+    /* mobile ≤ 640px: 2×2, show first 4, comfy gap + indent */
+    @media (max-width: 640px){
+      .wrap--photo .g-wrap{
+        padding: 18px 16px 22px !important;
+      }
+      .wrap--photo .gallery-grid{
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-auto-rows: auto !important;
+        gap: 14px !important;
+        padding: 0 !important;
+        margin: 6px auto 0 !important;
+        width: 100%;
+      }
+      .wrap--photo .gallery-grid .gitem:nth-child(n+5){
+        display: none !important;
+      }
+      .wrap--photo .gitem{
+        aspect-ratio: 3 / 4;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .wrap--photo .gitem--tall{
+        grid-row: span 1 !important;
+      }
+      .wrap--photo .gitem img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
 
-  .wrap--photo .gallery-grid{
-    grid-template-columns: repeat(2, 1fr) !important;
-    grid-auto-rows: auto !important;
-    gap: 14px !important;                   /* space between tiles */
-    padding: 0 !important;
-    margin: 6px auto 0 !important;
-    width: 100%;
-  }
+    /* ===== Contact container ===== */
+    /* ===== Contact card (2nd design) ===== */
+    #contact { padding: 0 20px; }
 
-  .wrap--photo .gallery-grid .gitem:nth-child(n+5){
-    display: none !important;               /* only the first 4 tiles on mobile */
-  }
+    .contact-card{
+      max-width: 1240px;
+      margin: 34px auto 50px;
+      padding: clamp(22px, 3.2vw, 44px) clamp(18px, 4vw, 64px);
+      border-radius: 28px;
+      border: 1px solid rgba(226,200,147,.45);
+      background:
+        radial-gradient(1200px 340px at 100% 0, rgba(226,200,147,.18) 0%, rgba(226,200,147,0) 60%),
+        linear-gradient(180deg, #FFFCF6 0%, #FBF3E6 100%);
+      box-shadow:
+        0 26px 70px rgba(139,113,51,.14),
+        inset 0 1px 0 rgba(255,255,255,.75);
+    }
 
-  .wrap--photo .gitem{
-    aspect-ratio: 3 / 4;                    /* tall, luxe */
-    border-radius: 16px;
-    overflow: hidden;
-  }
+    .contact-eyebrow{
+      display:inline-block;
+      color:var(--gold-ink);
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-size:12px;
+      margin-bottom:10px;
+    }
 
-  .wrap--photo .gitem--tall{
-    grid-row: span 1 !important;            /* keep rows even on mobile */
-  }
+    .contact-title{
+      font-family:"Playfair Display",serif;
+      font-weight:700;
+      font-size: clamp(20px, 5vw, 45px);
+      line-height:1.05;
+      color:#1f2b35;
+      margin: 0 0 10px;
+    }
 
-  .wrap--photo .gitem img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}/* ===== Contact container ===== */
-/* ===== Contact card (2nd design) ===== */
-#contact { padding: 0 20px; }
+    .contact-rule{
+      height:3px;
+      width:100%;
+      max-width: 980px;
+      background:linear-gradient(90deg, rgba(226,200,147,.95), rgba(226,200,147,.15));
+      border-radius:999px;
+      margin: 8px 0 18px;
+    }
 
-.contact-card{
-  max-width: 1240px;
-  margin: 34px auto 50px;
-  padding: clamp(22px, 3.2vw, 44px) clamp(18px, 4vw, 64px);
-  border-radius: 28px;
-  border: 1px solid rgba(226,200,147,.45);
-  background:
-    radial-gradient(1200px 340px at 100% 0, rgba(226,200,147,.18) 0%, rgba(226,200,147,0) 60%),
-    linear-gradient(180deg, #FFFCF6 0%, #FBF3E6 100%);
-  box-shadow:
-    0 26px 70px rgba(139,113,51,.14),
-    inset 0 1px 0 rgba(255,255,255,.75);
-}
+    .contact-sub{
+      margin: 0 0 18px;
+      color:#6f6a68;
+    }
 
-.contact-eyebrow{
-  display:inline-block;
-  color:var(--gold-ink);
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  font-size:12px;
-  margin-bottom:10px;
-}
+    .contact-form{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
 
-.contact-title{
-  font-family:"Playfair Display",serif;
-  font-weight:700;
-  font-size: clamp(20px, 5vw, 45px);
-  line-height:1.05;
-  color:#1f2b35;
-  margin: 0 0 10px;
-}
+    .contact-form input,
+    .contact-form textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:16px 18px;
+      font: inherit;
+      color:var(--ink);
+      box-shadow: 0 6px 16px rgba(139,113,51,.06);
+    }
 
-.contact-rule{
-  height:3px;
-  width:100%;
-  max-width: 980px;             /* subtle, not full bleed */
-  background:linear-gradient(90deg, rgba(226,200,147,.95), rgba(226,200,147,.15));
-  border-radius:999px;
-  margin: 8px 0 18px;
-}
+    .contact-form input{ height:56px; }
 
-.contact-sub{
-  margin: 0 0 18px;
-  color:#6f6a68;
-}
+    .contact-actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top: 6px;
+    }
 
-.contact-form{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-}
+    @media (max-width: 640px){
+      .contact-card{
+        padding: 22px 16px;
+        border-radius: 22px;
+      }
+      .contact-rule{ max-width:100%; }
+      .contact-actions{ flex-wrap:wrap; }
+    }
 
-/* Inputs matching the mock */
-.contact-form input,
-.contact-form textarea{
-  width:100%;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:#fff;
-  padding:16px 18px;
-  font: inherit;
-  color:var(--ink);
-  box-shadow: 0 6px 16px rgba(139,113,51,.06);
-}
+    /* === MOBILE: make the gallery bigger & longer === */
+    @media (max-width: 640px){
+      .wrap--photo .g-wrap{
+        padding: 22px 14px 28px !important;
+      }
+      .wrap--photo .g-title{
+        font-size: clamp(28px, 8vw, 42px);
+        margin-bottom: 8px;
+      }
+      .wrap--photo .g-sub{
+        font-size: clamp(14px, 3.8vw, 18px);
+        margin-bottom: 16px;
+      }
+      .wrap--photo .gallery-grid{
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 0 !important;
+        grid-auto-rows: auto !important;
+      }
+      .wrap--photo .gitem{
+        aspect-ratio: auto !important;
+        height: clamp(220px, 50vw, 420px) !important;
+        border-radius: 18px !important;
+        overflow: hidden;
+      }
+      .wrap--photo .gitem img{
+        width: 100%; height: 100%; object-fit: cover;
+      }
+      .wrap--photo .gallery-grid .gitem:nth-child(n+5){
+        display: none !important;
+      }
+    }
 
-.contact-form input{ height:56px; }
+    /* MOBILE — gallery: 1 column, edge-to-edge, no big center gap */
+    @media (max-width: 640px){
+      .wrap--photo .g-wrap{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .wrap--photo .gallery-grid{
+        grid-template-columns: 1fr !important;
+        column-gap: 0 !important;
+        row-gap: 12px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100%;
+      }
+      .wrap--photo .gitem{
+        aspect-ratio: auto !important;
+        height: auto !important;
+        border-radius: 0 !important;
+      }
+      .wrap--photo .gitem img{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+      }
+    }
 
-.contact-actions{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  margin-top: 6px;
-}
-
-/* Make the card breathe on phones */
-@media (max-width: 640px){
-  .contact-card{
-    padding: 22px 16px;
-    border-radius: 22px;
-  }
-  .contact-rule{ max-width:100%; }
-  .contact-actions{ flex-wrap:wrap; }
-}
-/* === MOBILE: make the gallery bigger & longer === */
-@media (max-width: 640px){
-  /* give the card a touch more breathing room */
-  .wrap--photo .g-wrap{
-    padding: 22px 14px 28px !important;
-  }
-
-  /* bigger heading & copy inside the card */
-  .wrap--photo .g-title{
-    font-size: clamp(28px, 8vw, 42px);
-    margin-bottom: 8px;
-  }
-  .wrap--photo .g-sub{
-    font-size: clamp(14px, 3.8vw, 18px);
-    margin-bottom: 16px;
-  }
-
-  /* keep 2 columns, tighten the gap a bit */
-  .wrap--photo .gallery-grid{
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    padding: 0 !important;
-    grid-auto-rows: auto !important;
-  }
-
-  /* make each tile MUCH taller/bigger */
-  .wrap--photo .gitem{
-    aspect-ratio: auto !important;                 /* let height drive the size */
-    height: clamp(220px, 50vw, 420px) !important;  /* ← bump these numbers to go even bigger */
-    border-radius: 18px !important;
-    overflow: hidden;
-  }
-  .wrap--photo .gitem img{
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
-  /* still show only the first 4 on mobile */
-  .wrap--photo .gallery-grid .gitem:nth-child(n+5){
-    display: none !important;
-  }
-}
-
-/* MOBILE — gallery: 1 column, edge-to-edge, no big center gap */
-@media (max-width: 640px){
-  /* remove side padding so images can be wider */
-  .wrap--photo .g-wrap{
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  /* single column, tight vertical spacing */
-  .wrap--photo .gallery-grid{
-    grid-template-columns: 1fr !important;
-    column-gap: 0 !important;
-    row-gap: 12px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100%;
-  }
-
-  /* let each tile fill the width */
-  .wrap--photo .gitem{
-    aspect-ratio: auto !important;  /* stop forcing tall crop */
-    height: auto !important;
-    border-radius: 0 !important;    /* edge-to-edge look */
-  }
-  .wrap--photo .gitem img{
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-  }
-}
-
+    /* ========= NEW: Full-bleed cream background per section ========= */
+    header.hero, #photos, #videos, #testimonials, #contact { position: relative; z-index: 0; }
+    header.hero::before,
+    #photos::before,
+    #videos::before,
+    #testimonials::before,
+    #contact::before{
+      content:""; position:absolute; left:50%; transform:translateX(-50%);
+      top:-28px; bottom:-28px; width:100vw; z-index:-1; pointer-events:none;
+      border-top:1px solid rgba(226,200,147,.30);
+      border-bottom:1px solid rgba(226,200,147,.24);
+    }
+    header.hero::before{
+      background:
+        radial-gradient(900px 280px at 8% 0%, rgba(226,200,147,.10) 0%, rgba(226,200,147,0) 60%),
+        linear-gradient(180deg, var(--creamA1), var(--creamA2));
+    }
+    #photos::before{
+      background:
+        radial-gradient(900px 280px at 92% 14%, rgba(226,200,147,.10) 0%, rgba(226,200,147,0) 60%),
+        linear-gradient(180deg, var(--creamB1), var(--creamB2));
+    }
+    #videos::before{
+      background:
+        radial-gradient(900px 300px at 6% 12%, rgba(226,200,147,.12) 0%, rgba(226,200,147,0) 62%),
+        linear-gradient(180deg, var(--creamC1), var(--creamC2));
+    }
+    #testimonials::before{
+      background:
+        radial-gradient(900px 300px at 84% 8%, rgba(226,200,147,.10) 0%, rgba(226,200,147,0) 62%),
+        linear-gradient(180deg, var(--creamD1), var(--creamD2));
+    }
+    #contact::before{
+      background:
+        radial-gradient(1000px 360px at 50% 0%, rgba(226,200,147,.12) 0%, rgba(226,200,147,0) 68%),
+        linear-gradient(180deg, var(--creamE1), var(--creamE2));
+    }
+    /* Slightly reduce top/bottom bleed on small screens */
+    @media (max-width:640px){
+      header.hero::before,
+      #photos::before,
+      #videos::before,
+      #testimonials::before,
+      #contact::before{ top:-18px; bottom:-18px; }
+    }
   </style>
 </head>
 <body>
@@ -676,29 +706,29 @@
 
   <!-- CONTACT -->
   <!-- CONTACT -->
-<section id="contact">
-  <div class="contact-card">
-    <span class="contact-eyebrow">COLLABORATIONS</span>
-    <h2 class="contact-title">Let’s Collaborate</h2>
-    <div class="contact-rule" aria-hidden="true"></div>
+  <section id="contact">
+    <div class="contact-card">
+      <span class="contact-eyebrow">COLLABORATIONS</span>
+      <h2 class="contact-title">Let’s Collaborate</h2>
+      <div class="contact-rule" aria-hidden="true"></div>
 
-    <p class="contact-sub">
-      Tell me about your product and goals — I’ll share concepts within 24 hours.
-    </p>
+      <p class="contact-sub">
+        Tell me about your product and goals — I’ll share concepts within 24 hours.
+      </p>
 
-    <form id="contactForm" class="contact-form">
-      <input id="name" name="name" placeholder="Your name" required>
-      <input id="email" name="email" type="email" placeholder="Your email" required>
-      <textarea id="message" name="message" rows="5" placeholder="Your message" required></textarea>
+      <form id="contactForm" class="contact-form">
+        <input id="name" name="name" placeholder="Your name" required>
+        <input id="email" name="email" type="email" placeholder="Your email" required>
+        <textarea id="message" name="message" rows="5" placeholder="Your message" required></textarea>
 
-      <div class="contact-actions">
-        <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
-        <a class="cta cta--ghost" id="mailtoBtn" href="#" target="_blank" rel="noopener">Open Email</a>
-        <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
-      </div>
-    </form>
-  </div>
-</section>
+        <div class="contact-actions">
+          <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
+          <a class="cta cta--ghost" id="mailtoBtn" href="#" target="_blank" rel="noopener">Open Email</a>
+          <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -900,7 +930,6 @@ ${e || ''}`;
     window.open(gmailCompose, '_blank', 'noopener');
   });
 })();
-
   </script>
   
 </body>
