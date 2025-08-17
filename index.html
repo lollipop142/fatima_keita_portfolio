@@ -356,6 +356,68 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
   border-radius: 20px;
   object-fit: cover;
 }
+/* Fancy, animated "Read Testimonials" button (no HTML changes) */
+.studio__btn{
+  position: relative;
+  border: 0;                        /* remove hard border */
+  padding: 12px 48px 12px 18px;     /* room for arrow */
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg,#0B2D4D 0%, #1b4d7a 60%, #0f3154 100%);
+  background-size: 200% 200%;       /* allows subtle sweep */
+  box-shadow: 0 10px 22px rgba(11,45,77,.18), inset 0 0 0 1px rgba(255,255,255,.12);
+  transition: transform .2s ease, box-shadow .2s ease, background-position .45s ease;
+  text-decoration: none;
+  overflow: hidden;                  /* for the shine effect */
+}
+
+.studio__btn:hover{
+  transform: translateY(-2px);
+  background-position: right center;               /* gradient moves */
+  box-shadow: 0 16px 32px rgba(11,45,77,.25);
+}
+
+.studio__btn:active{
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(11,45,77,.20);
+}
+
+/* soft gold focus ring */
+.studio__btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(199,167,106,.45), 0 10px 22px rgba(11,45,77,.18);
+}
+
+/* slidey arrow added with CSS */
+.studio__btn::after{
+  content: "›";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  line-height: 1;
+  opacity: .95;
+  transition: transform .25s ease;
+}
+
+.studio__btn:hover::after{
+  transform: translateY(-50%) translateX(3px);
+}
+
+/* quick “shine” sweep on hover */
+.studio__btn::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 40%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 60%);
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+}
+
+.studio__btn:hover::before{
+  transform: translateX(120%);
+}
 
 </style>
 </head>
