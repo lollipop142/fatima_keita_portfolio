@@ -1003,6 +1003,47 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
   }
   .polaroid__head{ gap: 8px; padding: 8px 12px; } /* tidy spacing */
 }
+/* =============== MOBILE-ONLY IG/Pinterest grid for Featured Photo Gallery =============== */
+@media (max-width: 640px){
+  /* turn the gallery into a 2-col grid */
+  .collage-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:12px;                       /* tighter spacing */
+    padding:2px;
+  }
+
+  /* let polaroids flow directly into the grid (ignore column "stacks") */
+  .collage-grid .stack{
+    display:contents;               /* children become grid items */
+    gap:0 !important;               /* kill inner gaps */
+  }
+
+  /* keep the same card look, just lighter for small screens */
+  .polaroid{
+    border-radius:16px;
+    border:1px solid rgba(234,222,205,.75);
+    box-shadow:0 8px 22px rgba(11,45,77,.10);
+    overflow:hidden;
+  }
+
+  /* compact header */
+  .polaroid__head{
+    padding:6px 10px;
+    font-size:12px;
+    gap:6px;
+    background:linear-gradient(180deg,#fff,#FAF9F6);
+  }
+  .polaroid__dot{ display:none !important; } /* cleaner, more IG-like */
+
+  /* 4:5 like Instagram posts */
+  .polaroid__img{ aspect-ratio:4 / 5; border-radius:14px; }
+
+  /* compact footer icons */
+  .polaroid__foot{ padding:6px 8px; gap:8px; }
+  .polaroid .icon-btn{ padding:4px; }
+  .polaroid .icon-btn svg{ width:18px; height:18px; }
+}
 
 </style>
 </head>
