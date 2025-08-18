@@ -1726,6 +1726,19 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
     transform:translateY(-50%) translateX(2px);
   }
 }
+/* FIX: Brand Testimonials should be single-column */
+#testimonials .card{
+  display:block;                 /* kill the grid */
+  grid-template-columns: none;   /* safety */
+  padding: 16px;                 /* keep some breathing room */
+}
+#testimonials .card img{
+  width:100%;
+  display:block;
+  border-radius:20px;
+  border:1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
 
 </style>
 </head>
