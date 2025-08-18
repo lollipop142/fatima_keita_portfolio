@@ -2401,17 +2401,16 @@ wrap.classList.add('shine-auto');
   }
 })();
 </script>
-
 <script>
-/* ===== Build 6 IG-style phones, then loop them side-to-side forever ===== */
+/* ===== Build IG-style phones for the side-scrolling belt (only the 5 requested videos) ===== */
 (() => {
+  // Order: makeup3, skincare1, skincare2, makeup1, makeup2
   const SOURCES = [
-    { src:"./assets/makeup3.mp4",     poster:"./assets/posters/makeup3.jpg",      likes:874,  cap:"" },
-    { src:"./assets/video1.mp4",      poster:"./assets/posters/skincare1.jpg",    likes:1210, cap:"" },
-    { src:"./assets/makeup1.mp4",     poster:"./assets/posters/makeup1.jpg",      likes:965,  cap:"" },
-    { src:"./assets/skincare2.mp4",   poster:"./assets/posters/skincare2.jpg",    likes:732,  cap:"" },
-    { src:"./assets/showcasing1.mp4", poster:"./assets/posters/testimonial1.jpg", likes:542,  cap:"" },
-    { src:"./assets/organic1.mp4",    poster:"./assets/posters/organic1.jpg",     likes:611,  cap:"" },
+    { src:"./assets/makeup3.mp4",   poster:"./assets/posters/makeup3.jpg",   likes:874,  cap:"" },
+    { src:"./assets/video1.mp4",    poster:"./assets/posters/skincare1.jpg", likes:1210, cap:"" }, // skincare1
+    { src:"./assets/skincare2.mp4", poster:"./assets/posters/skincare2.jpg", likes:732,  cap:"" },
+    { src:"./assets/makeup1.mp4",   poster:"./assets/posters/makeup1.jpg",   likes:965,  cap:"" },
+    { src:"./assets/makeup2.mp4",   poster:"./assets/posters/makeup2.jpg",   likes:901,  cap:"" },
   ];
 
   const beltA = document.getElementById('beltA');
@@ -2445,15 +2444,14 @@ wrap.classList.add('shine-auto');
     return outer;
   };
 
-  // Fill both halves with identical sequences to create a seamless loop
+  // Fill both rows with the same sequence for a seamless loop
   SOURCES.forEach(v => beltA.appendChild(makePhone(v)));
   SOURCES.forEach(v => beltB.appendChild(makePhone(v)));
 
-  // Measure the width of one full sequence and set animation distance + duration
+  // Measure sequence width and set animation distance + duration
   const applyLoopMetrics = () => {
-    // read after layout
     const width = beltA.scrollWidth || beltA.getBoundingClientRect().width || 1200;
-    const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--speed')) || 60;
+    const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--speed')) || 60; // px/s
     const duration = width / speed; // seconds
     document.documentElement.style.setProperty('--loop-width', width + 'px');
     document.documentElement.style.setProperty('--duration', duration + 's');
@@ -2464,10 +2462,13 @@ wrap.classList.add('shine-auto');
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleMeasure);
   window.addEventListener('load', scheduleMeasure);
 
-  // re-measure on resize (rAF debounced)
   let raf;
-  addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(applyLoopMetrics); });
+  addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(applyLoopMetrics);
+  });
 })();
 </script>
+
 </body>
 </html>
