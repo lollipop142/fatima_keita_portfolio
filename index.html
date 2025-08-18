@@ -1463,7 +1463,7 @@ wrap.classList.add('shine-auto');
     const n = (nameEl.value || '').trim();
     const e = (emailEl.value || '').trim();
     const m = (msgEl.value || '').trim();
-    return `Hi Fatima,\r\n\r\n${m}\r\n\r\n— ${n || 'Your Name'}\r\n${e || ''}`;
+    return `Hi Fatima,\r\n\r\n${m}\r\n\r\n ${n || ''}\r\n${e || ''}`;
   };
 
   const openMailto = (subject, body) => {
