@@ -926,6 +926,83 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
     box-shadow: inset 0 0 0 1px rgba(234, 222, 205, .35);
   }
 }
+/* ===== Scroll-reveal (applies to sections/cards as they enter viewport) ===== */
+.reveal{
+  opacity:0;
+  transform: translateY(16px);
+  transition: opacity .55s ease, transform .55s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible{
+  opacity:1;
+  transform:none;
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal{ transition:none }
+}
+
+/* ===== Slider animations: slide out/in left/right ===== */
+.slide{ opacity:0; }                 /* default hidden */
+.slide.active{ opacity:1; }          /* visible when idle */
+
+.slide.enter, .slide.exit{ position:absolute; inset:0; }
+.slide.enter.from-right{ transform: translateX(100%); opacity:1; }
+.slide.enter.from-left{  transform: translateX(-100%); opacity:1; }
+.slide.enter.go{
+  transition: transform .55s cubic-bezier(.22,.61,.36,1);
+  transform: translateX(0);
+}
+.slide.exit.to-left,
+.slide.exit.to-right{
+  transition: transform .55s cubic-bezier(.22,.61,.36,1), opacity .55s;
+  opacity:0;
+}
+.slide.exit.to-left{  transform: translateX(-100%); }
+.slide.exit.to-right{ transform: translateX(100%); }
+
+/* ===== Scroll-reveal (applies to sections/cards as they enter viewport) ===== */
+.reveal{
+  opacity:0;
+  transform: translateY(16px);
+  transition: opacity .55s ease, transform .55s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible{
+  opacity:1;
+  transform:none;
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal{ transition:none }
+}
+
+/* ===== Slider animations: slide out/in left/right ===== */
+.slide{ opacity:0; }                 /* default hidden */
+.slide.active{ opacity:1; }          /* visible when idle */
+
+.slide.enter, .slide.exit{ position:absolute; inset:0; }
+.slide.enter.from-right{ transform: translateX(100%); opacity:1; }
+.slide.enter.from-left{  transform: translateX(-100%); opacity:1; }
+.slide.enter.go{
+  transition: transform .55s cubic-bezier(.22,.61,.36,1);
+  transform: translateX(0);
+}
+.slide.exit.to-left,
+.slide.exit.to-right{
+  transition: transform .55s cubic-bezier(.22,.61,.36,1), opacity .55s;
+  opacity:0;
+}
+.slide.exit.to-left{  transform: translateX(-100%); }
+.slide.exit.to-right{ transform: translateX(100%); }
+/* === FIX: show the gold dot on mobile, too === */
+@media (max-width: 640px){
+  .polaroid .polaroid__head .polaroid__dot{
+    display: inline-block !important;   /* override the earlier hide */
+    margin-right: 8px;
+    /* optional: slightly smaller dot on tiny screens */
+    width: 12px; height: 12px;
+  }
+  .polaroid__head{ gap: 8px; padding: 8px 12px; } /* tidy spacing */
+}
 
 </style>
 </head>
@@ -1120,7 +1197,7 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
   <div class="vgrid" style="margin-bottom:24px">
     <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic1.jpg"><source src="./assets/organic1.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
     <div class="vcard"><div class="vframe"><video muted autoplay loop playsinline controls preload="metadata" poster="./assets/posters/organic2.jpg"><source src="./assets/organic2.mp4" type="video/mp4"></source></video><button class="sound-hint" type="button">🔊 Tap for audio</button></div></div>
-    <div class="vicard"></div>
+    <div class="v card"></div>
   </div>
 </section>
 
@@ -1150,7 +1227,7 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 
       <div class="contact-actions">
         <button class="cta" id="submitBtn" type="submit">Send Inquiry</button>
-        <a class="cta cta--ghost" id="mailtoBtn" href="#" target="_blank" rel="noopener">Open Email</a>
+        <a class="cta cta--ghost" id="mailtoBtn" href="#">Email Me</a>
         <span id="formStatus" class="muted" role="status" aria-live="polite"></span>
       </div>
     </form>
@@ -1265,51 +1342,6 @@ const PHOTO_SOURCES = [
   panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 })();
 
-/* Contact helpers */
-(() => {
-  const TO = 'jeanetteferrater14@gmail.com';
-  const form = document.getElementById('contactForm');
-  const statusEl = document.getElementById('formStatus');
-  const nameEl = document.getElementById('name');
-  const emailEl = document.getElementById('email');
-  const msgEl = document.getElementById('message');
-  const gmailBtn = document.getElementById('mailtoBtn');
-  if (!form || !gmailBtn) return;
-
-  const buildSubject = () => {
-    const n = (nameEl.value || '').trim();
-    return `UGC Inquiry from ${n || 'a brand'}`;
-  };
-  const buildBody = () => {
-    const n = (nameEl.value || '').trim();
-    const e = (emailEl.value || '').trim();
-    const m = (msgEl.value || '').trim();
-    return `Hi Fatima,
-
-${m}
-
-— ${n || 'Your Name'}
-${e || ''}`;
-  };
-
-  form.addEventListener('submit', (ev) => {
-    ev.preventDefault();
-    const subject = encodeURIComponent(buildSubject());
-    const body = encodeURIComponent(buildBody());
-    const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${subject}&body=${body}`;
-    window.open(gmailCompose, '_blank', 'noopener');
-    const mailto = `mailto:${TO}?subject=${subject}&body=${body}`;
-    const s = document.getElementById('formStatus');
-    if (s) s.textContent = 'Opening Gmail and your email app…';
-    setTimeout(() => { window.location.href = mailto; }, 150);
-  });
-
-  gmailBtn.addEventListener('click', (ev) => {
-    ev.preventDefault();
-    const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(buildSubject())}&body=${encodeURIComponent(buildBody())}`;
-    window.open(gmailCompose, '_blank', 'noopener');
-  });
-})();
 
 </script>
 <script>
@@ -1381,6 +1413,106 @@ wrap.classList.add('shine-auto');
 
     // Auto-shine the first two tiles for a premium “first look”
     if (i < 2) wrap.classList.add('shine-auto');
+  });
+})();
+</script>
+<script>
+(() => {
+  const targets = [
+    ...document.querySelectorAll('.studio, .polaroid, .vcard, .contact-card')
+  ];
+  targets.forEach(el => el.classList.add('reveal'));
+
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+
+  targets.forEach(el => io.observe(el));
+})();
+</script>
+<script>
+(() => {
+  const TO = 'jeanetteferrater14@gmail.com';
+
+  const form      = document.getElementById('contactForm');
+  const statusEl  = document.getElementById('formStatus');
+  const nameEl    = document.getElementById('name');
+  const emailEl   = document.getElementById('email');
+  const msgEl     = document.getElementById('message');
+  const mailtoBtn = document.getElementById('mailtoBtn');
+  if (!form || !mailtoBtn) return;
+
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  const buildSubject = () => {
+    const n = (nameEl.value || '').trim();
+    return `UGC Inquiry from ${n || 'a brand'}`;
+  };
+
+  // Use CRLF so bodies render correctly in mail apps
+  const buildBody = () => {
+    const n = (nameEl.value || '').trim();
+    const e = (emailEl.value || '').trim();
+    const m = (msgEl.value || '').trim();
+    return `Hi Fatima,\r\n\r\n${m}\r\n\r\n— ${n || 'Your Name'}\r\n${e || ''}`;
+  };
+
+  const openMailto = (subject, body) => {
+    const href = `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Programmatic click (best for iOS)
+    const a = document.createElement('a');
+    a.href = href;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Safety fallback
+    setTimeout(() => { window.location.href = href; }, 100);
+  };
+
+  const openGmailWeb = (subject, body) => {
+    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(url, '_blank', 'noopener');
+  };
+
+  // Form submit -> send
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const subject = buildSubject();
+    const body    = buildBody();
+
+    if (isMobile) {
+      if (statusEl) statusEl.textContent = 'Opening your email app…';
+      openMailto(subject, body);
+    } else {
+      if (statusEl) statusEl.textContent = 'Opening Gmail…';
+      openGmailWeb(subject, body);
+      // If a popup blocker stops Gmail web, still try the default email client
+      setTimeout(() => openMailto(subject, body), 600);
+    }
+  });
+
+  // “Open Email” button
+  mailtoBtn.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const subject = buildSubject();
+    const body    = buildBody();
+    if (isMobile) {
+      openMailto(subject, body);
+    } else {
+      openGmailWeb(subject, body);
+    }
   });
 })();
 </script>
