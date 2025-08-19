@@ -2007,34 +2007,54 @@ h1{ margin:0; font-family:"Playfair Display",serif; font-size:30px; line-height:
 
 <!-- ================= Scripts ================= -->
 <script>
-/* Photo sources for slider */
-const PHOTO_SOURCES = [
-  "./assets/shot1.jpg","./assets/shot2.jpg","./assets/shot3.jpg","./assets/shot4.jpg",
-  "./assets/shot5.jpg","./assets/shot6.jpg","./assets/shot7.jpg","./assets/shot8.jpg",
-  "./assets/shot9.jpg","./assets/shot10.jpg","./assets/shot11.jpg","./assets/shot12.jpg",
-];
+/* =========================
+   0) Small helpers
+   ========================= */
+const $  = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-/* Year + lazy alts */
+/* =========================
+   1) Year + image priority
+   ========================= */
 (() => {
-  const y = document.getElementById('y');
+  const y = $('#y');
   if (y) y.textContent = new Date().getFullYear();
-  document.querySelectorAll('img').forEach(img => {
-    img.loading = 'lazy';
+
+  // Eager-load hero images for a fast LCP, lazy elsewhere
+  $$('img').forEach(img => {
+    const inHero = img.closest('header.hero');
+    if (inHero) {
+      img.loading = 'eager';
+      img.decoding = 'async';
+      img.setAttribute('fetchpriority', 'high');
+    } else {
+      img.loading = 'lazy';
+    }
     if (!img.alt) img.alt = 'Lifestyle image';
   });
 })();
 
-/* Slider with dots (now uses all 12) */
+/* =========================
+   2) Photo slider (#ph-slider)
+   ========================= */
 (() => {
-  const wrap = document.querySelector('#ph-slider .slides');
-  const dotsWrap = document.getElementById('ph-dots');
-  if (!wrap || !dotsWrap) return;
+  const PHOTO_SOURCES = [
+    "./assets/shot1.jpg","./assets/shot2.jpg","./assets/shot3.jpg","./assets/shot4.jpg",
+    "./assets/shot5.jpg","./assets/shot6.jpg","./assets/shot7.jpg","./assets/shot8.jpg",
+    "./assets/shot9.jpg","./assets/shot10.jpg","./assets/shot11.jpg","./assets/shot12.jpg",
+  ];
 
-  // Build ALL slides
+  const wrap = $('#ph-slider .slides');
+  const dotsWrap = $('#ph-dots');
+  const prev = $('#ph-slider .prev');
+  const next = $('#ph-slider .next');
+  if (!wrap || !dotsWrap || !prev || !next) return;
+
+  // Build all slides + dots
   PHOTO_SOURCES.forEach((src, i) => {
     const fig = document.createElement('figure');
     fig.className = 'slide' + (i === 0 ? ' active' : '');
-    fig.innerHTML = `<img src="${src}" alt="Slide ${i+1}">`;
+    fig.innerHTML = `<img src="${src}" alt="Slide ${i+1}" loading="lazy">`;
     wrap.appendChild(fig);
 
     const dot = document.createElement('button');
@@ -2043,8 +2063,8 @@ const PHOTO_SOURCES = [
     dotsWrap.appendChild(dot);
   });
 
-  const slides = Array.from(wrap.children);
-  const dots   = Array.from(dotsWrap.children);
+  const slides = $$('.slide', wrap);
+  const dots   = $$('.dot', dotsWrap);
   let idx = 0;
 
   const show = (n) => {
@@ -2053,113 +2073,91 @@ const PHOTO_SOURCES = [
     dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
   };
 
-  document.querySelector('#ph-slider .prev').addEventListener('click', ()=>show(idx-1));
-  document.querySelector('#ph-slider .next').addEventListener('click', ()=>show(idx+1));
+  prev.addEventListener('click', ()=>show(idx-1));
+  next.addEventListener('click', ()=>show(idx+1));
   dots.forEach((d,i)=> d.addEventListener('click', ()=>show(i)));
 
-  // auto-advance with pause on hover/touch
-  let timer = setInterval(()=>show(idx+1), 2000);
-  wrap.addEventListener('mouseenter',()=>clearInterval(timer));
-  wrap.addEventListener('mouseleave',()=>timer=setInterval(()=>show(idx+1),5000));
-  dotsWrap.addEventListener('mouseenter',()=>clearInterval(timer));
-  dotsWrap.addEventListener('mouseleave',()=>timer=setInterval(()=>show(idx+1),5000));
+  // Auto-advance (gentle); pause on hover
+  const AUTO_MS = 5000;
+  let timer = setInterval(()=>show(idx+1), AUTO_MS);
+  const pause = () => { clearInterval(timer); timer = null; };
+  const resume = () => { if (!timer) timer = setInterval(()=>show(idx+1), AUTO_MS); };
+
+  [wrap, dotsWrap].forEach(el => {
+    el.addEventListener('mouseenter', pause);
+    el.addEventListener('mouseleave', resume);
+    el.addEventListener('touchstart', pause, {passive:true});
+  });
 })();
 
-
-/* Mobile nav */
+/* =========================
+   3) Mobile nav
+   ========================= */
 (() => {
   const body  = document.body;
-  const btn   = document.getElementById('menuBtn');
-  const panel = document.getElementById('mobileMenu');
+  const btn   = $('#menuBtn');
+  const panel = $('#mobileMenu');
+  let overlay = $('#menuOverlay');
   if (!btn || !panel) return;
-  let overlay = document.getElementById('menuOverlay');
-  if (!overlay) { overlay = document.createElement('div'); overlay.id='menuOverlay'; overlay.className='menu-overlay'; document.body.appendChild(overlay); }
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id='menuOverlay';
+    overlay.className='menu-overlay';
+    document.body.appendChild(overlay);
+  }
   const openMenu = () => { body.classList.add('menu-open'); btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','Close menu'); };
   const closeMenu= () => { body.classList.remove('menu-open'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','Open menu'); };
   btn.addEventListener('click', () => body.classList.contains('menu-open') ? closeMenu() : openMenu());
   overlay.addEventListener('click', closeMenu);
   window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  $$('a', panel).forEach(a => a.addEventListener('click', closeMenu));
 })();
 
-
-</script>
-<script>
-/* Wrap hero images and add a shine layer without changing your HTML */
+/* =========================
+   4) Hero collage: wrap IMG → .hero__img with shine (once)
+   ========================= */
 (() => {
-  const grid = document.querySelector('.hero__grid');
+  const grid = $('.hero__grid');
   if (!grid) return;
 
-  // Collect current <img> nodes in the hero grid
-  const imgs = Array.from(grid.querySelectorAll('img.hero__img, .hero__img'));
+  const children = Array.from(grid.children);
+  let order = 0;
 
-  imgs.forEach((img, idx) => {
-    // Create wrapper that will become the grid child
-    const wrap = document.createElement('div');
-    wrap.className = 'hero__img';                   // keep same class for styling
-    // preserve span classes like "tall" or "wide"
-    if (img.classList.contains('tall')) wrap.classList.add('tall');
-    if (img.classList.contains('wide')) wrap.classList.add('wide');
+  children.forEach(node => {
+    // Only wrap raw <img> that are direct children of the grid
+    if (node.tagName !== 'IMG') return;
 
-    // Insert wrapper in place of the image
-    grid.insertBefore(wrap, img);
-
-    // Move the image inside the wrapper and clean classes
-    img.classList.remove('tall','wide');
-    wrap.appendChild(img);
-
-    // Add the shine layer
-    const shine = document.createElement('span');
-    shine.className = 'shine';
-    wrap.appendChild(shine);
-
-    // Give auto-bling to the first two
-// Give auto-bling to ALL tiles (twice via CSS)
-wrap.classList.add('shine-auto');
-  });
-})();
-</script>
-<script>
-/* Upgrade first-page hero collage without changing your HTML */
-(() => {
-  const grid = document.querySelector('.hero__grid');
-  if (!grid) return;
-
-  // Grab current images (they’re <img class="hero__img"> in your markup)
-  const rawImgs = Array.from(grid.querySelectorAll('img.hero__img, .hero__img'));
-
-  rawImgs.forEach((img, i) => {
-    // If it's already wrapped from a previous script, skip
-    if (img.closest('.hero__img') && img.parentElement !== grid) return;
-
-    // Create a wrapper and keep layout classes (tall/wide)
+    const img = node;
     const wrap = document.createElement('div');
     wrap.className = 'hero__img';
+
+    // preserve layout spans that might be on the <img>
     if (img.classList.contains('tall')) wrap.classList.add('tall');
     if (img.classList.contains('wide')) wrap.classList.add('wide');
 
-    // Insert wrapper and move the image inside
     grid.insertBefore(wrap, img);
     img.classList.remove('tall','wide');
     wrap.appendChild(img);
 
-    // Add shine overlay
+    // add shine overlay
     const shine = document.createElement('span');
     shine.className = 'shine';
     wrap.appendChild(shine);
 
-    // Staggered fade-up
-    wrap.style.animationDelay = `${i * 70}ms`;
-
-    // Auto-shine the first two tiles for a premium “first look”
-    if (i < 2) wrap.classList.add('shine-auto');
+    // stagger fade-up
+    wrap.style.animationDelay = `${order * 70}ms`;
+    // auto-shine first two
+    if (order < 2) wrap.classList.add('shine-auto');
+    order++;
   });
 })();
-</script>
-<script>
+
+/* =========================
+   5) Scroll-reveal
+   ========================= */
 (() => {
   const targets = [
-    ...document.querySelectorAll('.studio, .polaroid, .vcard, .contact-card')
+    ...$$('.studio'), ...$$('.polaroid'), ...$$('.vcard'), ...$$('.contact-card')
   ];
   targets.forEach(el => el.classList.add('reveal'));
 
@@ -2178,215 +2176,66 @@ wrap.classList.add('shine-auto');
 
   targets.forEach(el => io.observe(el));
 })();
-</script>
-<script>
+
+/* =========================
+   6) Contact form (Gmail desktop / mail app mobile)
+   ========================= */
 (() => {
   const TO = 'keitaskam@gmail.com';
-
-  const form      = document.getElementById('contactForm');
-  const statusEl  = document.getElementById('formStatus');
-  const nameEl    = document.getElementById('name');
-  const emailEl   = document.getElementById('email');
-  const msgEl     = document.getElementById('message');
-  const mailtoBtn = document.getElementById('mailtoBtn');
+  const form      = $('#contactForm');
+  const statusEl  = $('#formStatus');
+  const nameEl    = $('#name');
+  const emailEl   = $('#email');
+  const msgEl     = $('#message');
+  const mailtoBtn = $('#mailtoBtn');
   if (!form || !mailtoBtn) return;
 
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  const buildSubject = () => {
-    const n = (nameEl.value || '').trim();
-    return `UGC Inquiry from ${n || 'a brand'}`;
-  };
-
-  // Use CRLF so bodies render correctly in mail apps
-  const buildBody = () => {
+  const subject = () => `UGC Inquiry from ${(nameEl.value || '').trim() || 'a brand'}`;
+  const body = () => {
     const n = (nameEl.value || '').trim();
     const e = (emailEl.value || '').trim();
     const m = (msgEl.value || '').trim();
     return `Hi Fatima,\r\n\r\n${m}\r\n\r\n ${n || ''}\r\n${e || ''}`;
   };
 
-  const openMailto = (subject, body) => {
-    const href = `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    // Programmatic click (best for iOS)
-    const a = document.createElement('a');
-    a.href = href;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Safety fallback
-    setTimeout(() => { window.location.href = href; }, 100);
+  const openMailto = () => {
+    const href = `mailto:${TO}?subject=${encodeURIComponent(subject())}&body=${encodeURIComponent(body())}`;
+    const a = document.createElement('a'); a.href = href; a.style.display = 'none';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => { window.location.href = href; }, 100); // fallback
   };
-
-  const openGmailWeb = (subject, body) => {
-    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const openGmailWeb = () => {
+    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TO)}&su=${encodeURIComponent(subject())}&body=${encodeURIComponent(body())}`;
     window.open(url, '_blank', 'noopener');
   };
 
-  // Form submit -> send
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
-    const subject = buildSubject();
-    const body    = buildBody();
-
     if (isMobile) {
       if (statusEl) statusEl.textContent = 'Opening your email app…';
-      openMailto(subject, body);
+      openMailto();
     } else {
       if (statusEl) statusEl.textContent = 'Opening Gmail…';
-      openGmailWeb(subject, body);
-      // If a popup blocker stops Gmail web, still try the default email client
-      setTimeout(() => openMailto(subject, body), 600);
+      openGmailWeb();
+      setTimeout(openMailto, 600); // popup-blocker fallback
     }
   });
 
-  // “Open Email” button
   mailtoBtn.addEventListener('click', (ev) => {
     ev.preventDefault();
-    const subject = buildSubject();
-    const body    = buildBody();
-    if (isMobile) {
-      openMailto(subject, body);
-    } else {
-      openGmailWeb(subject, body);
-    }
+    isMobile ? openMailto() : openGmailWeb();
   });
 })();
-</script>
-<script>
+
+/* =========================
+   7) “Watch Glow-up Stories” phone belt
+   ========================= */
 (() => {
-  const SOURCES = [
-    { src: "./assets/makeup3.mp4",     poster: "./assets/posters/makeup3.jpg",  likes: 874 },
-    { src: "./assets/video1.mp4",      poster: "./assets/posters/skincare1.jpg", likes: 1210 },
-    { src: "./assets/makeup1.mp4",     poster: "./assets/posters/makeup1.jpg",   likes: 965 },
-    { src: "./assets/showcasing1.mp4", poster: "./assets/posters/testimonial1.jpg", likes: 542 }
-  ];
-
-  const wrap = document.querySelector('#vid-slider .slides');
-  const dotsWrap = document.getElementById('vid-dots');
-  if (!wrap || !dotsWrap) return;
-
-  // Build slides with a phone bezel + IG overlay
-  SOURCES.forEach((v, i) => {
-    const fig = document.createElement('figure');
-    fig.className = 'slide' + (i === 0 ? ' active' : '');
-    fig.innerHTML = `
-      <div class="reel-box">
-        <div class="ig-bezel">
-          <span class="ig-notch" aria-hidden="true"></span>
-          <div class="ig-screen">
-            <video ${i===0?'autoplay':''} muted loop playsinline preload="metadata" poster="${v.poster}">
-              <source src="${v.src}" type="video/mp4">
-            </video>
-            <div class="ig-ui">
-              <div class="ig-top">
-                <div class="ig-user"><span>@everythingfrose</span> • <em style="opacity:.85">Follow</em></div>
-                <button class="ig-more" aria-label="More">⋯</button>
-              </div>
-              <div class="ig-bottom">
-                <div class="ig-caption"><strong>@everythingfrose</strong> glow-up in 10s ✨</div>
-                <div class="ig-actions">
-                  <button class="ig-btn heart" aria-label="Like">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 21s-6.2-3.8-9-7.5C.6 10.5 2 7 5 7c1.9 0 3 1.3 3.7 2.3.7-1 1.8-2.3 3.7-2.3 3 0 4.4 3.5 2 6.5-2.8 3.7-9 7.5-9 7.5z"
-                            fill="none" stroke="currentColor" stroke-width="1.6"/>
-                    </svg>
-                    <span class="count">${v.likes}</span>
-                  </button>
-                  <button class="ig-btn sound" aria-label="Toggle sound">🔇</button>
-                </div>
-              </div>
-              <div class="ig-progress" aria-hidden="true"><span></span></div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-    wrap.appendChild(fig);
-
-    const dot = document.createElement('button');
-    dot.className = 'dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', 'Go to video ' + (i+1));
-    dotsWrap.appendChild(dot);
-  });
-
-  const slides = Array.from(wrap.children);
-  const dots   = Array.from(dotsWrap.children);
-  let idx = 0;
-
-  const videoAt = (i) => slides[i]?.querySelector('video');
-  const play = (i) => { const v = videoAt(i); if (!v) return; v.currentTime = 0; v.play().catch(()=>{}); };
-  const pause = (i) => { const v = videoAt(i); if (v) v.pause(); };
-
-  const show = (n) => {
-    const next = (n + slides.length) % slides.length;
-    pause(idx);
-    slides.forEach((s,i)=>s.classList.toggle('active', i===next));
-    dots.forEach((d,i)=>d.classList.toggle('active', i===next));
-    idx = next; play(idx);
-  };
-
-  // arrows + dots
-  document.querySelector('#vid-slider .prev').addEventListener('click', ()=>show(idx-1));
-  document.querySelector('#vid-slider .next').addEventListener('click', ()=>show(idx+1));
-  dots.forEach((d,i)=> d.addEventListener('click', ()=>show(i)));
-
-  // Sound + like actions
-  slides.forEach((s) => {
-    const v = s.querySelector('video');
-    const likeBtn = s.querySelector('.ig-btn.heart');
-    const cnt = likeBtn?.querySelector('.count');
-    const snd = s.querySelector('.ig-btn.sound');
-
-    likeBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      likeBtn.classList.toggle('liked');
-      const n = parseInt(cnt.textContent.replace(/,/g,''),10) || 0;
-      cnt.textContent = (likeBtn.classList.contains('liked') ? n+1 : Math.max(0,n-1)).toLocaleString();
-    });
-
-    snd?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      v.muted = !v.muted;
-      snd.textContent = v.muted ? '🔇' : '🔈';
-      if (!v.muted) v.play().catch(()=>{});
-    });
-
-    // tap video toggles sound too (nice UX)
-    v?.addEventListener('click', () => {
-      v.muted = !v.muted;
-      if (!v.muted) v.play().catch(()=>{});
-      if (snd) snd.textContent = v.muted ? '🔇' : '🔈';
-    });
-  });
-
-  // Auto-advance; pause on hover or when scrolled away
-  let timer = setInterval(()=>show(idx+1), 6000);
-  const stop = () => { clearInterval(timer); timer = null; };
-  const start = () => { if (!timer) timer = setInterval(()=>show(idx+1), 6000); };
-
-  wrap.addEventListener('mouseenter', stop);
-  wrap.addEventListener('mouseleave', start);
-  dotsWrap.addEventListener('mouseenter', stop);
-  dotsWrap.addEventListener('mouseleave', start);
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { start(); play(idx); } else { stop(); pause(idx); } });
-    }, { threshold: 0.25 });
-    io.observe(wrap);
-  }
-})();
-</script>
-<script>
-/* ===== Build IG-style phones for the side-scrolling belt (only the 5 requested videos) ===== */
-(() => {
-  // Order: makeup3, skincare1, skincare2, makeup1, makeup2
+  // order: makeup3, skincare1, skincare2, makeup1, makeup2
   const SOURCES = [
     { src:"./assets/makeup3.mp4",   poster:"./assets/posters/makeup3.jpg",   likes:874,  cap:"" },
-    { src:"./assets/video1.mp4",    poster:"./assets/posters/skincare1.jpg", likes:1210, cap:"" }, // skincare1
+    { src:"./assets/video1.mp4",    poster:"./assets/posters/skincare1.jpg", likes:1210, cap:"" },
     { src:"./assets/skincare2.mp4", poster:"./assets/posters/skincare2.jpg", likes:732,  cap:"" },
     { src:"./assets/makeup1.mp4",   poster:"./assets/posters/makeup1.jpg",   likes:965,  cap:"" },
     { src:"./assets/makeup2.mp4",   poster:"./assets/posters/makeup2.jpg",   likes:901,  cap:"" },
@@ -2394,16 +2243,15 @@ wrap.classList.add('shine-auto');
 
   const beltA = document.getElementById('beltA');
   const beltB = document.getElementById('beltB');
+  if (!beltA || !beltB) return;
 
-  const makePhone = (v) => {
-    const outer = document.createElement('div');
-    outer.className = 'cardlet';
-    outer.innerHTML = `
+  const phoneHTML = (v) => `
+    <div class="cardlet">
       <div class="phone">
         <span class="notch" aria-hidden="true"></span>
         <div class="screen">
           <video autoplay muted loop playsinline preload="metadata" poster="${v.poster}">
-            <source src="${v.src}" type="video/mp4">
+            <source data-src="${v.src}" type="video/mp4">
           </video>
           <div class="ui">
             <div class="top">
@@ -2419,65 +2267,51 @@ wrap.classList.add('shine-auto');
             <div class="progress" aria-hidden="true"><span></span></div>
           </div>
         </div>
-      </div>`;
-    return outer;
-  };
+      </div>
+    </div>`;
 
-  // Fill both rows with the same sequence for a seamless loop
-  SOURCES.forEach(v => beltA.appendChild(makePhone(v)));
-  SOURCES.forEach(v => beltB.appendChild(makePhone(v)));
+  beltA.innerHTML = SOURCES.map(phoneHTML).join('');
+  beltB.innerHTML = SOURCES.map(phoneHTML).join('');
 
-  // Measure sequence width and set animation distance + duration
+  // measure sequence width → CSS vars for seamless loop
   const applyLoopMetrics = () => {
     const width = beltA.scrollWidth || beltA.getBoundingClientRect().width || 1200;
-    const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--speed')) || 60; // px/s
+    // Use CSS --speed if set, else 60 px/s
+    const root = getComputedStyle(document.documentElement);
+    const speed = parseFloat(root.getPropertyValue('--speed')) || 60;
     const duration = width / speed; // seconds
     document.documentElement.style.setProperty('--loop-width', width + 'px');
     document.documentElement.style.setProperty('--duration', duration + 's');
   };
 
-  const scheduleMeasure = () => requestAnimationFrame(applyLoopMetrics);
-  scheduleMeasure();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleMeasure);
-  window.addEventListener('load', scheduleMeasure);
-
-  let raf;
-  addEventListener('resize', () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(applyLoopMetrics);
-  });
+  const measureSoon = () => requestAnimationFrame(applyLoopMetrics);
+  measureSoon();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureSoon);
+  window.addEventListener('load', measureSoon);
+  let raf; window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(applyLoopMetrics); });
 })();
-</script>
-<script>
-/* Visibility-based lazy video loader + autoplay
-   - Defers network: moves <source src> -> data-src until near viewport
-   - Autoplays (muted) when ~25% visible, pauses when offscreen
-   - Works for #videos grid, the phone belt, and the video slider
-   - Respects your existing "Tap for audio" hint buttons
-*/
-(() => {
-  const ALL_VIDEOS = Array.from(document.querySelectorAll('video'));
-  if (!ALL_VIDEOS.length) return;
 
-  // Prepare each video for lazy loading (don’t fetch until we say so)
-  const prepareVideo = (v) => {
+/* =========================
+   8) Lazy video hydrate + viewport autoplay/pause
+      (works for vgrid + belt + any other <video>)
+   ========================= */
+(() => {
+  const videos = $$('video');
+  if (!videos.length) return;
+
+  // prepare: move src → data-src and disable eager fetching
+  const prepare = (v) => {
     try {
-      // Ensure mobile-friendly defaults
       v.setAttribute('playsinline', '');
       v.muted = true;
-
-      // Stop eager fetch/auto
       v.preload = 'none';
       v.removeAttribute('autoplay');
 
-      // If <video src="..."> (rare in your code), park it as data-src
       if (v.hasAttribute('src') && !v.dataset.src) {
         v.dataset.src = v.getAttribute('src');
         v.removeAttribute('src');
       }
-
-      // For each <source>, park src as data-src
-      v.querySelectorAll('source').forEach(s => {
+      $$('source', v).forEach(s => {
         if (!s.dataset.src && s.hasAttribute('src')) {
           s.dataset.src = s.getAttribute('src');
           s.removeAttribute('src');
@@ -2486,67 +2320,51 @@ wrap.classList.add('shine-auto');
     } catch {}
   };
 
-  // Hydrate: restore srcs so the browser can load, then play
-  const hydrateAndPlay = (v) => {
+  const hydrateAndPlay = async (v) => {
     try {
-      // If not hydrated yet, restore sources
-      const unhydrated = v.querySelector('source[data-src]') || v.dataset.src;
-      if (unhydrated) {
-        // Restore <source> tags
-        v.querySelectorAll('source[data-src]').forEach(s => {
+      if ($$('source[data-src]', v).length || v.dataset.src) {
+        $$('source[data-src]', v).forEach(s => {
           s.setAttribute('src', s.dataset.src);
           s.removeAttribute('data-src');
         });
-        // Restore direct <video src> if present
         if (v.dataset.src) {
           v.setAttribute('src', v.dataset.src);
           delete v.dataset.src;
         }
         v.load();
       }
-      // Try to play (muted autoplay is allowed on all modern browsers)
-      v.play().catch(() => { /* ignore */ });
+      await v.play().catch(()=>{});
     } catch {}
   };
 
-  // Pause helper
-  const pauseVideo = (v) => {
-    try { v.pause(); } catch {}
-  };
+  const pause = (v) => { try { v.pause(); } catch {} };
 
-  // Init
-  ALL_VIDEOS.forEach(prepareVideo);
+  videos.forEach(prepare);
 
-  // IntersectionObserver: preload a bit before it enters (rootMargin)
-  const io = 'IntersectionObserver' in window
-    ? new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          const v = entry.target;
-          if (entry.isIntersecting) {
-            hydrateAndPlay(v);
-          } else {
-            pauseVideo(v);
-          }
-        });
-      }, { rootMargin: '300px 0px', threshold: 0.25 })
-    : null;
-
-  if (io) ALL_VIDEOS.forEach(v => io.observe(v));
-  else {
-    // Fallback: if IO is not supported, just hydrate the first screen’s videos
-    ALL_VIDEOS.slice(0, 3).forEach(hydrateAndPlay);
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const v = entry.target;
+        if (entry.isIntersecting) hydrateAndPlay(v);
+        else pause(v);
+      });
+    }, { rootMargin: '300px 0px', threshold: 0.25 });
+    videos.forEach(v => io.observe(v));
+  } else {
+    // Fallback: lightly hydrate a couple on first screen
+    videos.slice(0, 3).forEach(hydrateAndPlay);
   }
 
-  // Pause everything when tab is hidden (saves battery/CPU)
+  // Pause all when tab is hidden
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) ALL_VIDEOS.forEach(pauseVideo);
+    if (document.hidden) videos.forEach(pause);
   });
 
-  // Keep your “Tap for audio” hints working
-  document.querySelectorAll('.vframe .sound-hint').forEach(btn => {
+  // “Tap for audio” buttons inside .vframe
+  $$('.vframe .sound-hint').forEach(btn => {
     const v = btn.closest('.vframe')?.querySelector('video');
     if (!v) return;
-    const show = (showIt) => btn.classList.toggle('hide', !showIt);
+    const show = (visible) => btn.classList.toggle('hide', !visible);
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       v.muted = false;
@@ -2557,6 +2375,7 @@ wrap.classList.add('shine-auto');
   });
 })();
 </script>
+
 
 </body>
 </html>
