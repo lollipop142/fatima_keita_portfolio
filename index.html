@@ -2065,27 +2065,6 @@ const PHOTO_SOURCES = [
   dotsWrap.addEventListener('mouseleave',()=>timer=setInterval(()=>show(idx+1),5000));
 })();
 
-/* Videos behavior */
-(() => {
-  const vids = document.querySelectorAll('#videos video');
-  if (!vids.length) return;
-  const hasTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-  vids.forEach(v => {
-    v.setAttribute('playsinline',''); v.muted = true;
-    const frame = v.closest('.vframe'); if (!frame) return;
-    const hint = frame.querySelector('.sound-hint');
-    if (hint) hint.textContent = (hasTouch ? '🔊 Tap for audio' : '🔊 Click for audio');
-    hint?.addEventListener('click', (e) => { e.stopPropagation(); v.muted = false; v.play().catch(()=>{}); hint.classList.add('hide'); });
-    v.addEventListener('click', () => { v.muted = !v.muted; if (!v.muted) v.play().catch(()=>{}); if (hint) hint.classList.toggle('hide', !v.muted); });
-    v.addEventListener('volumechange', () => { if (hint) hint.classList.toggle('hide', v.muted ? false : true); });
-  });
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { const v = e.target; if (!e.isIntersecting) v.pause(); else if (v.paused) v.play().catch(()=>{}); });
-    }, { threshold: 0.25 });
-    vids.forEach(v => io.observe(v));
-  }
-})();
 
 /* Mobile nav */
 (() => {
@@ -2466,6 +2445,115 @@ wrap.classList.add('shine-auto');
   addEventListener('resize', () => {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(applyLoopMetrics);
+  });
+})();
+</script>
+<script>
+/* Visibility-based lazy video loader + autoplay
+   - Defers network: moves <source src> -> data-src until near viewport
+   - Autoplays (muted) when ~25% visible, pauses when offscreen
+   - Works for #videos grid, the phone belt, and the video slider
+   - Respects your existing "Tap for audio" hint buttons
+*/
+(() => {
+  const ALL_VIDEOS = Array.from(document.querySelectorAll('video'));
+  if (!ALL_VIDEOS.length) return;
+
+  // Prepare each video for lazy loading (don’t fetch until we say so)
+  const prepareVideo = (v) => {
+    try {
+      // Ensure mobile-friendly defaults
+      v.setAttribute('playsinline', '');
+      v.muted = true;
+
+      // Stop eager fetch/auto
+      v.preload = 'none';
+      v.removeAttribute('autoplay');
+
+      // If <video src="..."> (rare in your code), park it as data-src
+      if (v.hasAttribute('src') && !v.dataset.src) {
+        v.dataset.src = v.getAttribute('src');
+        v.removeAttribute('src');
+      }
+
+      // For each <source>, park src as data-src
+      v.querySelectorAll('source').forEach(s => {
+        if (!s.dataset.src && s.hasAttribute('src')) {
+          s.dataset.src = s.getAttribute('src');
+          s.removeAttribute('src');
+        }
+      });
+    } catch {}
+  };
+
+  // Hydrate: restore srcs so the browser can load, then play
+  const hydrateAndPlay = (v) => {
+    try {
+      // If not hydrated yet, restore sources
+      const unhydrated = v.querySelector('source[data-src]') || v.dataset.src;
+      if (unhydrated) {
+        // Restore <source> tags
+        v.querySelectorAll('source[data-src]').forEach(s => {
+          s.setAttribute('src', s.dataset.src);
+          s.removeAttribute('data-src');
+        });
+        // Restore direct <video src> if present
+        if (v.dataset.src) {
+          v.setAttribute('src', v.dataset.src);
+          delete v.dataset.src;
+        }
+        v.load();
+      }
+      // Try to play (muted autoplay is allowed on all modern browsers)
+      v.play().catch(() => { /* ignore */ });
+    } catch {}
+  };
+
+  // Pause helper
+  const pauseVideo = (v) => {
+    try { v.pause(); } catch {}
+  };
+
+  // Init
+  ALL_VIDEOS.forEach(prepareVideo);
+
+  // IntersectionObserver: preload a bit before it enters (rootMargin)
+  const io = 'IntersectionObserver' in window
+    ? new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            hydrateAndPlay(v);
+          } else {
+            pauseVideo(v);
+          }
+        });
+      }, { rootMargin: '300px 0px', threshold: 0.25 })
+    : null;
+
+  if (io) ALL_VIDEOS.forEach(v => io.observe(v));
+  else {
+    // Fallback: if IO is not supported, just hydrate the first screen’s videos
+    ALL_VIDEOS.slice(0, 3).forEach(hydrateAndPlay);
+  }
+
+  // Pause everything when tab is hidden (saves battery/CPU)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) ALL_VIDEOS.forEach(pauseVideo);
+  });
+
+  // Keep your “Tap for audio” hints working
+  document.querySelectorAll('.vframe .sound-hint').forEach(btn => {
+    const v = btn.closest('.vframe')?.querySelector('video');
+    if (!v) return;
+    const show = (showIt) => btn.classList.toggle('hide', !showIt);
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      v.muted = false;
+      v.play().catch(()=>{});
+      show(false);
+    });
+    v.addEventListener('volumechange', () => show(v.muted));
   });
 })();
 </script>
